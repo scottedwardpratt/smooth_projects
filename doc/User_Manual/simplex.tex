@@ -45,14 +45,14 @@ The first column is the model-parameter name, and the last three parameters desc
 \subsection{Training Types}
 
 \subsubsection{Type 1}
- Depending on the number of parameters, $N$, the program creates a simplex in $N$ dimensions. This simplex's vertices will be used to generate new training points. These points will be scaled by different values so the training points aren't in the same radius. This results in the minimum number of required points for linear fits. Thus, if the model is perfectly linear, this option provides perfect emulation. 
+ Depending on the number of parameters, $n$, the program creates a simplex in $n$ dimensions. This simplex's vertices will be used to generate $N_{\rm train}=n+1$ training points. These points will be scaled by different values so the training points aren't in the same radius. This results in the minimum number of required points for linear fits. Thus, if the model is perfectly linear, this option provides perfect emulation. 
 
 \subsubsection{Type 2}
 
- Depending on the number of parameters, the program first creates a simplex in $N$ dimensions. This simplex's vertices will be used to generate new training points there and along the edges. These points will be scaled to be in different radii from the center. This results in the minimum number of required points for quadratic fits. The net number of training points is then $n+1+n(n+1)/2=$. Thus, if the model is perfectly quadratic, this option provides perfect emulation.
+ Depending on the number of parameters, the program first creates a simplex in $n$ dimensions. This simplex's vertices will be used to generate new training points there and along the edges. These points will be scaled to be in different radii from the center. This results in the minimum number of required points for quadratic fits. The net number of training points is then $N_{\rm train}=n+1+n(n+1)/2$. Thus, if the model is perfectly quadratic, this option provides perfect emulation.
  
 \subsubsection{Type 3}
-This training type creates two different simplexes, both centered at the origin. The second simplex is a reflection of the first. The 2-dimensional visualization of this would look like the ``Star of David''.  Finally, one extra training point is added at the origin.
+This training type creates two different simplexes, both centered at the origin. The second simplex is a reflection of the first. The 2-dimensional visualization of this would look like the ``Star of David''.  Finally, one extra training point is added at the origin. The net number of training points is $N_{\rm train}=2n+3$.
 
 \subsection{Running Simplex to Generate Training Points}
 
