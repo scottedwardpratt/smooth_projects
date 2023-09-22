@@ -51,7 +51,7 @@ The second file is {\tt MY\_PROJECT/Info/observable\_info.txt}. This describes o
 }
 The first entry in each line simply provides the names of the observable which will be processed in the Bayesian analysis. The second lists the units, and is never used, but is included for reference. The third entry is only used by {\tt Smooth Emulator} during tuning. The spread, $\sigma_A$, describes the variance of the output due to a single term in the Taylor expansion. Because this is treated as a random variable, and varied from one sampling of the coefficients to another, one must have an initial choice for it before the MCMC procedures in the tuning can proceed. One simple needs to choose this value within a few factors of two from the optimized value. Otherwise, the initial burn-in stage of the MCMC might require more time to coverge in the right neighborhood. Once the burn-in of the MCMC procedure is completed, this parameter is not used. 
 
-\subsection{Step 2: Running {\it Simplex Sampler}}
+\subsection{Running {\it Simplex Sampler}}
 
 Both {\it Simplex Sampler} and {\tt Smooth Emulator} have options. These are provided in parameter files. For this tutorial, the provided parameter file is {\tt MY\_PROJECT/parameters/simplex\_parameters.txt}. The provided file is
 {\tt
@@ -81,18 +81,18 @@ If all goes, well there is no screen output. The programs writes information abo
 }
 This describes the four model parameters, which will serve as the input for the first full model run. If one had set the parameter {\tt Simplex\_TrainType} to 2, there would be 15 sub-directories in {\tt modelruns/}. The next step will be to run the full model for the parameters in each directory. Thus for {\tt Simplex\_Traintype=1}, one would need 5 full-model runs, and for {\tt Simplex\_Traintype=2}, one would need to do 15 full-model runs. The corresponding observables will be written in the files {\tt modelruns/runI/obs.txt}
 
-\subsection{Step 3: Running the Fake Full Model}
-Once the training points have been generated, the user will input a Real full model based on the given structure, tailored to address their specific problem. For the tutorial, a fake model is provided. It reads the model-parameter values in each {\tt modelruns/runI/mod_parameters.txt} file and writes the corresponding observables in {\tt modelruns/runI/obs.txt}. 
+\subsection{Running the Fake Full Model}
+Once the training points have been generated, the user will input a Real full model based on the given structure, tailored to address their specific problem. For the tutorial, a fake model is provided. It reads the model-parameter values in each {\tt modelruns/runI/mod\_parameters.txt} file and writes the corresponding observables in {\tt modelruns/runI/obs.txt}. 
 
 The fake model is a simple python script, which is enacted by entering the command:
-\vspace{-20pt}
+
 {\tt
 \begin{verbatim}
    MY_PROJECT% python3 MY_LOCAL/fakemodel/templatemod.py
 \end{verbatim}
 }
 The output should appear as
-\vspace{-20pt}
+
 {\tt
 \begin{verbatim}
    MY_PROJECT% python3 MY_LOCAL/fakemodel/templatemod.py
@@ -108,7 +108,7 @@ The output should appear as
 \end{verbatim}
 }
 Inspecting the {\tt modelruns/run0/obs.txt} file,
-\vspace{-20pt}
+
 {\tt
 \begin{verbatim}
    length 10.871583624279312 1.0
@@ -118,12 +118,12 @@ Inspecting the {\tt modelruns/run0/obs.txt} file,
 }
 The second entry of each line is the value of the specified observable for that specific training point. The last entry is the random uncertainty associated with the full model. This is only relevant if the model has random fluctuations, meaning the re-running the model at the same point might result in different output. For this tutorial, the emulator will not consider such fluctuations (there is an emulator parameter that can be set to either consider the randomness or ignore it), so the third entry on each line is superfluous.
 
-\subsection{Step 4: Running {\it Smooth Emulator}}
-To tune the emulator, the User will run {\tt MY\_LOCAl/bin/smoothy\_tune} which should have been compiled in the directions above. The User needs to edit one additional file a this point, the parameter file that sets numerous options for {\it Smooth Emulator}. For the template used in this tutorial, that file is
-\vspace{-20pt}
+\subsection{Running {\it Smooth Emulator}}
+To tune the emulator, the User will run {\tt MY\_LOCAL/bin/smoothy\_tune} which should have been compiled in the directions above. The User needs to edit one additional file a this point, the parameter file that sets numerous options for {\it Smooth Emulator}. For the template used in this tutorial, that file is
+
 {\tt
 \begin{verbatim}
- #SmoothEmulator_LogFileName smoothlog.txt
+#SmoothEmulator_LogFileName smoothlog.txt
  SmoothEmulator_LAMBDA 3.0
  SmoothEmulator_MAXRANK 4
  SmoothEmulator_NASample 8  # No. of coefficient samples
@@ -133,22 +133,160 @@ To tune the emulator, the User will run {\tt MY\_LOCAl/bin/smoothy\_tune} which 
  SmoothEmulator_CutoffA false
  SmoothEmulator_ModelRunDirName modelruns
  SmoothEmulator_CoefficientsDirName coefficients
+ SmoothEmulator_ModelParInfoDir    Info
+ SmoothEmulator_ObservableInfoDir  Info
  SmoothEmulator_TrainingPts 0-4
  SmoothEmulator_MCStepSize 0.01
- SmoothEmulator_MCSigmaAStepSize 0.01
+ SmoothEmulator_MCSigmaAStepSize 50.0
  SmoothEmulator_NMC 10000  # Steps between samples 
  SmoothEmulator_UsePCA   false
 \end{verbatim}
 }
-The parameters are described in detail in Sec. \ref{sec:emulator}. For the purpose of this tutorial we review a few of them. The parameter {\tt SmoothEmulator\_TrainingPts} is set above to include all five of the training points. However, if {\it Simplex Sampler} were run with a different choice, or if the User had added more points to be used by some other means, this parameter should be adjusted. The three parameters, {\tt SmoothEmulator\_MCStepSize}, {\tt SmoothEmulator\_MCSigmaAStepSize} and {\tt SmoothEmulator\_NMC} might be adjusted depending on the rate of Monte Carlo convergence of the tuning. 
+The parameters are described in detail in Sec. \ref{sec:emulator}. For the purpose of this tutorial we review a few of them. The parameter {\tt SmoothEmulator\_TrainingPts} is set above to include all five of the training points. However, if {\it Simplex Sampler} were run with a different choice, or if the User had added more points to be used by some other means, this parameter should be adjusted. The three parameters, {\tt SmoothEmulator\_MCStepSize}, {\tt SmoothEmulator\_MCSigmaAStepSize} and {\tt SmoothEmulator\_NMC} might be adjusted depending on the rate of Monte Carlo convergence of the tuning.
+
+Now, running {\tt smoothy\_tune}, produces the following output,
+
+{\tt
+\begin{verbatim}
+MY_PROJECT% smoothy_tune parameters/emulator_parameters.txt
+ Tuning Emulator for length
+ success percentage=30.900000, SigmaA=170.951454, logP/Ndof=-0.604220,BestLogP/Ndof=-0.482655
+ success percentage=29.980000, SigmaA=842.098167, logP/Ndof=-0.731110,BestLogP/Ndof=-0.544052
+ success percentage=30.840000, SigmaA=184.488302, logP/Ndof=-0.651830,BestLogP/Ndof=-0.528882
+ success percentage=31.330000, SigmaA=151.392117, logP/Ndof=-0.784629,BestLogP/Ndof=-0.583911
+ success percentage=30.120000, SigmaA=120.719517, logP/Ndof=-0.588851,BestLogP/Ndof=-0.481046
+ success percentage=29.950000, SigmaA=178.510175, logP/Ndof=-0.671494,BestLogP/Ndof=-0.495041
+ success percentage=29.710000, SigmaA=281.210451, logP/Ndof=-0.750559,BestLogP/Ndof=-0.605111
+ success percentage=29.930000, SigmaA=171.487852, logP/Ndof=-0.599591,BestLogP/Ndof=-0.521237
+ Tuning Emulator for mass
+ success percentage=19.490000, SigmaA=53.649126, logP/Ndof=-0.625247,BestLogP/Ndof=-0.492470
+ success percentage=19.910000, SigmaA=84.204171, logP/Ndof=-0.656591,BestLogP/Ndof=-0.527139
+ success percentage=17.380000, SigmaA=46.138790, logP/Ndof=-0.780594,BestLogP/Ndof=-0.573535
+ success percentage=18.750000, SigmaA=92.444543, logP/Ndof=-0.531562,BestLogP/Ndof=-0.505887
+ success percentage=19.190000, SigmaA=60.575128, logP/Ndof=-0.540636,BestLogP/Ndof=-0.457436
+ success percentage=17.920000, SigmaA=75.219279, logP/Ndof=-0.674120,BestLogP/Ndof=-0.539112
+ success percentage=18.360000, SigmaA=40.116381, logP/Ndof=-0.656642,BestLogP/Ndof=-0.557670
+ success percentage=19.470000, SigmaA=74.261850, logP/Ndof=-0.675975,BestLogP/Ndof=-0.564430
+ Tuning Emulator for time
+ success percentage=19.760000, SigmaA=82.486706, logP/Ndof=-0.669089,BestLogP/Ndof=-0.489885
+ success percentage=19.970000, SigmaA=44.492860, logP/Ndof=-0.632434,BestLogP/Ndof=-0.497695
+ success percentage=19.520000, SigmaA=80.956164, logP/Ndof=-0.682640,BestLogP/Ndof=-0.549880
+ success percentage=19.340000, SigmaA=70.625835, logP/Ndof=-0.668105,BestLogP/Ndof=-0.518805
+ success percentage=19.590000, SigmaA=116.988915, logP/Ndof=-0.673993,BestLogP/Ndof=-0.582763
+ success percentage=19.080000, SigmaA=89.891122, logP/Ndof=-0.631130,BestLogP/Ndof=-0.508224
+ success percentage=19.880000, SigmaA=102.710384, logP/Ndof=-0.707850,BestLogP/Ndof=-0.542698
+ success percentage=19.450000, SigmaA=206.622539, logP/Ndof=-0.800493,BestLogP/Ndof=-0.486518
+\end{verbatim}
+}
+
+If the success percentage above is small, much less than 50\%, then one may wish to decrease the Monte Carlo stepsizes, {\tt SmoothEmulator\_MCStepSize} and {\tt SmoothEmulator\_MCSigmaAStepSize 0.01}, to increase the success rate of the Metropolis steps. If the percentage is large, much greater than 50\%, conversely, one may wish to increase the step size to increase the coverage of the Monte Carlo trace. The quantity {\tt SigmaA} represents the characteristic width of the distributions of coefficients. It is allowed to vary, and from experience, the range can be quite large. If the value of {\tt SigmaA} does not seem to have randomized, one may wish to increase the number of Monte Carlo steps, {\tt  SmoothEmulator\_NMC}. The quantitiy {\tt logP/Ndof} is the logarithm of the weight for a coefficient set divided by the number of degrees of freedom (number of coefficients). It should fluctuate throughout the trace. Higher values (usually less negative) indicate better fits. If the value is well below -1, and rising throughout the trace, it suggests the burn-in was insufficient and {\tt  SmoothEmulator\_NMC} should be increased. The last entry in the output lines, {\tt BestLogP/Ndof}, simply reports the highest weight encountered in the trace. Again, if that is significantly increasing throughout the trace, {\tt  SmoothEmulator\_NMC} should be increased. 
+
+To represent the uncertainty, there were $N_{\rm sample}$ sets of coefficients generated by {\it Smooth Emulator}. In this case, the parameter {\tt SmoothEmulator\_NASample} was set to 8. As the Monte Carlo trace proceeds, after {\tt SmoothEmulator\_NMC} steps, the coefficients are stored, and an output line is generated as seen above. Thus there are 8 lines printed above for each observable.
+
+The program generates Taylor coefficients for $N_{\rm sample}$ samples and saves them in the {\tt coefficients} directory. Each observable has its own sub-directory with its name. Besides the coefficients, {\it Smooth Emulator} also produces a {\tt meta.txt} file in the same directory. It includes essential information like the observable's maximum rank and net number of model parameters. This file is used to access the coefficients later. In this case, {\tt smoothy\_tune} created the directories, {\tt MY\_PROJECT/coefficients/length},  {\tt MY\_PROJECT/coefficients/mass} and {\tt MY\_PROJECT/coefficients/time}. Within each of these sub-directories {\tt smoothy\_tune} created files {\tt meta.txt}, {\tt sample0.txt}, {\tt sample1.text} $\cdots$ {\tt sample7.txt}.
 
 
+\section{Generating Emulated Observables}
+Finally, now that the emulator is tuned, one may wish to generate emulated values for the observables for specified points in model-parameter space. A sample program, {\tt MY\_LOCAL/bin/smoothy\_calcobs} is provided to illustrate how this can be accomplished. If one invokes the executable, using the same parameters as those used by {\tt smoothy\_tune}, the User is prompted to enter the coordinates of a point in model-parameter space, after which {\tt smoothy\_calcobs} prints out the observables. In this case, for the case where {\tt par1=20}, {\tt par2=40}, {\tt par3=60} and {\tt par4=80},
 
- 
+{\tt
+\begin{verbatim}
+~/git/smooth_projects/scottrun% smoothy_calcobs parameters/emulator_parameters.txt
+Prior Info
+#         ParameterName Type   Xmin_or_Xbar  Xmax_or_SigmaX
+ 0:            par1   uniform          0        100
+ 1:            par2   uniform          0        100
+ 2:            par3   uniform          0        100
+ 3:            par4   uniform          0        100
+Enter value for par1:
+20
+Enter value for par2:
+40
+Enter value for par3:
+60
+Enter value for par4:
+80
+length = 61.349 +/- 5.14857
+mass = -26.4496 +/- 2.6206
+time = -44.9779 +/- 2.0495
+\end{verbatim}
+}
 
+One can test the emulator by entering the coordinates of training point. For example, one of the training points is {\tt par1=50}, {\tt par2=50}, {\tt par3=88.7298} and {\tt par4=40}. Running {\tt smoothy\_calcobs} for that coordinate,
 
-The program generates Taylor coefficients for $N_{\rm sample}$ samples and saves them in the {\tt coefficients} directory. Each observable has its own subdirectory with its name. Besides the coefficients, {\it Smooth Emulator} also produces a {\tt meta.txt} file in the same directory. It includes essential information like the observable's maximum rank and net number of model parameters. This file can be used to access the coefficients later.
+{\tt
+\begin{verbatim}
+~/git/smooth_projects/scottrun% smoothy_calcobs parameters/emulator_parameters.txt
+Prior Info
+#         ParameterName Type   Xmin_or_Xbar  Xmax_or_SigmaX
+ 0:            par1   uniform          0        100
+ 1:            par2   uniform          0        100
+ 2:            par3   uniform          0        100
+ 3:            par4   uniform          0        100
+Enter value for par1:
+50
+Enter value for par2:
+50
+Enter value for par3:
+88.7298
+Enter value for par4:
+40
+length = -45.878 +/- 6.7435e-07
+mass = -7.8083 +/- 8.42937e-08
+time = -52.4031 +/- 1.16801e-06
+\end{verbatim}
+}
+Note that the uncertainties for the emulation are not effectivly zero, as each set of the 8 sets of coefficients provides an an emulator that exactly reproduces the training points.
 
-{\it Smooth Emulator} offers progress updates throughout its execution, which may appear on the screen or be saved to a file, depending on the settings established in the SmoothEmulator\_LogFile parameter. The progress report encompasses data on the success rate of the MCMC program. Specifically, the line BestLogP/Ndof represents the weight utilized to assess the likelihood of a coefficients sample. It is worth noting that this value should converge roughly when the Metropolis procedure settles on the most probable region. For Further understanding refer to section \ref{sec:emulator}{Tuning the Emulator}
+Of course, it is unlikely the User will wish to enter model parameters interactively as was done above. To incorporate {\tt Smooth Emulator} into other programs, the User should inspect the main program, {\tt MY\_LOCAL/main\_programs/smoothy\_calcobs\_main.cc}. The User can then design their own program based on this source code, and compile and link it by editing {\tt MY\_LOCAL/build/CMakeLists.txt}. By editing the CMake file, replacing the lines unique to {\tt smoothy\_calcobs}, one can easily compile new executables based on the User's main programs. To understand what might be involved, the source code in {\tt MY\_LOCAL/main\_programs/smooth\_calcobs\_main.cc} is
+{\tt
+\begin{verbatim}
+#include "msu_commonutils/parametermap.h"
+#include "msu_smooth/master.h"
+#include "msu_commonutils/log.h"
+using namespace std;
+
+ int main(int argc,char *argv[]){
+   if(argc!=2){
+      CLog::Info("Usage smoothy_calcobs emulator parameter filename");
+      exit(1);
+   }
+   CparameterMap *parmap=new CparameterMap();
+   parmap->ReadParsFromFile(string(argv[1]));
+   CSmoothMaster master(parmap);
+   master.ReadCoefficientsAllY();
+   
+   CModelParameters *modpars=new CModelParameters(master.priorinfo); // contains info about single point
+   
+   master.priorinfo->PrintInfo();
+   // Prompt user for model parameter values
+   vector<double> X(modpars->NModelPars);
+   for(int ipar=0;ipar<modpars->NModelPars;ipar++){
+      cout << "Enter value for " << master.priorinfo->GetName(ipar) << ":\n";
+      cin >> X[ipar];
+   }
+   modpars->SetX(X);
+   
+   //  Calc Observables
+   CObservableInfo *obsinfo=master.observableinfo;
+   vector<double> Y(obsinfo->NObservables);
+   vector<double> SigmaY(obsinfo->NObservables);
+   master.CalcAllY(modpars,Y,SigmaY);
+   for(int iY=0;iY<obsinfo->NObservables;iY++){
+      cout << obsinfo->GetName(iY) << " = " << Y[iY] << " +/- " << SigmaY[iY] << endl;
+   }
+
+   return 0;
+}
+\end{verbatim}
+}
+This illustrates how one can write a code that 
+\begin{itemize}\itemsep=0pt
+\item[a)] Reads the parameter file
+\item[b)] Creates a {\it master} emulator file (called master because it includes emulators for all the observables)
+\item[c)] Creates a model-parameters object, {\tt modpars}, that stores the coordinates of the model-parameter point
+\item[d)] Calculates the observables from the emulator
+\end{itemize}
+
 
 \end{document}
