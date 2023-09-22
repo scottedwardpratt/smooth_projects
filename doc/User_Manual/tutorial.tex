@@ -119,20 +119,33 @@ Inspecting the {\tt modelruns/run0/obs.txt} file,
 The second entry of each line is the value of the specified observable for that specific training point. The last entry is the random uncertainty associated with the full model. This is only relevant if the model has random fluctuations, meaning the re-running the model at the same point might result in different output. For this tutorial, the emulator will not consider such fluctuations (there is an emulator parameter that can be set to either consider the randomness or ignore it), so the third entry on each line is superfluous.
 
 \subsection{Step 4: Running {\it Smooth Emulator}}
-To compile the tuning program, User should navigate to {\tt GITHOME\_MSU/smooth/local/build/} directory and execute the following commands.
+To tune the emulator, the User will run {\tt MY\_LOCAl/bin/smoothy\_tune} which should have been compiled in the directions above. The User needs to edit one additional file a this point, the parameter file that sets numerous options for {\it Smooth Emulator}. For the template used in this tutorial, that file is
+\vspace{-20pt}
 {\tt
 \begin{verbatim}
- ~/GITHOME_MSU/smooth/local/build % cmake .
- ~/GITHOME_MSU/smooth/local/build % make smoothy_tune
+ #SmoothEmulator_LogFileName smoothlog.txt
+ SmoothEmulator_LAMBDA 3.0
+ SmoothEmulator_MAXRANK 4
+ SmoothEmulator_NASample 8  # No. of coefficient samples
+ SmoothEmulator_TuneChooseMCMC true # set false if NPars<5
+ SmoothEmulator_UseSigmaYRreal false # 
+ SmoothEmulator_ConstrainA0 false
+ SmoothEmulator_CutoffA false
+ SmoothEmulator_ModelRunDirName modelruns
+ SmoothEmulator_CoefficientsDirName coefficients
+ SmoothEmulator_TrainingPts 0-4
+ SmoothEmulator_MCStepSize 0.01
+ SmoothEmulator_MCSigmaAStepSize 0.01
+ SmoothEmulator_NMC 10000  # Steps between samples 
+ SmoothEmulator_UsePCA   false
 \end{verbatim}
 }
-The executable {\tt smoothy\_tune} should now appear in the {\tt GITHOME\_MSU/smooth/local/bin/} directory. After the addition of the {\tt bin/} directory to the User's path, the User may switch to the User's project directory, and enter the command
-{\tt
-\begin{verbatim}
-  ~/MY_PROJECT % GITHOME_MSU/smooth/local/bin/smoothy_tune PARAMETERS/MY_PARAMETERS.TXT
-\end{verbatim}
-}
-In the above, {\tt GITHOME\_MSU} is the path of the {\it Smooth Emulator} installation. {\tt PROJECT\_TEMPLATE}, and {\tt PARAMETERS/emulator\_parameters.txt} would be replaced by the User.
+The parameters are described in detail in Sec. \ref{sec:emulator}. For the purpose of this tutorial we review a few of them. The parameter {\tt SmoothEmulator\_TrainingPts} is set above to include all five of the training points. However, if {\it Simplex Sampler} were run with a different choice, or if the User had added more points to be used by some other means, this parameter should be adjusted. The three parameters, {\tt SmoothEmulator\_MCStepSize}, {\tt SmoothEmulator\_MCSigmaAStepSize} and {\tt SmoothEmulator\_NMC} might be adjusted depending on the rate of Monte Carlo convergence of the tuning. 
+
+
+
+ 
+
 
 The program generates Taylor coefficients for $N_{\rm sample}$ samples and saves them in the {\tt coefficients} directory. Each observable has its own subdirectory with its name. Besides the coefficients, {\it Smooth Emulator} also produces a {\tt meta.txt} file in the same directory. It includes essential information like the observable's maximum rank and net number of model parameters. This file can be used to access the coefficients later.
 
