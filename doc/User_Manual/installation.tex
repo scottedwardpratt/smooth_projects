@@ -30,65 +30,60 @@ The GNU Scientific Library (GSL) is a numerical library for C and C++ programmer
 \begin{verbatim} % brew install gsl\end{verbatim}
 }
 
-\subsection{Making Home Directory and Setting Home Environment Variable}
+\subsection{Downloading the Repository and Setting the GITHOME\_BAND Environment Variable}
 
-The software requires two repositories. They should be cloned into the same directory. For compilation purposes this directory needs to be accessed via an environmental variable.  For example the directory might be named {\tt /Users/CarlosSmith/git\_msu}. The User needs to set an environmental variable, {\tt GITHOME\_MSU}, to the full path of the directory, e.g. 
-{\tt
-\begin{verbatim}
-    % export GITHOME_MSU="/Users/CarlosSmith/git_msu"
-\end{verbatim}
-}
-It is recommended to copy this command into the user's {\tt .bashrc} (or equivalent) file to avoid re-defining it each time one needs to recompile.
-
-\subsection{Downloading}\label{sec:Downloading_Compiling}
-From within the {\tt GITHOME\_MSU/} directory,
+The software requires downloading the BAND framework software repository into some directory. Should that be in the User's home directory, the User might enter
 {\tt 
 \begin{verbatim}
-    GITHOME_MSU% git clone https://github.com/scottedwardpratt/smooth.git
-    GITHOME_MSU% git clone https://github.com/scottedwardpratt/commonutils.git
+    /Users/CarlosSmith% git clone https://github.com/bandframework/bandframework.git
 \end{verbatim}
 }
-
-This creates 2 directories: {\tt .../GITHOME\_MSU/commonutils} and {\tt .../GITHOME\_MSU/smooth}.
+The User needs to set an environmental variable, {\tt GITHOME\_BAND}, to the full path of the directory where the software is located, e.g. 
+{\tt
+\begin{verbatim}
+    % export GITHOME_BAND="/Users/CarlosSmith/bandframework/software"
+\end{verbatim}
+}
+It is recommended to copy this command into the user's {\tt .bashrc} (or equivalent) file to avoid re-defining it each time one needs to recompile. Throughout the manual the phrase {\tt GITHOME\_BAND} will refer to this directory. The {\it Smooth Emulator} and {\it Simplex Sampler} software requires software from two directories: {\tt .../GITHOME\_BAND/SmoothUtilities} and {\tt .../GITHOME\_BAND/SmoothEmulator}.
 
 The User needs to create a project directory from which the User would perform most projects. This is easiest accomplished by copying a template from the {\it Smooth} distribution,
 {\tt
 \begin{verbatim}
-    % cp -r GITHOME_MSU/templates/myproject MY_PROJECT
+    % cp -r GITHOME_BAND/templates/myproject MY_PROJECT
 \end{verbatim}
 }
-Hence forth, {\tt MY\_PROJECT} will refer to the directory, including the path, from which the User will perform most of the analysis. The User may wish to have several such directories. These directories should be outside the main distribution, i.e. outside the {\tt smooth/} or {\tt commonutils} paths. 
+Hence forth, {\tt MY\_PROJECT} will refer to the directory, including the path, from which the User will perform most of the analysis. The User may wish to have several such directories. These directories should be outside the main distribution, i.e. outside the {\tt bandframework/} path. 
 
 Although the main source code, include files and libraries are all located in the software directory, the main programs and executables are not. The motivation for this decision is to allow the User to easily modify their own versions of the main programs. These tend to be very short programs. For that reason their is a separate directory to store the main programs and their executables. The User can easily set this up by copying a template directory,
 {\tt 
 \begin{verbatim}
-    % cp -r GITHOME_MSU/templates/mylocal MY_LOCAL
+    % cp -r GITHOME_BAND/templates/mylocal MY_LOCAL
 \end{verbatim}
 }
-Here {\tt MY\_LOCAL} will hence forth refer to the path of this directory. This directory should be outside the main distribution, i.e. outside the {\tt smooth/} or {\tt commonutils} paths. 
+Here {\tt MY\_LOCAL} will hence forth refer to the path of this directory. This directory should be outside the main distribution, i.e. outside the {\tt bandframework/} path. 
 
-For the remainder of this manual, {\tt GITHOME\_MSU}, {\tt MY\_LOCAL} and {\tt MY\_PROJECT} will be used to denote the location of these directories.
+For the remainder of this manual, {\tt GITHOME\_BAND}, {\tt MY\_LOCAL} and {\tt MY\_PROJECT} will be used to denote the location of these directories.
 
 \subsection{Directory and File Structure}
 
 \begin{figure}
 \centerline{\includegraphics[width = 0.95\textwidth]{directorystructure}}
-\caption{{\bf The directory structure}: The User clones two repositories into some location, which will be referred to as {\tt GITHOME\_MSU}. The User can then copy two template directories into the User's choices of locations outside the path of the repositories. The name of those two directories will be referred to as {\tt MY\_LOCAL}, which will contain the main programs and executables, and {\tt MY\_PROJECT} which contains the data files related to a given project. The programs are designed to be run from within the {\tt MY\_PROJECT/} directory.}
+\caption{{\bf The directory structure}: The User clones two repositories into some location, which will be referred to as {\tt GITHOME\_BAND}. The User can then copy two template directories into the User's choices of locations outside the path of the BAND repositories. The name of those two directories will be referred to as {\tt MY\_LOCAL}, which will contain the main programs and executables, and {\tt MY\_PROJECT} which contains the data files related to a given project. The programs are designed to be run from within the {\tt MY\_PROJECT/} directory.}
 \end{figure}
 
-Once compiled, the libraries in the {\tt commonutils/} directory are used for a variety of tasks. These libaries are not particularly designed for {\it Smooth Emulator} or {\it Simplex Sampler}. The {\tt smooth/} directory contains codes that are used to create libraries specific to the sampler and emulator. The executables are stored in {\tt MY\_LOCAL/bin}. The short main program source files are located in {\tt MY\_LOCAL/main\_programs/}. It is not envisioned that the User would edit files in the {\tt smooth/software/} directory, but that the User may well wish to create custom versions of the short main programs in {\tt MY\_LOCAL/main\_programs/}. The main programs are compiled using the CMake files in {\tt MY\_LOCAL/build/}. The User may find it convenient to add {\tt MY\_LOCAL/bin/} to their path.
+Once compiled, the libraries in the {\tt commonutils/} directory are used for a variety of tasks. These libaries are not particularly designed for {\it Smooth Emulator} or {\it Simplex Sampler}. The {\tt SmoothEmulator/} directory contains codes that are used to create libraries specific to the sampler and emulator. The executables are stored in {\tt MY\_LOCAL/bin}. The short main program source files are located in {\tt MY\_LOCAL/main\_programs/}. It is not envisioned that the User would edit files in the {\tt SmoothEmulator/software/} directory, but that the User may well wish to create custom versions of the short main programs in {\tt MY\_LOCAL/main\_programs/}. The main programs are compiled using the CMake files in {\tt MY\_LOCAL/build/}. The User may find it convenient to add {\tt MY\_LOCAL/bin/} to their path.
 
 \subsection{Compiling Libraries }
 
 First, change into software directories, then create the makefiles with cmake, then compile them.
 {\tt 
 \begin{verbatim}
-    % cd GITHOME_MSU/commonutils/software
-    GITHOME_MSU/commonutils/software% cmake .
-    GITHOME_MSU/commonutils/software% make
-    GITHOME_MSU/commonutils/software% cd ../GITHOME_MSU/smooth/software
-    GITHOME_MSU/smooth/software% cmake .
-    GITHOME_MSU/smooth/software% make
+    % cd GITHOME_BAND/SmoothUtilities/software
+    GITHOME_BAND/SmoothUtilities/software% cmake .
+    GITHOME_BAND/SmoothUtilities/software% make
+    GITHOME_BAND/SmoothUtilities/software% cd ../GITHOME_BAND/SmoothEmulator/software
+    GITHOME_BAND/SmoothEmulator/software% cmake .
+    GITHOME_BAND/SmoothEmulator/software% make
 \end{verbatim}
 }
 At this point all the libraries are built, but this does not include the main programs. The main programs are short, and are located in a separate location, as they are meant to serve as examples which the User might copy and edit at will.
@@ -104,7 +99,7 @@ Finally, compile the main programs. Below, this illustrates how to build the pro
     .
 \end{verbatim}
 }
-Other source codes for main programs can be found in {\tt MY\_LOCAL/main\_programs/}. If you build your own main programs (probably using these as examples), you can edit the {\tt CMakeList.txt} file in {\tt GITHOME\_MSU/smooth/local/build}, using the existing entries as an example. The executables should appear in {\tt MY\_LOCAL/bin/}. 
+Other source codes for main programs can be found in {\tt MY\_LOCAL/main\_programs/}. If you build your own main programs (probably using these as examples), you can edit the {\tt CMakeList.txt} file in {\tt GITHOME\_BAND/SmoothEmulator/local/build}, using the existing entries as an example. The executables should appear in {\tt MY\_LOCAL/bin/}. 
 
 \subsection{The Project Directory}
 

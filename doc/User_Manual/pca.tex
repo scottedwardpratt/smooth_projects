@@ -10,7 +10,7 @@ This section is incomplete, and the PCA software is not yet fully tested.
 Rather than emulating all observables, it can be more efficient to emulate a handful of principal components. After generating the training-point data, one can run the {\tt pca} program included with the distribution. This will create files that shadow those used to emulate the observables. This will create a file {\tt Info/pca\_info.txt} alongside {\tt Info/observable\_info.txt}. The difference is that the observables will be named {\tt z1,z2}$\cdots$. In each run directory, alongside the {\tt obs.txt} files, there will be a {\tt obs\_pca.txt} file. Finally, there will be a file {\tt PCA\_Info/tranformation\_info.txt} file that contains all the information and matrices required to perform the basis transformation. If the parameter {\tt Use\_PCA} is set to {\tt true}, the emulator will use the PCA files above instead of the observable files. The emulator will then store the Taylor coefficients in the directory {\tt coefficients\_pca/} rather than in {\tt coefficients/}. 
 
 To get an idea of the capabilities and functionality of the PCA elements of the {\it Smooth Emulator} Distribution, one can view the sample main program,\\
-{\tt GITHOME\_MSU/smooth/local/main\_programs/pca\_main.cc}. 
+{\tt GITHOME\_BAND/SmoothEmulator/local/main\_programs/pca\_main.cc}. 
 
 \subsection{PCA Parameters (not model parameters!)}
 The PCA programs uses parameter that are prefixed with {\bf SmoothEmulator}. One would typically use the same parameter file as used for running {\it Smooth Emulator}. The relevant parameters are:
@@ -24,15 +24,15 @@ If one wishes to emulate the PCA observables, i.e. those that are linear combina
 
 The first sample program is {\tt pca\_calctransformation}, which reads the training information from the full model runs and calculates the principal component information. Quantities such as the PCA eigenvalues and eigenvectors are stored. This provides the User knowledge of which linear combination of observables carry significant resolving power. By storing the eigenvectors, the information may be retrieved later. This allows the User to easily transform from the observable, $y_a$, to the PCA components $z_a$. 
 
-One should first to {\tt GITHOME\_MSU/local/build} and compile/install the program\\
-{\tt GITHOME\_MSU/local/bin/pca\_calctransformation}.
+One should first to {\tt GITHOME\_BAND/local/build} and compile/install the program\\
+{\tt GITHOME\_BAND/local/bin/pca\_calctransformation}.
 {\tt
 \begin{verbatim}
  .../local/build % cmake .
  .../local/build % make pca_calctransformation
  \end{verbatim}
 }
-Next, from the project directory (assuming the training point information has already been collected) one can enter the command (assuming the path includes {\tt GITHOME\_MSU/local/bin})
+Next, from the project directory (assuming the training point information has already been collected) one can enter the command (assuming the path includes {\tt GITHOME\_BAND/local/bin})
 {\tt
 \begin{verbatim}
  ../my_project/ % pca_calctransformation PARAMETER_FILENAME

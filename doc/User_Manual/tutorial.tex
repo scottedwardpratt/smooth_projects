@@ -19,13 +19,13 @@ This section describes the steps of how the User would
 \subsection{Installation}
 After completing the necessary prerequisites listed in section \ref{sec:installation}[Installation] and following the steps outlined in section \ref{sec:installation}[Prerequisites] to install the required cmake, eigen, and gsl libraries, and setting the Home Environment Variable by creating the Home Directory as described in section \ref{sec:installation}[Making Home Directory and Setting Home Environment Variable], the user must proceed to clone the smooth and commonutils directories and compile the libraries, as explained in sections \ref{sec:installation}[Downloading] and [Compiling Libraries].
 
-Then, the user can establish a personalized project directory by duplicating the project\_template directory onto their computer. The User needs to copy two directories, {\tt GITHOME\_MSU/smooth/templates/mylocal} and {\tt GITHOME\_MSU/smooth/templates/myproject} to locations in their personal space. We will refer to the User's two new directories as {\tt MY\_LOCAL/} and {\tt MY\_PROJECT/}. For the purpose of this tutorial, the User must compile three programs. This requires first changing into the {\tt MY\_LOCAL/build/} directory and entering:
+Then, the user can establish a personalized project directory by duplicating the project\_template directory onto their computer. The User needs to copy two directories, {\tt GITHOME\_BAND/SmoothEmulator/templates/mylocal} and {\tt GITHOME\_BAND/SmoothEmulator/templates/myproject} to locations in their personal space. We will refer to the User's two new directories as {\tt MY\_LOCAL/} and {\tt MY\_PROJECT/}. For the purpose of this tutorial, the User must compile three programs. This requires first changing into the {\tt MY\_LOCAL/build/} directory and entering:
 {\tt
 \begin{verbatim}
-   MY_LOCAL% cmake .
-   MY_LOCAL% make simplex
-   MY_LOCAL% make smoothy_tune
-   MY_LOCAL% make smoothy_calcobs
+   MY_LOCAL/build% cmake .
+   MY_LOCAL/build% make simplex
+   MY_LOCAL/build% make smoothy_tune
+   MY_LOCAL/build% make smoothy_calcobs
 \end{verbatim}
 }
 
@@ -119,7 +119,7 @@ Inspecting the {\tt modelruns/run0/obs.txt} file,
 The second entry of each line is the value of the specified observable for that specific training point. The last entry is the random uncertainty associated with the full model. This is only relevant if the model has random fluctuations, meaning the re-running the model at the same point might result in different output. For this tutorial, the emulator will not consider such fluctuations (there is an emulator parameter that can be set to either consider the randomness or ignore it), so the third entry on each line is superfluous.
 
 \subsection{Running {\it Smooth Emulator}}
-To tune the emulator, the User will run {\tt MY\_LOCAL/bin/smoothy\_tune} which should have been compiled in the directions above. The User needs to edit one additional file a this point, the parameter file that sets numerous options for {\it Smooth Emulator}. For the template used in this tutorial, that file is
+To tune the emulator, the User will run {\tt MY\_LOCAL/bin/SmoothEmulator\_tune} which should have been compiled in the directions above. The User needs to edit one additional file a this point, the parameter file that sets numerous options for {\it Smooth Emulator}. For the template used in this tutorial, that file is
 
 {\tt
 \begin{verbatim}
@@ -148,7 +148,7 @@ Now, running {\tt smoothy\_tune}, produces the following output,
 
 {\tt
 \begin{verbatim}
-MY_PROJECT% smoothy_tune parameters/emulator_parameters.txt
+MY_PROJECT% MY_LOCAL/bin/smoothy_tune parameters/emulator_parameters.txt
  Tuning Emulator for length
  success percentage=30.900000, SigmaA=170.951454, logP/Ndof=-0.604220,BestLogP/Ndof=-0.482655
  success percentage=29.980000, SigmaA=842.098167, logP/Ndof=-0.731110,BestLogP/Ndof=-0.544052
@@ -191,7 +191,7 @@ Finally, now that the emulator is tuned, one may wish to generate emulated value
 
 {\tt
 \begin{verbatim}
-~/git/smooth_projects/scottrun% smoothy_calcobs parameters/emulator_parameters.txt
+MY_PROJECT% MY_LOCAL/bin/smoothy_calcobs parameters/emulator_parameters.txt
 Prior Info
 #         ParameterName Type   Xmin_or_Xbar  Xmax_or_SigmaX
  0:            par1   uniform          0        100
@@ -216,7 +216,7 @@ One can test the emulator by entering the coordinates of training point. For exa
 
 {\tt
 \begin{verbatim}
-~/git/smooth_projects/scottrun% smoothy_calcobs parameters/emulator_parameters.txt
+MY_PROJECT% MY_LOCAL/bin/smoothy_calcobs parameters/emulator_parameters.txt
 Prior Info
 #         ParameterName Type   Xmin_or_Xbar  Xmax_or_SigmaX
  0:            par1   uniform          0        100
@@ -238,7 +238,7 @@ time = -52.4031 +/- 1.16801e-06
 }
 Note that the uncertainties for the emulation are not effectivly zero, as each set of the 8 sets of coefficients provides an an emulator that exactly reproduces the training points.
 
-Of course, it is unlikely the User will wish to enter model parameters interactively as was done above. To incorporate {\tt Smooth Emulator} into other programs, the User should inspect the main program, {\tt MY\_LOCAL/main\_programs/smoothy\_calcobs\_main.cc}. The User can then design their own program based on this source code, and compile and link it by editing {\tt MY\_LOCAL/build/CMakeLists.txt}. By editing the CMake file, replacing the lines unique to {\tt smoothy\_calcobs}, one can easily compile new executables based on the User's main programs. To understand what might be involved, the source code in {\tt MY\_LOCAL/main\_programs/smooth\_calcobs\_main.cc} is
+Of course, it is unlikely the User will wish to enter model parameters interactively as was done above. To incorporate {\tt Smooth Emulator} into other programs, the User should inspect the main program, {\tt MY\_LOCAL/main\_programs/smoothy\_calcobs\_main.cc}. The User can then design their own program based on this source code, and compile and link it by editing {\tt MY\_LOCAL/build/CMakeLists.txt}. By editing the CMake file, replacing the lines unique to {\tt smoothy\_calcobs}, one can easily compile new executables based on the User's main programs. To understand what might be involved, the source code in {\tt MY\_LOCAL/main\_programs/SmoothEmulator\_calcobs\_main.cc} is
 {\tt
 \begin{verbatim}
 #include "msu_commonutils/parametermap.h"
