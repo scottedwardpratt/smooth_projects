@@ -20,7 +20,7 @@ CMake is an open-source, cross-platform build system that helps automate the pro
 \begin{verbatim} % brew install cmake\end{verbatim}
 }
 
-Eigen is a C++ template library for vector and matrix math, i.e. linear algebra. The user can visit the Eigen website (\url{https://eigen.tuxfamily.org/dox/}), or use their system's package manager. For example on Mac OS with {\it homeebrew},
+Eigen is a C++ template library for vector and matrix math, i.e. linear algebra. The user can visit the Eigen website (\url{https://eigen.tuxfamily.org/dox/}), or use their system's package manager. For example on Mac OS with {\it homebrew},
 {\tt 
 \begin{verbatim} % brew install eigen\end{verbatim}
 }
@@ -86,6 +86,15 @@ First, change into software directories, then create the makefiles with cmake, t
     GITHOME_BAND/SmoothEmulator/software% make
 \end{verbatim}
 }
+There seems to be a common problem that {\tt cmake} misreports the path the {\tt Eigen} installation. If the User should get an error stating that the Eigen header files cannot be found, or if the {\tt GSL} header files cannot be found, the User can set one of the following environmental variables,
+{\tt 
+\begin{verbatim}
+    % export EIGEN3_INCLUDE_DIR=/usr/local/include/eigen3
+    % export GSL_INCLUDE_DIR=/usr/local/include/gsl
+\end{verbatim}
+}
+The final arguments may need to be changed depending on the User's location of the packages.
+
 At this point all the libraries are built, but this does not include the main programs. The main programs are short, and are located in a separate location, as they are meant to serve as examples which the User might copy and edit at will.
 
 Finally, compile the main programs. Below, this illustrates how to build the programs used for generating training points with Simplex and for tuning the emulator with Smoothy:
