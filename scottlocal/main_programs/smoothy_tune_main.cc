@@ -17,7 +17,7 @@ int main(int argc,char *argv[]){
 
 	master.GenerateCoefficientSamples();
 	
-	//master.TestAtTrainingPts();
+	master.TestAtTrainingPts();
 	
 	master.WriteCoefficientsAllY();
 
