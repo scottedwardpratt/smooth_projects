@@ -9,7 +9,7 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "../bin")
 add_custom_target(extern_commonutils COMMAND make WORKING_DIRECTORY ${GITHOME_MSU}/commonutils/software)
 add_custom_target(extern_smooth COMMAND make WORKING_DIRECTORY ${GITHOME_BAND}/SmoothEmulator/software)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall -std=c++17")
+set(CMAKE_CXX_FLAGS "-W -Wall -march=native -std=c++17 -O2")
 set(CMAKE_MODULE_PATH "${MAIN_PROGRAM_DIR}/cmake")
 find_package(GSL REQUIRED)
 find_package(Eigen3 REQUIRED)
@@ -33,7 +33,7 @@ target_link_libraries(smoothy_tune ${GITHOME_BAND}/SmoothEmulator/software/lib/l
 set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/smoothy_readcoefficients_main.cc)
 add_executable(smoothy_readcoefficients ${MAIN_PROGRAM_DIR}/smoothy_readcoefficients_main.cc)
 add_dependencies(smoothy_readcoefficients extern_smooth extern_commonutils)
-target_link_libraries(smoothy_readcoefficients ${GITHOME_BAND}/SmoothEmulator/software/lib/libsmooth.a  ${GITHOME_MSU}/commonutils/software/lib/libmsu_commonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
+target_link_libraries(smoothy_readcoefficients ${GITHOME_BAND}/SmoothEmulator/software/lib/libsmooth.a  ${GITHOME_MSU_PRATT}/commonutils/software/lib/libmsu_commonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
 #################################################
 set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/pca_calctransformation_main.cc)
 add_executable(pca_calctransformation ${MAIN_PROGRAM_DIR}/pca_calctransformation_main.cc)
@@ -49,5 +49,13 @@ set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/smoothy_calcobs_main.cc)
 add_executable(smoothy_calcobs ${MAIN_PROGRAM_DIR}/smoothy_calcobs_main.cc)
 add_dependencies(smoothy_calcobs extern_smooth extern_commonutils)
 target_link_libraries(smoothy_calcobs ${GITHOME_BAND}/SmoothEmulator/software/lib/libsmooth.a  ${GITHOME_MSU}/commonutils/software/lib/libmsu_commonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
+#################################################
+# fakemodels
+set (FAKE_MODEL_DIR "../fakemodel")
+#################################################
+set(SOURCE_FILES ${FAKE_MODEL_DIR}/fakesmooth.cc)
+add_executable(fakesmooth ${FAKE_MODEL_DIR}/fakesmooth.cc)
+add_dependencies(fakesmooth extern_smooth extern_commonutils)
+target_link_libraries(fakesmooth ${GITHOME_BAND}/SmoothEmulator/software/lib/libsmooth.a  ${GITHOME_MSU}/commonutils/software/lib/libmsu_commonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
 #################################################
 
