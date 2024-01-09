@@ -32,9 +32,9 @@ void CalcY(vector<double> &xmin,vector<double> &xmax,vector<double> &x,vector<do
 }
 
 using namespace std;
-int main(int argc,char *argv[]){
+int main(){
 	string filename;
-	int itrain,iobs,ipar,i,NTrain;
+	int itrain,iobs,ipar,NTrain;
 	vector<double> theta,xtrue,Ytrain,Ytrue,xmin,xmax,xtrain,SigmaY;
 	theta.resize(NPars);
 	NMSUPratt::Crandy randy(123);
@@ -45,7 +45,7 @@ int main(int argc,char *argv[]){
 	printf("Enter number of training points to read in: ");
 	scanf("%d",&NTrain);
 	
-	FILE *fptr,*fptr_out;
+	FILE *fptr;
 	xtrue.resize(NPars);
 	Ytrue.resize(NObs);
 	SigmaY.resize(NObs);
@@ -83,7 +83,7 @@ int main(int argc,char *argv[]){
 		CalcY(xmin,xmax,xtrain,Ytrain);
 		
 		filename="modelruns/run"+to_string(itrain)+"/obs.txt";
-		fptr_out=fopen(filename.c_str(),"w");
+		fptr=fopen(filename.c_str(),"w");
 		for(iobs=0;iobs<NObs;iobs++){
 			fprintf(fptr,"%s %lf\n",obsname[iobs].c_str(),Ytrain[iobs]);
 		}
