@@ -18,7 +18,7 @@ int main(int argc,char *argv[]){
 	master.priorinfo->PrintInfo();
 	// Prompt user for model parameter values
 	vector<double> X(modpars->NModelPars);
-	for(int ipar=0;ipar<modpars->NModelPars;ipar++){
+	for(unsigned int ipar=0;ipar<modpars->NModelPars;ipar++){
 		cout << "Enter value for " << master.priorinfo->GetName(ipar) << ":\n";
 		cin >> X[ipar];
 	}
@@ -29,7 +29,7 @@ int main(int argc,char *argv[]){
 	vector<double> Y(obsinfo->NObservables);
 	vector<double> SigmaY(obsinfo->NObservables);
 	master.CalcAllY(modpars,Y,SigmaY);
-	for(int iY=0;iY<obsinfo->NObservables;iY++){
+	for(unsigned int iY=0;iY<obsinfo->NObservables;iY++){
 		cout << obsinfo->GetName(iY) << " = " << Y[iY] << " +/- " << SigmaY[iY] << endl;
 	}
 

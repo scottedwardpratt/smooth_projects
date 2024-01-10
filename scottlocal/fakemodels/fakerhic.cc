@@ -23,12 +23,12 @@ void CalcY(vector<double> &xmin,vector<double> &xmax,vector<double> &x,vector<do
 	t[4]=theta[6]+0.4*theta[3]-0.5*theta[4];
 	t[5]=0.5*theta[0]-0.3*theta[2]+0.5*theta[4];
 	
-	Y[0]=450+40*(t[0]+0.5*t[1]+0.4*t[2]+0.4*t[1]);
-	Y[1]=725+60*(t[1]-0.5*t[2]+0.8*t[6]);
-	Y[2]=1100+100*(t[2]-0.8*t[4]-t[5]);
-	Y[3]=5.5+1.0*(t[3]-t[5]);
-	Y[4]=0.19+0.07*(t[2]+t[4]);
-	Y[5]=0.5-0.4*t[4];
+	Y[0]=450+75*(t[0]+0.5*t[1]*t[3]+0.3*t[1]*t[1]*t[3]);
+	Y[1]=725+100*(t[1]-0.5*t[2]*t[1]+0.2*t[2]*t[3]*t[4]);
+	Y[2]=1100+180*(t[2]-0.5*t[3]*t[4]*t[2]);
+	Y[3]=5.5+1.8*(t[3]-0.4*t[3]*t[5]+0.2*t[1]*t[2]*t[4]*t[5]);
+	Y[4]=0.19+0.12*(t[4]-0.7*t[2]*t[4]);
+	Y[5]=0.5-0.7*t[5];
 }
 
 using namespace std;
@@ -85,7 +85,7 @@ int main(){
 		filename="modelruns/run"+to_string(itrain)+"/obs.txt";
 		fptr=fopen(filename.c_str(),"w");
 		for(iobs=0;iobs<NObs;iobs++){
-			fprintf(fptr,"%s %lf\n",obsname[iobs].c_str(),Ytrain[iobs]);
+			fprintf(fptr,"%s %lf %lf\n",obsname[iobs].c_str(),Ytrain[iobs],SigmaY[iobs]);
 		}
 		fclose(fptr);
 	}

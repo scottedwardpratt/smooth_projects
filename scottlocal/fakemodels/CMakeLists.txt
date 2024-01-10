@@ -4,7 +4,7 @@ project(smooth_projects)
 set(GITHOME_MSU_PRATT $ENV{GITHOME_MSU_PRATT})
 set(GITHOME_BAND_SMOOTH $ENV{GITHOME_BAND_SMOOTH})
 set (MAIN_PROGRAM_DIR ".")
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ".")
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "../bin")
 
 add_custom_target(extern_commonutils COMMAND make WORKING_DIRECTORY ${GITHOME_MSU_PRATT}/commonutils/software)
 
