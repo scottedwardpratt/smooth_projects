@@ -5,14 +5,17 @@
 #include <cstring>
 #include "msu_commonutils/randy.h"
 
-const int NObs=6,NPars=6;
+using namespace std;
+
+const unsigned int NObs=6,NPars=6;
 
 void CalcY(vector<double> &xmin,vector<double> &xmax,vector<double> &x,vector<double> &Y){
+	
 	vector<double> xbar,theta,t;
 	xbar.resize(NPars);
 	theta.resize(NPars);
 	t.resize(NPars);
-	for(int ipar=0;ipar<NPars;ipar++){
+	for(unsigned int ipar=0;ipar<NPars;ipar++){
 		xbar[ipar]=0.5*(xmin[ipar]+xmax[ipar]);
 		theta[ipar]=2*(x[ipar]-xbar[ipar])/(xmax[ipar]-xmin[ipar]);
 	}
@@ -23,6 +26,9 @@ void CalcY(vector<double> &xmin,vector<double> &xmax,vector<double> &x,vector<do
 	t[4]=theta[4]+0.4*theta[3]-0.5*theta[6];
 	t[5]=-0.5*theta[5]-0.3*theta[1]+0.1*theta[3];
 	
+	
+	printf("t=%g,%g,%g,%g,%g,%g\n",t[0],t[1],t[2],t[3],t[4],t[5]);
+	
 	Y[0]=450+75*(t[0]+0.5*t[1]*t[3]+0.3*t[1]*t[1]*t[3]);
 	Y[1]=725+100*(t[1]-0.5*t[2]*t[1]+0.2*t[2]*t[3]*t[4]);
 	Y[2]=1100+180*(t[2]-0.5*t[3]*t[4]*t[2]);
@@ -31,11 +37,12 @@ void CalcY(vector<double> &xmin,vector<double> &xmax,vector<double> &x,vector<do
 	Y[5]=0.5-0.7*t[5];
 }
 
-using namespace std;
 int main(){
 	string filename;
-	int itrain,iobs,ipar,NTrain;
-	vector<double> theta,xtrue,Ytrain,Ytrue,xmin,xmax,xtrain,SigmaY;
+	char dummy[200];
+	unsigned int itrain,iobs,ipar,NTrain;
+	vector<double> theta,xtrue,Ytrain,Ytrue,xtrain,SigmaY;
+	vector<double> xmin(NPars),xmax(NPars);
 	theta.resize(NPars);
 	NMSUPratt::Crandy randy(123);
 	string obsname[NObs]={"meanpt_pion","meanpt_kaon","meanpt_proton","Rinv","v2","RAA"};
@@ -49,17 +56,22 @@ int main(){
 	xtrue.resize(NPars);
 	Ytrue.resize(NObs);
 	SigmaY.resize(NObs);
+	
 	xtrain.resize(NPars);
-	Ytrain.resize(NPars);
-	xmin.resize(NPars);
-	xmax.resize(NPars);
-	xmin={150.0,0.05,0.3,0.0,0.5,15.0};
-	xmax={300,0.32,1.2,1.0,2.0,30.0};
-	SigmaY={15,20,30,0.4,0.02,0.05};
+	Ytrain.resize(NObs);
+	printf("NPars=%u\n",NPars);
+	SigmaY[0]=15;
+	SigmaY[1]=20.0;
+	SigmaY[2]=30.0;
+	SigmaY[3]=0.4;
+	SigmaY[4]=0.02;
+	SigmaY[5]=0.05;
+
 	fptr=fopen("Info/modelpar_info.txt","r");
+	fgets(dummy,200,fptr);
 	for(ipar=0;ipar<NPars;ipar++){
 		fscanf(fptr,"%s %s %lf %lf",parname_c,type,&xmin[ipar],&xmax[ipar]);
-		xtrue[ipar]=0.6*xmin[ipar]+0.4*xmax[ipar];
+		xtrue[ipar]=0.4*xmin[ipar]+0.6*xmax[ipar];
 	}
 	fclose(fptr);
 	
