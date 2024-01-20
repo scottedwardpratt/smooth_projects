@@ -43,7 +43,7 @@ int main(){
 			}
 			Y2=smoothy->CalcY(A,lambda,theta2);
 			Y1=smoothy->CalcY(A,lambda,theta1);
-			//printf("%g =? %g\n",dYdTheta[idtheta],(Y2-Y1)/dtheta);
+			printf("%g =? %g\n",dYdTheta[idtheta],(Y2-Y1)/dtheta);
 			error+=fabs(dYdTheta[idtheta]-(Y2-Y1)/dtheta);
 		}
 		if((itrial+1)%1000==0){

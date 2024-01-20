@@ -23,7 +23,8 @@ int main(int argc,char *argv[]){
 	CModelParameters::priorinfo=master.priorinfo;
 	
 	unsigned int Nburn=1000;
-	mcmc.PerformMetropolisTrace(10,Nburn);
+	//mcmc.PerformMetropolisTrace(10,Nburn);
+	mcmc.PerformLangevinTrace(10,Nburn);
 
 	return 0;
 }
