@@ -17,8 +17,10 @@ int main(){
 	vector<double> theta(npars),theta1(npars),theta2(npars);
 	Crandy *randy=new Crandy(1234);
 	
+	unsigned int itrial,ntrial=100000;
+	
 	error=0.0;
-	for(int itrial=0;itrial<10000;itrial++){
+	for(itrial=0;itrial<ntrial;itrial++){
 		for(ic=0;ic<Ncoefficients;ic++){
 			A[ic]=100.0*randy->ran();
 		}
@@ -26,8 +28,9 @@ int main(){
 		for(itheta=0;itheta<npars;itheta++){
 			theta[itheta]=-1.0+2.0*randy->ran();
 		}
-		Y=smoothy->CalcY(A,lambda,theta);
-		
+		//Y=smoothy->CalcY(A,lambda,theta);
+		smoothy->CalcYDYDTheta(A,lambda,theta,Y,dYdTheta);
+		/*
 		Y0=Y;
 		smoothy->CalcYDYDTheta(A,lambda,theta,Y,dYdTheta);
 		
@@ -43,11 +46,12 @@ int main(){
 			}
 			Y2=smoothy->CalcY(A,lambda,theta2);
 			Y1=smoothy->CalcY(A,lambda,theta1);
-			printf("%g =? %g\n",dYdTheta[idtheta],(Y2-Y1)/dtheta);
+			//printf("%g =? %g\n",dYdTheta[idtheta],(Y2-Y1)/dtheta);
 			error+=fabs(dYdTheta[idtheta]-(Y2-Y1)/dtheta);
 		}
-		if((itrial+1)%1000==0){
-			printf("net error = %9.3e\n",error);
+		*/
+		if((itrial+1)%(ntrial/10)==0){
+			printf("finished %g percent\n",100.0*(itrial+1)/double(ntrial));
 			error=0.0;
 		}
 		
