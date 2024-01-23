@@ -55,9 +55,9 @@ add_executable(smoothy_test ${MAIN_PROGRAM_DIR}/smoothy_test_main.cc)
 add_dependencies(smoothy_test extern_smooth extern_commonutils)
 target_link_libraries(smoothy_test ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a  ${GITHOME_MSU_PRATT}/commonutils/software/lib/libmsu_commonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
 #################################################
-set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/mcmc_metropolis_main.cc)
-add_executable(mcmc_metropolis ${MAIN_PROGRAM_DIR}/mcmc_metropolis_main.cc)
-add_dependencies(mcmc_metropolis extern_smooth extern_commonutils)
-target_link_libraries(mcmc_metropolis ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a  ${GITHOME_MSU_PRATT}/commonutils/software/lib/libmsu_commonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
+set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/mcmc_main.cc)
+add_executable(mcmc ${MAIN_PROGRAM_DIR}/mcmc_main.cc)
+add_dependencies(mcmc extern_smooth extern_commonutils)
+target_link_libraries(mcmc ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a  ${GITHOME_MSU_PRATT}/commonutils/software/lib/libmsu_commonutils.a ${GSL_LIBRARY} ${GSL_CBLAS_LIBRARY} ${EIGEN3_LIBRARY})
 #################################################
 
