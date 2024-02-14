@@ -13,7 +13,9 @@ int main(int argc,char *argv[]){
 	NBandSmooth::CSmoothMaster master(parmap);
 	master.ReadCoefficientsAllY();
 	
-	NBandSmooth::CModelParameters *modpars=new NBandSmooth::CModelParameters(master.priorinfo); // contains info about single point
+	NBandSmooth::CModelParameters *modpars=new NBandSmooth::CModelParameters(); // contains info about single point
+	modpars->priorinfo=master.priorinfo;
+	
 	
 	master.priorinfo->PrintInfo();
 	// Prompt user for model parameter values

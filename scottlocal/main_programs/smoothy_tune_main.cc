@@ -18,7 +18,8 @@ int main(int argc,char *argv[]){
 	
 	master.ReadTrainingInfo();
 
-	master.GenerateCoefficientSamples();
+	//master.GenerateCoefficientSamples();
+	master.TuneAllY();
 	
 	master.TestAtTrainingPts();
 	
