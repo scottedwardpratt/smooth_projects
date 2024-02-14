@@ -1,0 +1,4 @@
+# obs. name		SigmaA0	
+obs1				50		
+obs2				50		
+obs3				50
