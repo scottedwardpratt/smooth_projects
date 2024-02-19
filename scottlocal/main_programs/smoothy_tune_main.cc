@@ -20,6 +20,7 @@ int main(int argc,char *argv[]){
 
 	//master.GenerateCoefficientSamples();
 	master.TuneAllY();
+	master.CalcAllLogP();
 	
 	master.TestAtTrainingPts();
 	

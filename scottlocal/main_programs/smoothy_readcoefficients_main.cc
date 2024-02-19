@@ -19,6 +19,8 @@ int main(int argc,char *argv[]){
 	master.ReadTrainingInfo();
 
 	master.TestAtTrainingPts();
+	
+	master.TestVsFakeModel();
 
 	return 0;
 }
