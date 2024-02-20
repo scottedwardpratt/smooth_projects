@@ -17,9 +17,10 @@ int main(int argc,char *argv[]){
 	CSmoothMaster master(parmap);
 	
 	master.ReadTrainingInfo();
-
+	
 	//master.GenerateCoefficientSamples();
 	master.TuneAllY();
+	
 	master.CalcAllLogP();
 	
 	master.TestAtTrainingPts();

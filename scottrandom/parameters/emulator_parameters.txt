@@ -1,5 +1,5 @@
 #SmoothEmulator_LogFileName smoothlog.txt
- SmoothEmulator_LAMBDA 4
+ SmoothEmulator_LAMBDA 2
  SmoothEmulator_MAXRANK 5
  SmoothEmulator_NASample 8  # No. of coefficient samples
  SmoothEmulator_TuneChooseMCMC false # set false if NPars<5
