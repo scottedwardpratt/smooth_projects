@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <vector>
 #include <cstring>
-#include "msu_commonutils/randy.h"
+#include "msu_smoothutils/randy.h"
 
 using namespace std;
 

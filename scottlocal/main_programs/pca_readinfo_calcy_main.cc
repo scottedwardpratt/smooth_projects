@@ -2,7 +2,7 @@
 #include <Eigen/Dense>
 #include <Eigen/Eigenvalues>
 
-#include "msu_commonutils/parametermap.h"
+#include "msu_smoothutils/parametermap.h"
 #include "msu_smooth/master.h"
 #include "msu_smooth/PCA.h"
 
