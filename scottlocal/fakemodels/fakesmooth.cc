@@ -3,6 +3,7 @@
 #include "msu_smoothutils/log.h"
 
 using namespace std;
+using namespace NMSUUtils;
 int main(){
 
 	const unsigned int NObs=10,NPars=10;
@@ -17,8 +18,20 @@ int main(){
 	
 	printf("Enter LAMBDA: ");
 	scanf("%lf",&LAMBDA);
-	printf("Enter NTrain: ");
-	scanf("%u",&NTrain);
+	//printf("Enter NTrain: ");
+	//scanf("%u",&NTrain);
+	NTrain=0;
+	bool existence;
+	do{
+		string filename="modelruns/run"+to_string(NTrain);
+		filesystem::path f{filename};
+		existence=filesystem::exists(f);
+		if(existence){
+			NTrain+=1;
+		}
+	}while(existence);
+	CLog::Info("NTraining Pts="+to_string(NTrain)+"\n");
+	CLog::Info("NPars="+to_string(NPars)+"\n");
 	
 	NBandSmooth::CSmooth smooth(NPars,maxrank);
 	A.resize(smooth.NCoefficients);
@@ -47,22 +60,15 @@ int main(){
 		}
 		for(itrain=0;itrain<NTrain;itrain++){
 			filename="modelruns/run"+to_string(itrain)+"/mod_parameters.txt";
-			//printf("filename=%s\n",filename.c_str());
 			fptr=fopen(filename.c_str(),"r");
 			for(ipar=0;ipar<NPars;ipar++){
 				fscanf(fptr,"%s %lf",parname_c,&x);
 				parname[ipar]=parname_c;
 				theta[ipar]=-1.0+x/50.0;
-				//printf("--- %s %g %g\n",parname[ipar].c_str(),x,theta[ipar]);
-				if(fabs(theta[ipar])>1.0){
-					printf("OOOOOUUUUUCH!!!!\n");
-					exit(1);
-				}
 			}
 			fclose(fptr);
 			y=smooth.CalcY(A,LAMBDA,theta);
 			filename="modelruns/run"+to_string(itrain)+"/obs.txt";
-			//printf("filename_out=%s\n",filename.c_str());
 			if(iobs==0)
 				fptr_out=fopen(filename.c_str(),"w");
 			else

@@ -4,9 +4,10 @@
 #include <vector>
 #include <cstring>
 #include "msu_smoothutils/randy.h"
+#include "msu_smoothutils/log.h"
 
 using namespace std;
-
+using namespace NMSUUtils;
 const unsigned int NObs=6,NPars=6;
 
 void CalcY(vector<double> &xmin,vector<double> &xmax,vector<double> &x,vector<double> &Y){
@@ -18,7 +19,6 @@ void CalcY(vector<double> &xmin,vector<double> &xmax,vector<double> &x,vector<do
 	for(unsigned int ipar=0;ipar<NPars;ipar++){
 		xbar[ipar]=0.5*(xmin[ipar]+xmax[ipar]);
 		theta[ipar]=2*(x[ipar]-xbar[ipar])/(xmax[ipar]-xmin[ipar]);
-		//printf("theta[%u]=%g\n",ipar,theta[ipar]);
 	}
 	/*
 	t[0]=0.5*theta[0]+0.5*theta[1]+0.5*theta[2];
@@ -33,9 +33,6 @@ void CalcY(vector<double> &xmin,vector<double> &xmax,vector<double> &x,vector<do
 	t[3]=theta[3];
 	t[4]=theta[4];
 	t[5]=theta[5];
-	
-	
-	//printf("t=%g,%g,%g,%g,%g,%g\n",t[0],t[1],t[2],t[3],t[4],t[5]);
 	
 	Y[0]=450+75*(t[0]+0.6*t[4]+0.5*t[1]*t[3]+0.1*t[1]*t[1]*t[3]);
 	Y[1]=725+100*(t[1]-0.9*t[2]+0.4*t[6]-0.5*t[2]*t[1]+0.1*t[2]*t[3]*t[4]);
@@ -57,8 +54,17 @@ int main(){
 	string parname[NPars]={"compressibility","etaovers","initial_flow","initial_screening","quenching_length","initial_epsilon"};
 	char parname_c[200],type[100];
 	
-	printf("Enter number of training points to read in: ");
-	scanf("%d",&NTrain);
+	NTrain=0;
+	bool existence;
+	do{
+		string filename="modelruns/run"+to_string(NTrain);
+		filesystem::path f{filename};
+		existence=filesystem::exists(f);
+		if(existence){
+			NTrain+=1;
+		}
+	}while(existence);
+	CLog::Info("NTraining Pts="+to_string(NTrain)+"\n");
 	
 	FILE *fptr;
 	xtrue.resize(NPars);
@@ -67,7 +73,7 @@ int main(){
 	
 	xtrain.resize(NPars);
 	Ytrain.resize(NObs);
-	printf("NPars=%u\n",NPars);
+	CLog::Info("NPars="+to_string(NPars)+"\n");
 	SigmaY[0]=100.0;
 	SigmaY[1]=200.0;
 	SigmaY[2]=300.0;
