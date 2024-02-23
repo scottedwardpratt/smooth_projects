@@ -3,7 +3,7 @@
  SmoothEmulator_MAXRANK 5
  SmoothEmulator_ConstrainA0 true
  SmoothEmulator_ModelRunDirName modelruns
- SmoothEmulator_TrainingPts 0-65
+ SmoothEmulator_TrainingPts 0-22
  SmoothEmulator_UsePCA   false
  #
  # These are only used if you are using MCMC tuning rather than Exact method

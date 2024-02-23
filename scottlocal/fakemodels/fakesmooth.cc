@@ -5,18 +5,20 @@
 using namespace std;
 int main(){
 
-	const int NObs=10,NPars=10,NTrain=66;
-	unsigned int itrain,iobs,ic,ipar,maxrank=5,it=time(NULL),itest;
+	const unsigned int NObs=10,NPars=10;
+	unsigned int NTrain,itrain,iobs,ic,ipar,maxrank=5,it=time(NULL),itest;
 	double LAMBDA;
 	double y,x;
 	vector<double> A;
 	vector<double> theta;
 	vector<vector<double>> thetatest;
 	theta.resize(NPars);
-	NMSUPratt::Crandy randy(0);
+	NMSUUtils::Crandy randy(0);
 	
 	printf("Enter LAMBDA: ");
 	scanf("%lf",&LAMBDA);
+	printf("Enter NTrain: ");
+	scanf("%u",&NTrain);
 	
 	NBandSmooth::CSmooth smooth(NPars,maxrank);
 	A.resize(smooth.NCoefficients);

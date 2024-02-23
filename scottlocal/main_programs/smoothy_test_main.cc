@@ -4,7 +4,7 @@
 
 using namespace std;
 using namespace NBandSmooth;
-using namespace NMSUPratt;
+using namespace NMSUUtils;
 
 int main(){
 	unsigned int maxrank=4;

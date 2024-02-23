@@ -4,7 +4,7 @@
 
 using namespace std;
 using namespace  NBandSmooth;
-using namespace NMSUPratt;
+using namespace NMSUUtils;
 
 int main(){
 	CparameterMap *parmap=new CparameterMap();

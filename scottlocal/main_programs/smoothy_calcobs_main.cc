@@ -5,10 +5,10 @@
 using namespace std;
 int main(int argc,char *argv[]){
 	if(argc!=2){
-		NMSUPratt::CLog::Info("Usage smoothy_calcobs emulator parameter filename");
+		NMSUUtils::CLog::Info("Usage smoothy_calcobs emulator parameter filename");
 		exit(1);
 	}
-	NMSUPratt::CparameterMap *parmap=new CparameterMap();
+	NMSUUtils::CparameterMap *parmap=new CparameterMap();
 	parmap->ReadParsFromFile(string(argv[1]));
 	NBandSmooth::CSmoothMaster master(parmap);
 	master.ReadCoefficientsAllY();

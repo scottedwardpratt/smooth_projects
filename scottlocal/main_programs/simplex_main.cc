@@ -4,7 +4,7 @@
 
 using namespace std;
 int main(){
-	NMSUPratt::CparameterMap *parmap=new NMSUPratt::CparameterMap();
+	NMSUUtils::CparameterMap *parmap=new NMSUUtils::CparameterMap();
 	parmap->ReadParsFromFile("parameters/simplex_parameters.txt");
 	NBandSmooth::CSimplexSampler *simplex=new NBandSmooth::CSimplexSampler(parmap);
 	

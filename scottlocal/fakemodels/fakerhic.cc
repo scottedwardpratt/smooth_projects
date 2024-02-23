@@ -52,7 +52,7 @@ int main(){
 	vector<double> theta,xtrue,Ytrain,Ytrue,xtrain,SigmaY;
 	vector<double> xmin(NPars),xmax(NPars);
 	theta.resize(NPars);
-	NMSUPratt::Crandy randy(123);
+	NMSUUtils::Crandy randy(123);
 	string obsname[NObs]={"meanpt_pion","meanpt_kaon","meanpt_proton","Rinv","v2","RAA"};
 	string parname[NPars]={"compressibility","etaovers","initial_flow","initial_screening","quenching_length","initial_epsilon"};
 	char parname_c[200],type[100];

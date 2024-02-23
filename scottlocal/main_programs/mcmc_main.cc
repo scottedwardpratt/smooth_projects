@@ -4,7 +4,7 @@
 #include "msu_smooth/mcmc.h"
 
 using namespace std;
-using namespace NMSUPratt;
+using namespace NMSUUtils;
 using namespace NBandSmooth;
 
 int main(int argc,char *argv[]){
