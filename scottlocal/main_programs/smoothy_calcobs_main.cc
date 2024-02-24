@@ -3,19 +3,14 @@
 #include "msu_smoothutils/log.h"
 
 using namespace std;
-int main(int argc,char *argv[]){
-	if(argc!=2){
-		NMSUUtils::CLog::Info("Usage smoothy_calcobs emulator parameter filename");
-		exit(1);
-	}
+int main(){
 	NMSUUtils::CparameterMap *parmap=new CparameterMap();
-	parmap->ReadParsFromFile(string(argv[1]));
+	parmap->ReadParsFromFile("parameters/emulator_parameters.txt");
 	NBandSmooth::CSmoothMaster master(parmap);
 	master.ReadCoefficientsAllY();
 	
 	NBandSmooth::CModelParameters *modpars=new NBandSmooth::CModelParameters(); // contains info about single point
 	modpars->priorinfo=master.priorinfo;
-	
 	
 	master.priorinfo->PrintInfo();
 	// Prompt user for model parameter values
@@ -31,6 +26,7 @@ int main(int argc,char *argv[]){
 	vector<double> Y(obsinfo->NObservables);
 	vector<double> SigmaY(obsinfo->NObservables);
 	master.CalcAllY(modpars,Y,SigmaY);
+	cout << "---- EMULATED OBSERVABLES ------\n";
 	for(unsigned int iY=0;iY<obsinfo->NObservables;iY++){
 		cout << obsinfo->GetName(iY) << " = " << Y[iY] << " +/- " << SigmaY[iY] << endl;
 	}
