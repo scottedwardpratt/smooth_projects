@@ -1,18 +1,16 @@
 #include "msu_smoothutils/parametermap.h"
 #include "msu_smooth/master.h"
 #include "msu_smoothutils/log.h"
-
 using namespace std;
 int main(){
 	NMSUUtils::CparameterMap *parmap=new CparameterMap();
 	parmap->ReadParsFromFile("parameters/emulator_parameters.txt");
 	NBandSmooth::CSmoothMaster master(parmap);
 	master.ReadCoefficientsAllY();
-	
 	NBandSmooth::CModelParameters *modpars=new NBandSmooth::CModelParameters(); // contains info about single point
 	modpars->priorinfo=master.priorinfo;
-	
 	master.priorinfo->PrintInfo();
+	
 	// Prompt user for model parameter values
 	vector<double> X(modpars->NModelPars);
 	for(unsigned int ipar=0;ipar<modpars->NModelPars;ipar++){
