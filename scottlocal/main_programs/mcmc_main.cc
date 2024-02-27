@@ -7,22 +7,22 @@ using namespace std;
 using namespace NMSUUtils;
 using namespace NBandSmooth;
 
-int main(int argc,char *argv[]){
-	if(argc!=2){
-		CLog::Info("Usage smoothy_calcobs emulator parameter filename");
-		exit(1);
-	}
+int main(){
 	CparameterMap *parmap=new CparameterMap();
-	parmap->ReadParsFromFile(string(argv[1]));
+	parmap->ReadParsFromFile(string("parameters/emulator_parameters.txt"));
+	parmap->ReadParsFromFile(string("parameters/mcmc_parameters.txt"));
 	CSmoothMaster master(parmap);
-	master.ReadTrainingInfo();
+	//master.ReadTrainingInfo();
 	
 	CMCMC mcmc(&master);
 	master.ReadCoefficientsAllY();
 	//master.TestAtTrainingPts();
 	CModelParameters::priorinfo=master.priorinfo;
 	
-	unsigned int Nburn=10000,Ntrace=10000,Nskip=5;
+	unsigned int Nburn=parmap->getI("MCMC_NBURN",1000);
+	unsigned int Ntrace=parmap->getI("MCMC_NTRACE",1000);
+	unsigned int Nskip=parmap->getI("MCMC_NSKIP",1000);
+		
 	mcmc.PerformMetropolisTrace(1,Nburn);
 	//mcmc.PerformLangevinTrace(1,Nburn);
 	
