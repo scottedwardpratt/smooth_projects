@@ -14,7 +14,7 @@ include_directories(SYSTEM ${EIGEN3_INCLUDE_DIR} ${GITHOME_BAND_SMOOTH}/software
 link_directories(${GITHOME_BAND_SMOOTH}/software/lib)
 
 find_library(${GITHOME_BAND_SMOOTH}/software/lib msu_smoothutils)
-find_library(${GITHOME_BAND_SMOOTH}/software/lib smooth)
+find_library(${GITHOME_BAND_SMOOTH}/software/lib msu_smooth)
 
 #################################################
 set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/simplex_main.cc)

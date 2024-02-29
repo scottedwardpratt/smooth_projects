@@ -16,20 +16,16 @@ int main(){
 	
 	CMCMC mcmc(&master);
 	master.ReadCoefficientsAllY();
-	//master.TestAtTrainingPts();
-	CModelParameters::priorinfo=master.priorinfo;
 	
-	unsigned int Nburn=parmap->getI("MCMC_NBURN",1000);
-	unsigned int Ntrace=parmap->getI("MCMC_NTRACE",1000);
-	unsigned int Nskip=parmap->getI("MCMC_NSKIP",1000);
+	unsigned int Nburn=parmap->getI("MCMC_NBURN",1000);  // Steps for burn in
+	unsigned int Ntrace=parmap->getI("MCMC_NTRACE",1000); // Record this many points
+	unsigned int Nskip=parmap->getI("MCMC_NSKIP",5); // Only record every Nskip^th point
 		
-	mcmc.PerformMetropolisTrace(1,Nburn);
-	//mcmc.PerformLangevinTrace(1,Nburn);
-	
+	mcmc.PerformTrace(1,Nburn);	
 	printf("finished burn in\n");
+	
 	mcmc.PruneTrace(); // Throws away all but last point
-	mcmc.PerformMetropolisTrace(Ntrace,Nskip);
-	//mcmc.PerformLangevinTrace(Ntrace,Nskip);
+	mcmc.PerformTrace(Ntrace,Nskip);
 	mcmc.EvaluateTrace();
 	mcmc.WriteTrace();
 
