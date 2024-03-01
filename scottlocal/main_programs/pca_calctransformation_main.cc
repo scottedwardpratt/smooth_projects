@@ -8,19 +8,14 @@
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
-
-  if(argc!=2){
-    printf("Usage emulator parameter filename\n");
-    exit(1);
-  }
-
-  NBandSmooth::PCA *pca = new NBandSmooth::PCA(argv[1]);
+int main() {
+	CparameterMap parmap;
+	parmap.ReadParsFromFile("parameters/emulator_parameters.txt");
+  NBandSmooth::PCA *pca = new NBandSmooth::PCA(&parmap);
 
   pca->CalcTransformationInfo();
 
   //pca->ReadPCATransformationInfo();
 
-  pca->WriteTransformationInfo();
 
 }
