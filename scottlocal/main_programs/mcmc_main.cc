@@ -11,9 +11,7 @@ int main(){
 	CparameterMap *parmap=new CparameterMap();
 	parmap->ReadParsFromFile(string("parameters/emulator_parameters.txt"));
 	parmap->ReadParsFromFile(string("parameters/mcmc_parameters.txt"));
-	CSmoothMaster master(parmap);
-	//master.ReadTrainingInfo();
-	
+	CSmoothMaster master(parmap);	
 	CMCMC mcmc(&master);
 	master.ReadCoefficientsAllY();
 	
@@ -22,7 +20,7 @@ int main(){
 	unsigned int Nskip=parmap->getI("MCMC_NSKIP",5); // Only record every Nskip^th point
 		
 	mcmc.PerformTrace(1,Nburn);	
-	printf("finished burn in\n");
+	CLog::Info("finished burn in\n");
 	
 	mcmc.PruneTrace(); // Throws away all but last point
 	mcmc.PerformTrace(Ntrace,Nskip);
