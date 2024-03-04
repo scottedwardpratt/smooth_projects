@@ -4,7 +4,7 @@
 
 #include "msu_smoothutils/parametermap.h"
 #include "msu_smooth/master.h"
-#include "msu_smooth/PCA.h"
+#include "msu_smooth/pca.h"
 
 using namespace std;
 
