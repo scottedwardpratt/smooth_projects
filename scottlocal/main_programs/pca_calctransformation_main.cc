@@ -11,7 +11,7 @@ using namespace std;
 int main() {
 	CparameterMap parmap;
 	parmap.ReadParsFromFile("parameters/emulator_parameters.txt");
-  NBandSmooth::PCA *pca = new NBandSmooth::PCA(&parmap);
+  NBandSmooth::CPCA *pca = new NBandSmooth::CPCA(&parmap);
 
   pca->CalcTransformationInfo();
 

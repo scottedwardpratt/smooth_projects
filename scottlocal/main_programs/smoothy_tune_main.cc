@@ -16,7 +16,7 @@ int main(){
 	
 	master.TuneAllY();
 	
-	master.CalcAllLogP();
+	//master.CalcAllLogP();
 	
 	//master.TestAtTrainingPts();
 	
