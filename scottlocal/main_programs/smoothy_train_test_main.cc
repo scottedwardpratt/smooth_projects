@@ -13,7 +13,7 @@ int main(){
 	master.ReadCoefficientsAllY();
 	
 	master.ReadTrainingInfo();
-
+	
 	master.TestAtTrainingPts();
 	
 	//master.TestVsFakeModel();
