@@ -18,9 +18,7 @@ int main(){
 	
 	//master.CalcAllLogP();
 	
-	//master.emulator[0]->PrintA(master.emulator[0]->ABest);
-	
-	master.TestAtTrainingPts();
+	//master.TestAtTrainingPts();
 	
 	master.WriteCoefficientsAllY();
 
