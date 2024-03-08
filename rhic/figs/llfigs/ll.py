@@ -8,9 +8,9 @@ from matplotlib.colors import LogNorm
 plt.rc('text', usetex=False)
 
 # you will likely wish to edit these parameters
-npars=14
+npars=5
 nbins=40
-mcmcfilename='mcmctrace.csv'
+mcmcfilename='trace.txt'
 limitsfilename='rhic_lhc.dat'
 outputfilename='ll.pdf'
 #you might wish to edit these
@@ -31,8 +31,7 @@ figsep=figsep/totalxsize
 counts1d = np.ndarray((nbins,),float)
 xarray = np.ndarray((nbins,),float)
 
-mcmcdata = np.loadtxt(mcmcfilename,delimiter=',',skiprows=1,comments='#')
-mcmcdata = mcmcdata.transpose()
+mcmcdata = np.loadtxt(mcmcfilename,delimiter=',',skiprows=0,comments='#',unpack=True)
 npts = mcmcdata[0].size
 print('npts=', npts)
 #limitsdata = np.loadtxt(limitsfilename,dtype=np.str)
