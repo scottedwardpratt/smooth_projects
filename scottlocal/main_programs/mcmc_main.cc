@@ -27,8 +27,9 @@ int main(){
 	
 	mcmc.PruneTrace(); // Throws away all but last point
 	mcmc.PerformTrace(Ntrace,Nskip);
-	mcmc.EvaluateTrace();
 	mcmc.WriteTrace();
+	mcmc.EvaluateTrace();
+
 
 	return 0;
 }
