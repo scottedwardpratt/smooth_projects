@@ -14,9 +14,8 @@ int main(){
 	CSmoothMaster master(parmap);	
 	CMCMC mcmc(&master);
 	master.ReadCoefficientsAllY();
-	printf("Coefficients Read In\n");
 	master.ReadTrainingInfo();
-	master.TestAtTrainingPts();
+	//master.TestAtTrainingPts();
 	
 	unsigned int Nburn=parmap->getI("MCMC_NBURN",1000);  // Steps for burn in
 	unsigned int Ntrace=parmap->getI("MCMC_NTRACE",1000); // Record this many points
@@ -29,7 +28,6 @@ int main(){
 	mcmc.PerformTrace(Ntrace,Nskip);
 	mcmc.WriteTrace();
 	mcmc.EvaluateTrace();
-
 
 	return 0;
 }
