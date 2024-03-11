@@ -9,17 +9,18 @@ using namespace NMSUUtils;
 int main(){
 	unsigned int maxrank=4;
 	unsigned int npars=14;
-	unsigned int ic,itheta,idtheta;
+	unsigned int ic,itheta;
+	//unsigned int idtheta;
 	CSmooth *smoothy=new CSmooth(npars,maxrank);
 	unsigned int Ncoefficients=smoothy->NCoefficients;
-	double Y,Y0,Y1,Y2,lambda=2.5,dtheta=0.01,error;
+	double lambda=2.5,Y;
+	//double Y0,Y1,Y2,dtheta=0.01,error=0.0;
 	vector<double> A(Ncoefficients),dYdTheta(Ncoefficients);
 	vector<double> theta(npars),theta1(npars),theta2(npars);
 	Crandy *randy=new Crandy(1234);
 	
 	unsigned int itrial,ntrial=100000;
 	
-	error=0.0;
 	for(itrial=0;itrial<ntrial;itrial++){
 		for(ic=0;ic<Ncoefficients;ic++){
 			A[ic]=100.0*randy->ran();
@@ -52,7 +53,7 @@ int main(){
 		*/
 		if((itrial+1)%(ntrial/10)==0){
 			printf("finished %g percent\n",100.0*(itrial+1)/double(ntrial));
-			error=0.0;
+			//error=0.0;
 		}
 		
 		
