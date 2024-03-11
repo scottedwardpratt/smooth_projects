@@ -16,7 +16,7 @@ int main(){
 	
 	master.TestAtTrainingPts();
 	
-	//master.TestVsFakeModel();
+	//master.TestVsFullModel();
 
 	return 0;
 }
