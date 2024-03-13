@@ -30,7 +30,7 @@ Ynames0 = []
 Ynames = []
 NObs=0
 iline=0
-for line in open('observable_info.txt'):
+for line in open('../observable_info.txt'):
   if len(line) > 1:
     NObs+=1
     tempdata=list(map(str,line.split()))
