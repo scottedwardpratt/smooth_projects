@@ -7,7 +7,7 @@ from matplotlib import ticker
 from matplotlib.ticker import ScalarFormatter
 sformatter=ScalarFormatter(useOffset=True,useMathText=True)
 sformatter.set_scientific(True)
-sformatter.set_powerlimits((-2,3))
+sformatter.set_powerlimits((-2,2))
 
 #plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 
@@ -55,7 +55,6 @@ VertSize=8
 plt.figure(figsize=(1.0+0.2*NTest,VertSize))
 fig = plt.figure(1)
 leftmargin=leftmargin/HorSize
-
 ax = fig.add_axes([leftmargin,bottommargin,1.0-leftmargin-rightmargin,1.0-topmargin-bottommargin])
 
 nfit=0
