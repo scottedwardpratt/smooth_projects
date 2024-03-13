@@ -11,10 +11,18 @@ sformatter.set_powerlimits((-2,3))
 
 #plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 
+# User may wish to edit the following for cosmetic purposes or if there are problems with plot fitting in designated area
+myfontsize=16 
+leftmargin=0.95
+rightmargin=0.01
+topmargin=0.04
+bottommargin=0.09
+# 
+
 
 font = {'family' : 'sans',
         'weight' : 'normal',
-        'size'   : 16}
+        'size'   : myfontsize}
 plt.rc('font', **font)
 plt.rc('text', usetex=False)
 
@@ -46,10 +54,7 @@ HorSize=1.3+0.2*NTest
 VertSize=8
 plt.figure(figsize=(1.0+0.2*NTest,VertSize))
 fig = plt.figure(1)
-leftmargin=0.9/HorSize
-rightmargin=0.01
-topmargin=0.04
-bottommargin=0.09
+leftmargin=leftmargin/HorSize
 
 ax = fig.add_axes([leftmargin,bottommargin,1.0-leftmargin-rightmargin,1.0-topmargin-bottommargin])
 
@@ -63,22 +68,9 @@ print(nfit, "of", NTest, " points within 1 sigma")
 ix=arange(0.5,NTest,1.0)
 
 plt.plot(ix,Yfull,linestyle='None',color='k',markersize=7, marker='s', markerfacecolor='k', markeredgecolor='k')
-#plt.plot(iY,Yemulator,linestyle='None',color='r',markersize=5, marker='o', markerfacecolor='r', markeredgecolor='r',markevery=10)
 plt.errorbar(ix,Yemulator,xerr=0.0,yerr=SigmaY,linestyle='None',color='r',markersize=7, marker='o', markerfacecolor='r', markeredgecolor='r')
 
-
-#plt.plot(x,z,linestyle=linestyles[1],linewidth=2,color='k',markersize=8, marker=markerstyles[3], markerfacecolor='r', markeredgecolor=colors[3])
-
-#plt.semilogy(x,y)
-
 ax.tick_params(axis='both', which='major', labelsize=14)
-
-#ax.set_xticks(np.arange(0,4,1.0), minor=False)
-#ax.set_xticklabels(np.arange(0,4,1.0), minor=False, family='serif')
-#ax.set_xticks(np.arange(0,4,0.5), minor=True)
-#ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
-#plt.xlim(1.0,3.55)
-
 ax.yaxis.set_major_formatter(sformatter)
 
 plt.xlabel('$i_X$', fontsize=22, weight='normal')
@@ -86,6 +78,7 @@ plt.ylabel(Ynames[iY],fontsize=22)
 
 
 plt.savefig('YvsY.pdf',format='pdf')
-os.system('open -a Preview YvsY.pdf')
-#plt.show()
+# for Mac OS this might be nicer than plt.show()
+#os.system('open -a Preview YvsY.pdf')
+plt.show()
 quit()

@@ -1,3 +1,5 @@
+The script RP.py compares full-model observables calculated at several points to the emulated observables, along with their uncertainties. Hopefully, about 
+
 User should copy three files into this diretory:
   1) ResolvingPower.txt  -- from mcmc_data/ after running mcmc
   2) observable_info.txt -- from Info/
@@ -11,7 +13,7 @@ Then User should edit two of those files
 	   compressibility  uniform  $\kappa$
 
 User can run the command
-% python3 RP.py
+ % python3 RP.py
 The output should be RP.pdf
 
 The User may wish to edit the python script, usually to adjust sizes, especially to get the labels to fit well. The lines to be adjusted are described inside the python script.

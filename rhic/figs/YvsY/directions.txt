@@ -1,0 +1,18 @@
+User should copy one directory and one file to this directory
+  1) fullmodel_testdata/  -- from ${myproject}/ after running smoothy_train_test
+  2) observable_info.txt   -- from Info/
+Then User should edit one info file
+  1) observable_info.txt -- keep only two lines, the observable name and the formatted string to use for display
+     For example, one of the lines could be
+	   meanpt_pion  $\langle p_t\rangle_{\pi}$
+	  This should be identical to the file in figs/resolvingpower
+
+User can run the command
+ % python3 YvsY.py
+The program will print out the observables:
+ ['meanpt_pion', 'meanpt_kaon', 'meanpt_proton', 'Rinv', 'v2', 'RAA']
+then prompt:
+  Enter iY: 
+This chooses which observable to analyze. E.g. if one enters '0', the emulator for meanpt_pion will be analyzed and if one enters '4', the v2 emulator will be considered. The program also prints out how many of the emulated values were within one sigma of full-model value. Hopefully, this will be not too far from 68%. Emulated values are red circles and full-model values are black squares. The output should be YvsY.pdf
+
+The User may wish to edit the a few lines for cosmetic purposes. The margins may be adjusted if the plot labels aren't fitting into the desired area, or if the User wishes to use a different fontsize.
