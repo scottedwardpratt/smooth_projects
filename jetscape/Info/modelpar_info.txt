@@ -1,0 +1,6 @@
+# par_name  dist_type xmin  xmax
+A			uniform	0 1.5
+B			uniform	0 20
+C			uniform	0 1.0
+D			uniform	0 20
+Q			uniform	1 4
