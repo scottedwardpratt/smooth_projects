@@ -1,11 +1,12 @@
 #LogFileName smoothlog.txt # comment out for interactive running
- SmoothEmulator_LAMBDA 2.5 # smoothness parameter
+ SmoothEmulator_LAMBDA 1.5 # smoothness parameter
  SmoothEmulator_MAXRANK 4
  SmoothEmulator_ConstrainA0 true
  SmoothEmulator_ModelRunDirName modelruns
- SmoothEmulator_TrainingPts 1-70
+ SmoothEmulator_TrainingPts 1-60
  SmoothEmulator_UsePCA false
  SmoothEmulator_TuneChooseExact true
+ SmoothEmulator_TestPts 61-70
  #
  # These are only used if you are using MCMC tuning rather than Exact method
  SmoothEmulator_TuneChooseMCMC false # set false if NPars<5
