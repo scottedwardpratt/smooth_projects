@@ -1,0 +1,26 @@
+#LogFileName smoothlog.txt # comment out for interactive running
+ SmoothEmulator_LAMBDA 2.0 # smoothness parameter
+ SmoothEmulator_MAXRANK 4
+ SmoothEmulator_ConstrainA0 false
+ SmoothEmulator_ModelRunDirName modelruns
+ SmoothEmulator_TrainingPts 0-27
+ SmoothEmulator_UsePCA false
+ SmoothEmulator_TuneChooseExact true
+ #SmoothEmulator_TrainingFormat training_format_smooth
+ SmoothEmulator_TrainingFormat training_format_surmise
+ SmoothEmulator_TrainingThetasFilename TrainingThetas.txt
+ SmoothEmulator_TrainingObsFilename TrainingObs.txt
+ #
+ # These are only used if you are using MCMC tuning rather than Exact method
+ # If using MCMC tuning remember to set SmoothEmulator_TuneChooseExact above to false
+ SmoothEmulator_TuneChooseMCMC false # 
+ SmoothEmulator_TuneChooseMCMCPerfect false # set false if NPars<5
+ SmoothEmulator_MCMC_NASample 10 # No. of coefficient samples
+ SmoothEmulator_MCMC_StepSize 0.2
+ SmoothEmulator_MCMC_CutoffA false # Used only if SigmaA constrained by SigmaA0
+ SmoothEmulator_MCMC_SigmaAStepSize 1.0  #
+ SmoothEmulator_MCMCUseSigmaY true # Takes into account theory model uncertainty
+ SmoothEmulator_MCMC_NMC 200000  # Steps between samples 
+ #
+ # This is for the MCMC search of parameter space (not for the emulator tuning)
+ RANDY_SEED  1234
