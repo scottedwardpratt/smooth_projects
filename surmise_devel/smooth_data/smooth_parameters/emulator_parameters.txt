@@ -5,8 +5,8 @@
  SmoothEmulator_ModelRunDirName modelruns
  SmoothEmulator_TrainingPts 0-27
  SmoothEmulator_UsePCA false
- #SmoothEmulator_TrainingFormat training_format_smooth
- SmoothEmulator_TrainingFormat training_format_surmise
+ SmoothEmulator_TrainingFormat training_format_smooth
+ #SmoothEmulator_TrainingFormat training_format_surmise
  SmoothEmulator_TrainingThetasFilename TrainingThetas.txt
  SmoothEmulator_TrainingObsFilename TrainingObs.txt
  # This is for the MCMC search of parameter space (not for the emulator tuning)
