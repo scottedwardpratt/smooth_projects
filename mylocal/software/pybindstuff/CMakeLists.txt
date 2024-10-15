@@ -5,11 +5,12 @@ set(GITHOME_BAND_SMOOTH $ENV{GITHOME_BAND_SMOOTH})
 set (MAIN_PROGRAM_DIR "../main_programs")
 set (FAKEFULLMODEL_DIR "../fakefullmodels")
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "$ENV{PWD}/../bin")
+set (PYBIND11_FINDPYTHON ON)
 
 add_custom_target(extern_smooth COMMAND make WORKING_DIRECTORY ${GITHOME_BAND_SMOOTH}/software)
 
 message("Will Compile with " ${CMAKE_CXX_COMPILER})
-message("For different compiler enter: cmake -D YOUR_PREFERRED_COMPILER .")
+message("For different compiler enter: cmake -D CMAKE_CXX_COMPILER=YOUR_PREFERRED_COMPILER .")
 set(CMAKE_CXX_FLAGS "-W -Wall -march=native -std=c++17 -O2 -fPIC")
 set(CMAKE_MODULE_PATH "${MAIN_PROGRAM_DIR}/cmake")
 find_package(Eigen3 REQUIRED)
