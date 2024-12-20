@@ -5,9 +5,7 @@
 using namespace std;
 int main(){
 	NBandSmooth::CSmoothMaster master;
-	printf("HOWDY a\n");
 	master.TuneAllY();
-	printf("HOWDY b\n");
 	master.TestVsFullModel();
 	return 0;
 }
