@@ -16,7 +16,7 @@ int main(){
 	NObs=master.observableinfo->NObservables;
 
 	fptr2=fopen("SigmaVsLambda/SigmaAvslambda.txt","w");
-	for(Lambda=1.5;Lambda<10.01;Lambda+=0.25){
+	for(Lambda=2;Lambda<8.01;Lambda+=1){
 		for(isigma=0;isigma<Nsigma;isigma++)
 			sigmadist[isigma]=0;
 		std::string Lstr = std::to_string (Lambda);
@@ -51,6 +51,7 @@ int main(){
 			fprintf(fptr3,"%8.3f %8.3f %8.3f\n",sig1,sig2,sig3);
 		}
 		sigmaAbar=sigmaAbar/double(NObs);
+		printf("%4d: <sigmaA>=%g\n",iY,sigmaAbar);
 		logPbar=logPbar/double(NObs);
 		sigma2=sigma2/double(NObs)-sigmaAbar*sigmaAbar;
 		for(isigma=0;isigma<Nsigma;isigma++){
