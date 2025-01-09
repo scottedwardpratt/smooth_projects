@@ -5,6 +5,7 @@
 using namespace std;
 int main(){
 	NBandSmooth::CSmoothMaster master;
+	master.CalcAllSigmaLambda();
 	master.TuneAllY();
 	master.TestVsFullModel();
 	return 0;

@@ -9,11 +9,15 @@ sformatter=ScalarFormatter(useOffset=True,useMathText=True)
 sformatter.set_scientific(True)
 sformatter.set_powerlimits((-2,2))
 
+Npars=12
+Ntrain=91
+Lambda=5
+
 #plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 
 # User may wish to edit the following for cosmetic purposes or if there are problems with plot fitting in designated area
 myfontsize=16 
-leftmargin=1.0
+leftmargin=1.2
 rightmargin=0.01
 topmargin=0.04
 bottommargin=0.09
@@ -41,11 +45,20 @@ for line in open('../observable_info.txt'):
     iline+=1
 
 print(Ynames0)
-
 iY=int(input("Enter iY: "))
-filename='fullmodel_testdata/YvsY_'+Ynames0[iY]+'.txt'
+filename='fullmodel_testdata_Npars'+str(Npars)+'_Ntrain'+str(Ntrain)+'_Lambda'+str(Lambda)+'/YvsY_'+Ynames0[iY]+'.txt'
+
 mydata=np.loadtxt(filename,skiprows=0,unpack=True)
 Yfull=mydata[0]
+Ymax=-10000
+Ymin=10000
+for iy in range(0,50):
+  if Yfull[iy] > Ymax:
+    Ymax=Yfull[iy]
+  if Yfull[iy] < Ymin:
+    Ymin=Yfull[iy]
+print('---- Ymax-Ymin='+str(Ymax-Ymin)+'\n')
+  
 Yemulator=mydata[1]
 SigmaY=mydata[2]
 NTest=Yfull.size
@@ -69,15 +82,19 @@ ix=arange(0.5,NTest,1.0)
 plt.plot(ix,Yfull,linestyle='None',color='k',markersize=7, marker='s', markerfacecolor='k', markeredgecolor='k')
 plt.errorbar(ix,Yemulator,xerr=0.0,yerr=SigmaY,linestyle='None',color='r',markersize=7, marker='o', markerfacecolor='r', markeredgecolor='r')
 
-ax.tick_params(axis='both', which='major', labelsize=14)
-ax.yaxis.set_major_formatter(sformatter)
+ax.tick_params(axis='both', which='major', labelsize=18)
+#ax.yaxis.set_major_formatter(sformatter)
 
-plt.xlabel('$i_X$', fontsize=22, weight='normal')
-plt.ylabel(Ynames[iY],fontsize=22)
+plt.xlabel('$I_{\\rm test}$', fontsize=22, weight='normal')
+plt.ylabel('Y',fontsize=22)
 
+yymin, yymax = plt.gca().get_ylim()
+titlestring='$N_{\\rm pars}=$'+str(Npars)+' $, N_{\\rm train}=$'+str(Ntrain)+' $, \Lambda=$'+str(Lambda)
+text(25,yymax-0.05*(yymax-yymin),titlestring,fontsize=28,ha='center')
 
-plt.savefig('YvsY.pdf',format='pdf')
+filename='pdfs/YvsY_'+str(Npars)+'_Ntrain'+str(Ntrain)+'_Lambda'+str(Lambda)+'.pdf'
+plt.savefig(filename,format='pdf')
 # for Mac OS this might be nicer than plt.show()
-os.system('open -a Preview YvsY.pdf')
+os.system('open -a Preview '+filename)
 #plt.show()
 quit()
