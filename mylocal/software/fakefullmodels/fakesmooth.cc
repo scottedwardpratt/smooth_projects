@@ -45,15 +45,6 @@ int main(){
 	CLog::Info("NTraining Pts="+to_string(NTrain)+"\n");
 	NBandSmooth::CSmooth smooth(NPars,maxrank);
 	
-	/*
-	for(ic=0;ic<=27;ic++){
-		printf("IPar[%d]=(",ic);
-		for(int ir=0;ir<int(smooth.rank[ic]);ir++){
-			printf("%2d ",smooth.IPar[ic][ir]);
-		}
-		printf(")\n");
-	}*/
-	
 	thetatrue.resize(NPars);
 	theta.resize(NPars);
 	ytrue.resize(NObs);

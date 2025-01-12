@@ -9,20 +9,19 @@ sformatter=ScalarFormatter(useOffset=True,useMathText=True)
 sformatter.set_scientific(True)
 sformatter.set_powerlimits((-2,2))
 
-Npars=12
-Ntrain=91
+Npars=6
+Ntrain=28
 Lambda=5
 
 #plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 
 # User may wish to edit the following for cosmetic purposes or if there are problems with plot fitting in designated area
 myfontsize=16 
-leftmargin=1.2
-rightmargin=0.01
-topmargin=0.04
+leftmargin=0.12
+rightmargin=0.02
+topmargin=0.02
 bottommargin=0.09
 # 
-
 
 font = {'family' : 'sans',
         'weight' : 'normal',
@@ -45,56 +44,72 @@ for line in open('../observable_info.txt'):
     iline+=1
 
 print(Ynames0)
-iY=int(input("Enter iY: "))
-filename='fullmodel_testdata_Npars'+str(Npars)+'_Ntrain'+str(Ntrain)+'_Lambda'+str(Lambda)+'/YvsY_'+Ynames0[iY]+'.txt'
+#iY=int(input("Enter iY: "))
 
-mydata=np.loadtxt(filename,skiprows=0,unpack=True)
-Yfull=mydata[0]
-Ymax=-10000
-Ymin=10000
-for iy in range(0,50):
-  if Yfull[iy] > Ymax:
-    Ymax=Yfull[iy]
-  if Yfull[iy] < Ymin:
-    Ymin=Yfull[iy]
-print('---- Ymax-Ymin='+str(Ymax-Ymin)+'\n')
-  
-Yemulator=mydata[1]
-SigmaY=mydata[2]
-NTest=Yfull.size
-
-HorSize=1.3+0.2*NTest
+HorSize=10
 VertSize=8
-plt.figure(figsize=(1.0+0.2*NTest,VertSize))
-fig = plt.figure(1)
-leftmargin=leftmargin/HorSize
-ax = fig.add_axes([leftmargin,bottommargin,1.0-leftmargin-rightmargin,1.0-topmargin-bottommargin])
+NTest=50
 
-nfit=0
-for ifull in range(0,NTest):
-  if abs(Yemulator[ifull]-Yfull[ifull]) < SigmaY[ifull]:
-    nfit+=1
+
+
+for iY in range(0,10):
+	filename='fullmodel_testdata_Npars'+str(Npars)+'_Ntrain'+str(Ntrain)+'_Lambda'+str(Lambda)+'/YvsY_'+Ynames0[iY]+'.txt'
+
+	mydata=np.loadtxt(filename,skiprows=0,unpack=True)
+	Yfull=mydata[0]
+	Ymax=-10000
+	Ymin=10000
+	Ymodel_bar=0.0
+	Ymodel_sigma=0.0
+	
+	for iy in range(0,50):
+		if Yfull[iy] > Ymax:
+			Ymax=Yfull[iy]
+		if Yfull[iy] < Ymin:
+			Ymin=Yfull[iy]
+		Ymodel_bar+=Yfull[iy]
+		Ymodel_sigma+=Yfull[iy]*Yfull[iy]
+	Ymodel_bar=Ymodel_bar/50.0
+	Ymodel_sigma=Ymodel_sigma/50.0
+	Ymodel_sigma=Ymodel_sigma-Ymodel_bar*Ymodel_bar
+	Ymodel_sigma=sqrt(Ymodel_sigma)
+	print('iY='+str(iY)+' ---- Ymax-Ymin='+str(Ymax-Ymin)+'\n')
   
-print(nfit, "of", NTest, " points within 1 sigma")
+	Yemulator=mydata[1]
+	SigmaY=mydata[2]
+	Yemu_sigma=0.0
+	for iy in range(0,50):
+		Yemu_sigma+=SigmaY[iy]
+	Yemu_sigma=Yemu_sigma/50.0
+	print('Yemu_sigma='+str(Yemu_sigma)+', model variance='+str(Ymodel_sigma))
+	print("<emulator unc.>/model variance="+str(Yemu_sigma/Ymodel_sigma))
+	plt.figure(figsize=(HorSize,VertSize))
+	fig = plt.figure(1)
+	ax = fig.add_axes([leftmargin,bottommargin,1.0-leftmargin-rightmargin,1.0-topmargin-bottommargin])
+	nfit=0
+	for ifull in range(0,NTest):
+		if abs(Yemulator[ifull]-Yfull[ifull]) < SigmaY[ifull]:
+			nfit+=1
+	print(nfit, "of", NTest, " points within 1 sigma")
+	
+	ix=arange(0.5,NTest,1.0)
+	
+	plt.plot(ix,Yfull,linestyle='None',color='k',markersize=7, marker='s', markerfacecolor='k', markeredgecolor='k')
+	plt.errorbar(ix,Yemulator,xerr=0.0,yerr=SigmaY,linestyle='None',color='r',markersize=7, marker='o', markerfacecolor='r', markeredgecolor='r')
+	ax.tick_params(axis='both', which='major', labelsize=18)
+   #ax.yaxis.set_major_formatter(sformatter)
+	
+	plt.xlabel('$I_{\\rm test}$', fontsize=22, weight='normal')
+	plt.ylabel('Y',fontsize=22)
+	
+	yymin, yymax = plt.gca().get_ylim()
+	titlestring='$N_{\\rm pars}=$'+str(Npars)+' $, N_{\\rm train}=$'+str(Ntrain)+' $, \Lambda=$'+str(Lambda)
+	text(25,yymax-0.05*(yymax-yymin),titlestring,fontsize=28,ha='center')
+	filename='pdfs/Npars'+str(Npars)+'_Ntrain'+str(Ntrain)+'_Lambda'+str(Lambda)+'_obs'+str(iY)+'.pdf'
+	plt.savefig(filename,format='pdf')
+	# for Mac OS this might be nicer than plt.show()
+	#os.system('open -a Preview '+filename)
+	plt.clf()
 
-ix=arange(0.5,NTest,1.0)
-
-plt.plot(ix,Yfull,linestyle='None',color='k',markersize=7, marker='s', markerfacecolor='k', markeredgecolor='k')
-plt.errorbar(ix,Yemulator,xerr=0.0,yerr=SigmaY,linestyle='None',color='r',markersize=7, marker='o', markerfacecolor='r', markeredgecolor='r')
-
-ax.tick_params(axis='both', which='major', labelsize=18)
-#ax.yaxis.set_major_formatter(sformatter)
-
-plt.xlabel('$I_{\\rm test}$', fontsize=22, weight='normal')
-plt.ylabel('Y',fontsize=22)
-
-yymin, yymax = plt.gca().get_ylim()
-titlestring='$N_{\\rm pars}=$'+str(Npars)+' $, N_{\\rm train}=$'+str(Ntrain)+' $, \Lambda=$'+str(Lambda)
-text(25,yymax-0.05*(yymax-yymin),titlestring,fontsize=28,ha='center')
-
-filename='pdfs/YvsY_'+str(Npars)+'_Ntrain'+str(Ntrain)+'_Lambda'+str(Lambda)+'.pdf'
-plt.savefig(filename,format='pdf')
-# for Mac OS this might be nicer than plt.show()
-os.system('open -a Preview '+filename)
-#plt.show()
+	 
 quit()

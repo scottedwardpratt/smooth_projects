@@ -10,7 +10,7 @@ const double HBARC=197.3269602;
 using namespace std;
 
 int main(int argc,char *argv[]){
-  unsigned int NPars,NObs;
+	unsigned int NPars,NObs;
 	unsigned int ipar,iy;
 	FILE *fptr;
 	string parname, obsname;

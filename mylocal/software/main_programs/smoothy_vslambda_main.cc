@@ -21,7 +21,7 @@ int main(){
 			
 		SigmaAbar+=SigmaA;
 		Lambdabar+=Lambda;
-			logPbar+=logP;
+		logPbar+=logP;
 			
 	}
 	SigmaAbar=SigmaAbar/double(NObs);
