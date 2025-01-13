@@ -7,7 +7,10 @@
 using namespace std;
 using namespace NMSUUtils;
 int main(){
-
+	double GSCALE=sqrt(3.0);
+	double sigmax=100.0;
+	char gu;
+	bool gaussian=true;
 	unsigned int NObs,NPars;
 	unsigned int NTrain,itrain,ic,ipar,maxrank=4,iobs;
 	double LAMBDA,y;
@@ -31,6 +34,12 @@ int main(){
 	
 	printf("Enter Lambda for fakesmooth: ");
 	scanf("%lf",&LAMBDA);
+	printf("For testing points: Enter g for gaussian, u for uniform: ");
+	scanf(" %c",&gu);
+	if(gu=='g')
+		gaussian=true;
+	else
+		gaussian=false;
 	
 	NTrain=0;
 	bool existence;
@@ -141,7 +150,10 @@ int main(){
 	for(itest=0;itest<Ntest;itest++){
 		thetatest[itest].resize(NPars);
 		for(ipar=0;ipar<NPars;ipar++){
-			thetatest[itest][ipar]=-1.0+2.0*randy.ran();
+			if(gaussian)
+				thetatest[itest][ipar]=(1.0/GSCALE)*randy.ran_gauss();
+			else
+				thetatest[itest][ipar]=-1.0+2.0*randy.ran();
 		}
 	}
 	
@@ -168,7 +180,12 @@ int main(){
 			for(ipar=0;ipar<NPars;ipar++){
 				fscanf(fptr,"%s %lf",parname_c,&x);
 				parname[ipar]=parname_c;
-				theta[ipar]=-1.0+2.0*(x-xmin[ipar])/(xmax[ipar]-xmin[ipar]);
+				if(gaussian){
+					double xbar=0.0;
+					theta[ipar]=(x-xbar)/(sigmax*GSCALE);
+				}
+				else
+					theta[ipar]=-1.0+2.0*(x-xmin[ipar])/(xmax[ipar]-xmin[ipar]);
 			}
 			fclose(fptr);
 			
