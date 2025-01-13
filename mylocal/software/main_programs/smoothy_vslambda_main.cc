@@ -8,11 +8,14 @@ int main(){
 	double SigmaAbar,SigmaA,Lambdabar,Lambda,logPbar,logP;
 	unsigned int iY,NObs;
 	FILE *fptr=fopen("SigmaVsLambda/sigmalambda.txt","w");
+
+	double sig1,sig2,sig3;
 	
 	NObs=master.observableinfo->NObservables;
 	SigmaAbar=logPbar=Lambdabar=0.0;
 	
 	for(iY=0;iY<NObs;iY++){
+		master.emulator[iY]->GetSigmaA123(sig1,sig2,sig3);
 		master.emulator[iY]->CalcSigmaLambda();
 		SigmaA=master.emulator[iY]->SigmaA;
 		Lambda=master.emulator[iY]->LAMBDA;

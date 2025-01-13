@@ -29,7 +29,7 @@ int main(){
 	fscanf(fptr,"%d %d",&NPars,&NObs);
 	fclose(fptr);
 	
-	printf("Enter LAMBDA for fakesmooth: ");
+	printf("Enter Lambda for fakesmooth: ");
 	scanf("%lf",&LAMBDA);
 	
 	NTrain=0;
@@ -111,7 +111,8 @@ int main(){
 		for(iobs=0;iobs<NObs;iobs++){
 			y=smooth.CalcY(A[iobs],LAMBDA,theta);
 
-			double randomerror=0.0*y;
+			//double randomerror=0.0*y;
+			double randomerror=0.0;
 			fprintf(fptr,"%s %lf %lf\n",obsname[iobs].c_str(),y,randomerror);
 			fprintf(fptr_obs,"%15.8f ",y);
 			fprintf(fptr_SigmaY,"%15.8f ",SigmaY[iobs]);
@@ -173,11 +174,12 @@ int main(){
 			
 			y=smooth.CalcY(A[iy],LAMBDA,theta);
 			filename="smooth_data/modelruns/run"+to_string(itrain)+"/obs.txt";
+			double randomerror=0.0;
 			if(iy==0)
 				fptr_out=fopen(filename.c_str(),"w");
 			else
 				fptr_out=fopen(filename.c_str(),"a");
-			fprintf(fptr_out,"%s %g\n",obsname[iy].c_str(),y);
+			fprintf(fptr_out,"%s %15.8f %15.8f\n",obsname[iy].c_str(),y,randomerror);
 			fclose(fptr_out);
 		}
 
