@@ -1,4 +1,7 @@
-rm -r modelruns/run*
-simplex parameters/simplex_parameters.txt
-fakerhic
-smoothy_tune parameters/emulator_parameters.txt
+make -C ../mylocal/software
+rm -f -r smooth_data/modelruns/run*
+rm -f -r smooth_data/fullmodel_testdata/*
+fakeinfo_gaussianprior;
+simplex;
+fakesmooth;
+smoothy_tune

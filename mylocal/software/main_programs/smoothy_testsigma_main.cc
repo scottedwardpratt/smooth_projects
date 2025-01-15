@@ -31,16 +31,15 @@ int main(){
 		sigmaAbar=sigma2=logPbar=Lambdabar=0.0;
 		for(iY=0;iY<NObs;iY++){
 			master.emulator[iY]->LAMBDA=Lambda;
-			master.emulator[iY]->Bcalculated=false;
 		}
 		master.TuneAllY();
 		//master.TestAtTrainingPts();
 		fprintf(fptr1,"#Lambda=%5.2f, dsigma=%g\n",Lambda,dsigma);
 		fprintf(fptr1,"#Sigma   Ndist(Sigma)\n");
 		for(iY=0;iY<NObs;iY++){
-			//master.emulator[iY]->CalcSigmaLambda(LambdaGuess);
+			//master.emulator[iY]->CalcSigmaALambda(LambdaGuess);
 			sigmaA=master.emulator[iY]->SigmaA;
-			master.emulator[iY]->CalcExactLogP();
+			master.emulator[iY]->CalcLogP();
 			LambdaGuess=Lambda;
 			logP=master.emulator[iY]->logP;
 			sigmaAbar+=sigmaA;

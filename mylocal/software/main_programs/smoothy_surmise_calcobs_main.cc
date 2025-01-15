@@ -31,7 +31,7 @@ int main(int argc,char *argv[]){
 	NBandSmooth::CObservableInfo *obsinfo=master.observableinfo;
 	vector<double> Y(obsinfo->NObservables);
 	vector<double> SigmaY(obsinfo->NObservables);
-	master.CalcAllY(modpars,Y,SigmaY);
+	master.GetAllY(modpars,Y,SigmaY);
 	//cout << "---- EMULATED OBSERVABLES ------\n";
 	//for(unsigned int iY=0;iY<obsinfo->NObservables;iY++){
 	//	cout << obsinfo->GetName(iY) << " = " << Y[iY] << " +/- " << SigmaY[iY] << endl;

@@ -8,34 +8,38 @@ using namespace std;
 using namespace NMSUUtils;
 int main(){
 	double GSCALE=sqrt(3.0);
-	double sigmax=100.0;
+	double sigmax=100.0,ALPHA;
+	char dummy[400];
 	char gu;
 	bool gaussian=true;
 	unsigned int NObs,NPars;
-	unsigned int NTrain,itrain,ic,ipar,maxrank=4,iobs;
+	unsigned int NTrain,itrain,ic,ipar,maxrank=5,iobs;
 	double LAMBDA,y;
 	CparameterMap parmap;
 	vector<vector<double>> A;
 	vector<double> theta,exptheta,X,SigmaY,xtrain,Ytrain;
 	vector<string> priortype;
-	char dummy[400];
 	string expfilename,filename,command;
 	vector<string> obsname;
 	vector<string> parname;
 	vector<double> xmin,xmax,thetatrue,ytrue;
 	FILE *fptr;
 	NMSUUtils::Crandy randy(-time(NULL));
+	//NMSUUtils::Crandy randy(-123);
 	char parname_c[200],type[100];
 	parmap.ReadParsFromFile("smooth_data/smooth_parameters/simplex_parameters.txt");
 	parmap.ReadParsFromFile("smooth_data/smooth_parameters/emulator_parameters.txt");
 	fptr=fopen("NParsNObs.txt","r");
-	fscanf(fptr,"%d %d",&NPars,&NObs);
+	fgets(dummy,400,fptr);
+	fscanf(fptr,"%d %d %lf",&NPars,&NObs,&ALPHA);
 	fclose(fptr);
 	
 	printf("Enter Lambda for fakesmooth: ");
 	scanf("%lf",&LAMBDA);
 	printf("For testing points: Enter g for gaussian, u for uniform: ");
 	scanf(" %c",&gu);
+	//LAMBDA=4.0;
+	//gu='g';
 	if(gu=='g')
 		gaussian=true;
 	else
@@ -51,7 +55,7 @@ int main(){
 			NTrain+=1;
 		}
 	}while(existence);
-	CLog::Info("NTraining Pts="+to_string(NTrain)+"\n");
+	//CLog::Info("NTraining Pts="+to_string(NTrain)+"\n");
 	NBandSmooth::CSmooth smooth(NPars,maxrank);
 	
 	thetatrue.resize(NPars);
@@ -82,7 +86,7 @@ int main(){
 	
 	// read in modelpar_info and set experimental value to theta=0.2
 	fptr=fopen("smooth_data/Info/modelpar_info.txt","r");
-	fgets(dummy,200,fptr);
+	fgets(dummy,400,fptr);
 	for(ipar=0;ipar<NPars;ipar++){
 		fscanf(fptr,"%s %s %lf %lf",parname_c,type,&xmin[ipar],&xmax[ipar]);
 		parname.push_back(string(parname_c));
@@ -120,7 +124,6 @@ int main(){
 		for(iobs=0;iobs<NObs;iobs++){
 			y=smooth.CalcY(A[iobs],LAMBDA,theta);
 
-			//double randomerror=0.0*y;
 			double randomerror=0.0;
 			fprintf(fptr,"%s %lf %lf\n",obsname[iobs].c_str(),y,randomerror);
 			fprintf(fptr_obs,"%15.8f ",y);

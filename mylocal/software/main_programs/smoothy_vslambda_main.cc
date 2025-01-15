@@ -13,7 +13,7 @@ int main(){
 	SigmaAbar=logPbar=Lambdabar=0.0;
 	
 	for(iY=0;iY<NObs;iY++){
-		master.emulator[iY]->CalcSigmaLambda();
+		master.emulator[iY]->CalcSigmaALambda();
 		SigmaA=master.emulator[iY]->SigmaA;
 		Lambda=master.emulator[iY]->LAMBDA;
 		logP=master.emulator[iY]->logP;

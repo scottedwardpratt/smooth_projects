@@ -65,7 +65,7 @@ ax = fig.add_axes([xmargin+xsize,ymargin,xsize,ysize])
 #ax.set_ylabel("$\Lambda$",size=24, family='serif',labelpad=6)
 ax.set_ylabel(None)
 ax.set_xlabel("$\sigma_A$",size=28, family='serif',labelpad=6)
-nbins=50
+nbins=80
 counts, xbins, ybins, Image =  ax.hist2d(sldata[0],sldata[1], bins=nbins, norm=LogNorm(), cmap=plt.cm.YlGnBu)
 counts = counts.transpose()
 maxcounts = np.nanmax(counts)
