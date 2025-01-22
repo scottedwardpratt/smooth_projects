@@ -5,6 +5,7 @@
 using namespace std;
 int main(){
 	NBandSmooth::CSmoothMaster master;
+	printf("check check\n");
 	double SigmaAbar,SigmaA,Lambdabar,Lambda,logPbar,logP;
 	unsigned int iY,NObs;
 	FILE *fptr=fopen("SigmaVsLambda/sigmalambda.txt","w");
@@ -13,7 +14,10 @@ int main(){
 	SigmaAbar=logPbar=Lambdabar=0.0;
 	
 	for(iY=0;iY<NObs;iY++){
+		master.emulator[iY]->CalcLambdaVariance();
+		printf("-----\nnew method: LAMBDA=%g +/- %g\n",master.emulator[iY]->LAMBDA,master.emulator[iY]->LambdaVariance);
 		master.emulator[iY]->CalcSigmaALambda();
+		printf("old method: LAMBDA=%g\n",master.emulator[iY]->LAMBDA);
 		SigmaA=master.emulator[iY]->SigmaA;
 		Lambda=master.emulator[iY]->LAMBDA;
 		logP=master.emulator[iY]->logP;

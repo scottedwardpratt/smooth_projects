@@ -34,6 +34,7 @@ int main(){
 	fgets(dummy,400,fptr);
 	fscanf(fptr,"%d %d %lf",&NPars,&NObs,&ALPHA);
 	fclose(fptr);
+	printf("NPars=%d, NObs=%d, ALPHA=%g\n",NPars,NObs,ALPHA);
 	
 	printf("Enter Lambda for fakesmooth: ");
 	scanf("%lf",&LAMBDA);
@@ -73,11 +74,11 @@ int main(){
 		xtrain[itrain].resize(NPars);
 		thetatrain[itrain].resize(NPars);
 	}
-	//CLog::Info("NTraining Pts="+to_string(NTrain)+"\n");
+	CLog::Info("NTraining Pts="+to_string(NTrain)+"\n");
 
 	// Create smooth object
 	NBandSmooth::CSmooth smooth(NPars,maxrank);
-	
+
 
 	// Create A for smooth object
 	A.resize(NObs);
@@ -135,7 +136,6 @@ int main(){
 		}
 		fprintf(fptr_thetas,"\n");
 		fclose(fptr);	
-
 
 		filename="smooth_data/modelruns/run"+to_string(itrain)+"/obs.txt";
 		fptr=fopen(filename.c_str(),"w");
