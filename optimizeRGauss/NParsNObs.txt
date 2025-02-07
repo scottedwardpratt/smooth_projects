@@ -1,0 +1,2 @@
+# NPars NObs ALPHA
+3 10 0.05
