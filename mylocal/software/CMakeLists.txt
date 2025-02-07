@@ -132,3 +132,10 @@ add_executable(optimize_MC ${MAIN_PROGRAM_DIR}/optimize_MC.cc)
 add_dependencies(optimize_MC extern_smooth)
 target_link_libraries(optimize_MC ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
 #################################################
+# optimizeSphere_MC
+#################################################
+set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/optimizeSphere_MC.cc)
+add_executable(optimizeSphere_MC ${MAIN_PROGRAM_DIR}/optimizeSphere_MC.cc)
+add_dependencies(optimizeSphere_MC extern_smooth)
+target_link_libraries(optimizeSphere_MC ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
+#################################################

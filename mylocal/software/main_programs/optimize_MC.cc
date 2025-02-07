@@ -2,12 +2,11 @@
 #include "msu_smooth/simplex.h"
 #include "msu_smoothutils/log.h"
 #include "msu_smoothutils/misc.h"
-const double PI=4.0*atan(1.0);
 using namespace std;
 using namespace NMSUUtils;
 int main(){
 	NBandSmooth::CSimplexSampler *simplex=new NBandSmooth::CSimplexSampler();
-	double LAMBDA=3.0,ALPHA=0.01,Sigma2Bar,bestSigma2,dtheta=0.05,detB,W11,r;
+	double LAMBDA=3.0,ALPHA=0.01,Sigma2Bar,bestSigma2,dtheta,detB,W11,r;
 	int imc,nmc=10000000,itrain,NPars,NTrain,ipar,nfail=0;
 	Crandy randy(time(NULL));
 	vector<vector<double>> besttheta;
@@ -24,17 +23,18 @@ int main(){
 	NTrain=simplex->NTrainingPts;
 	besttheta.resize(NTrain);
 	for(itrain=0;itrain<NTrain;itrain++){
-		besttheta[itrain].resize(NPars);
-		for(ipar=0;ipar<NPars;ipar++){
-			besttheta[itrain][ipar]=simplex->ThetaTrain[itrain][ipar];
-			simplex->ThetaTrain[itrain][ipar]=besttheta[itrain][ipar];
-		}
+	besttheta[itrain].resize(NPars);
+	for(ipar=0;ipar<NPars;ipar++){
+	besttheta[itrain][ipar]=simplex->ThetaTrain[itrain][ipar];
+	simplex->ThetaTrain[itrain][ipar]=besttheta[itrain][ipar];
+	}
 	}
 	*/
 	
 	double R0=1.0/sqrt(3.0);
 	printf("Enter NTrainingPts: ");
 	scanf("%d",&NTrain);
+	dtheta=0.1/sqrt(double(NTrain));
 	besttheta.resize(NTrain);
 	for(itrain=0;itrain<NTrain;itrain++){
 		besttheta[itrain].resize(NPars);
@@ -53,13 +53,13 @@ int main(){
 	bestSigma2=Sigma2Bar;
 	/*
 	for(itrain=0;itrain<NTrain;itrain++){
-		r=0.0;
-		printf("%2d: ",itrain);
-		for(ipar=0;ipar<NPars;ipar++){
-			r+=pow(besttheta[itrain][ipar],2);
-			printf("%8.5f ",besttheta[itrain][ipar]);
-		}
-		printf(": %8.5f\n",sqrt(r));
+	r=0.0;
+	printf("%2d: ",itrain);
+	for(ipar=0;ipar<NPars;ipar++){
+	r+=pow(besttheta[itrain][ipar],2);
+	printf("%8.5f ",besttheta[itrain][ipar]);
+	}
+	printf(": %8.5f\n",sqrt(r));
 	}*/
 	
 	for(imc=0;imc<nmc;imc++){
@@ -113,8 +113,10 @@ int main(){
 	fprintf(fptr,"%3d %8.5f\n",NTrain,bestSigma2);
 	fclose(fptr);
 	
-	fptr=fopen("ctheta.txt","w");
-	double ctheta;
+	vector<vector<double>> ctheta;
+	ctheta.resize(NTrain);
+	for(itrain=0;itrain<NTrain;itrain++)
+		ctheta[itrain].resize(NTrain);
 	int jtrain;
 	vector<double> rtrain(NTrain);
 	for(itrain=0;itrain<NTrain;itrain++){
@@ -134,40 +136,51 @@ int main(){
 		for(jtrain=0;jtrain<NTrain;jtrain++){
 			double rij=0.0;
 			if(rtrain[itrain]>0.1 && rtrain[jtrain]>0.1){
-				ctheta=0.0;
+				ctheta[itrain][jtrain]=0.0;
 				for(ipar=0;ipar<NPars;ipar++){
 					rij+=pow(besttheta[itrain][ipar]-besttheta[jtrain][ipar],2);
-					ctheta+=besttheta[itrain][ipar]*besttheta[jtrain][ipar];
+					ctheta[itrain][jtrain]+=besttheta[itrain][ipar]*besttheta[jtrain][ipar];
 				}
 				rij=sqrt(rij);
-				ctheta=ctheta/(rtrain[itrain]*rtrain[jtrain]);
-				fprintf(fptr,"%8.5f ",ctheta);
-				if(fabs(ctheta-0.6)<0.03)
-					printf("rij=%g\n",rij);
+				ctheta[itrain][jtrain]=ctheta[itrain][jtrain]/(rtrain[itrain]*rtrain[jtrain]);
+				fprintf(fptr,"%8.5f ",ctheta[itrain][jtrain]);
 			}
 		}
-		fprintf(fptr,"\n");
 	}			
+	
+	fptr=fopen("ctheta.txt","w");
+	for(itrain=0;itrain<NTrain;itrain++){
+		sort(ctheta[itrain].begin(),ctheta[itrain].end());
+		for(jtrain=0;jtrain<NTrain;jtrain++){
+			fprintf(fptr,"%8.5f ",ctheta[itrain][jtrain]);
+
+		}
+		fprintf(fptr,"\n");
+	}
 	fclose(fptr);
 	
 	for(ipar=0;ipar<NPars;ipar++){
 		printf("sumtheta[%d]=%g\n",ipar,sumtheta[ipar]);
 	}
+	/*
+	const double PI=4.0*atan(1.0);
 	vector<double> phi(NTrain),theta(NTrain);
+	double costheta;
 	for(itrain=0;itrain<NTrain;itrain++){
-		ctheta=besttheta[itrain][0];
+		costheta=besttheta[itrain][0];
 		r=0.0;
 		for(ipar=0;ipar<NPars;ipar++){
 			r+=besttheta[itrain][ipar]*besttheta[itrain][ipar];
 		}
 		r=sqrt(r);
-		ctheta=ctheta/r;
+		costheta=costheta/r;
 		phi(NTrain)=atan2(besttheta[itrain][2],besttheta[itrain][1]);
 		if(theta<0.0)
 			theta+=PI;
-		theta(NTrain)=(180.0/PI)*acos(ctheta);
+		theta(NTrain)=(180.0/PI)*acos(costheta);
 		phi(NTrain)=(180.0/PI)*phi(NTrain);
 		printf("%8.5f %9.3f %9.3f\n",r,theta,phi);
 	}
+	*/
 	return 0;
 }
