@@ -12,7 +12,7 @@ using namespace std;
 using namespace NMSUPratt;
 
 
-void GetIJK_numerical(Crandy *randy,double beta,double gamma,double theta_a,double theta_b,double &Iab,double &Jab,double &Jba,double &Kab){
+void GetIiJiKi_numerical(Crandy *randy,double beta,double gamma,double theta_a,double theta_b,double &Iab,double &Jab,double &Kab){
 	double theta,X,R;
 	int isample,nsample=100000000;
 	Iab=Jab=Jba=Kab=0.0;

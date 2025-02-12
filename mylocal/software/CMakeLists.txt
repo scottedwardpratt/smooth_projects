@@ -21,20 +21,10 @@ find_library(${GITHOME_BAND_SMOOTH}/software/lib msu_smoothutils)
 find_library(${GITHOME_BAND_SMOOTH}/software/lib msu_smooth)
 
 #################################################
-set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/simplex_main.cc)
-add_executable(simplex ${MAIN_PROGRAM_DIR}/simplex_main.cc)
-add_dependencies(simplex extern_smooth)
-target_link_libraries(simplex ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a  ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
-#################################################
 set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/simplex_optimize_main.cc)
 add_executable(simplex_optimize ${MAIN_PROGRAM_DIR}/simplex_optimize_main.cc)
 add_dependencies(simplex_optimize extern_smooth)
 target_link_libraries(simplex_optimize ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a  ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
-#################################################
-set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/simplex_setRGauss_main.cc)
-add_executable(simplex_setRGauss ${MAIN_PROGRAM_DIR}/simplex_setRGauss_main.cc)
-add_dependencies(simplex extern_smooth)
-target_link_libraries(simplex_setRGauss ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a  ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
 #################################################
 set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/smoothy_tune_main.cc)
 add_executable(smoothy_tune ${MAIN_PROGRAM_DIR}/smoothy_tune_main.cc)
@@ -102,40 +92,4 @@ add_executable(fakerhic ${FAKEFULLMODEL_DIR}/fakerhic.cc)
 add_dependencies(fakerhic extern_smooth)
 target_link_libraries(fakerhic ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a
  ${EIGEN3_LIBRARY})
-#################################################
-# optimizeRGauss_MC1
-#################################################
-set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/optimizeRGauss_MC1.cc)
-add_executable(optimizeRGauss_MC1 ${MAIN_PROGRAM_DIR}/optimizeRGauss_MC1.cc)
-add_dependencies(optimizeRGauss_MC1 extern_smooth)
-target_link_libraries(optimizeRGauss_MC1 ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
-#################################################
-# optimizeRGauss_MC2
-#################################################
-set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/optimizeRGauss_MC2.cc)
-add_executable(optimizeRGauss_MC2 ${MAIN_PROGRAM_DIR}/optimizeRGauss_MC2.cc)
-add_dependencies(optimizeRGauss_MC2 extern_smooth)
-target_link_libraries(optimizeRGauss_MC2 ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
-#################################################
-# optimizeRGauss_MC3
-#################################################
-set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/optimizeRGauss_MC3.cc)
-add_executable(optimizeRGauss_MC3 ${MAIN_PROGRAM_DIR}/optimizeRGauss_MC3.cc)
-add_dependencies(optimizeRGauss_MC3 extern_smooth)
-target_link_libraries(optimizeRGauss_MC3 ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
-#################################################
-#################################################
-# optimize_MC
-#################################################
-set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/optimize_MC.cc)
-add_executable(optimize_MC ${MAIN_PROGRAM_DIR}/optimize_MC.cc)
-add_dependencies(optimize_MC extern_smooth)
-target_link_libraries(optimize_MC ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
-#################################################
-# optimizeSphere_MC
-#################################################
-set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/optimizeSphere_MC.cc)
-add_executable(optimizeSphere_MC ${MAIN_PROGRAM_DIR}/optimizeSphere_MC.cc)
-add_dependencies(optimizeSphere_MC extern_smooth)
-target_link_libraries(optimizeSphere_MC ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
 #################################################
