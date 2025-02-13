@@ -10,7 +10,6 @@ const double PI=4.0*atan(1.0);
 using namespace std;
 using namespace NMSUPratt;
 
-
 void GetIiJiKi_numerical(double beta,double gamma,double theta_a,double theta_b,double &Iab,double &Jab,double &Kab){
 	double theta,X,R,dtheta;
 	int isample,nsample=100000000;
@@ -41,8 +40,6 @@ void GetIiJiKi_analytic(double beta,double gamma,double theta_a,double theta_b,d
 	Y=(beta-thetabar)*Xplus-(-beta-thetabar)*Xminus;
 	Jab+=(0.25/(gamma*beta))*prefact*Y;
 	Z=pow(beta-thetabar,3)*Xplus-pow(-beta-thetabar,3)*Xminus;
-	
-	
 	Kab=(0.5/(gamma*gamma))*Iab
 		+(-(0.5/gamma)-0.25*deltheta*deltheta)*Jab
 		-((0.25/(gamma*gamma*beta)) +deltheta*deltheta/(16.0*beta*gamma))*prefact*Y	
