@@ -19,7 +19,8 @@ void GetIiJiKi_numerical(double beta,double gamma,double theta_a,double theta_b,
 		X=0.5*gamma*pow(theta_a-theta,2)+0.5*gamma*pow(theta_b-theta,2);
 		Iab+=exp(-X)*dtheta;
 		Jab-=0.5*(pow(theta_a-theta,2)+pow(theta_b-theta,2))*exp(-X)*dtheta;
-		Kab+=0.25*pow(pow(theta_a-theta,2)+pow(theta_b-theta,2),2)*exp(-X)*dtheta;
+		Kab+=0.25*pow(theta_a-theta,2)*pow(theta_b-theta,2)*exp(-X)*dtheta;
+		//Kab+=0.25*pow(pow(theta_a-theta,2)+pow(theta_b-theta,2),2)*exp(-X)*dtheta;
 	}
 	Iab*=0.5/beta;
 	Jab*=0.5/beta;
@@ -27,23 +28,37 @@ void GetIiJiKi_numerical(double beta,double gamma,double theta_a,double theta_b,
 }
 
 void GetIiJiKi_analytic(double beta,double gamma,double theta_a,double theta_b,double &Iab,double &Jab,double &Kab){
-	double deltheta,thetabar,rootgamma,Xplus,Xminus,prefact,Y,Z;
+	double deltheta,thetabar,rootgamma,Xplus,Xminus,X,P,Y,Z,Pprime,Pprimeprime,W,bplus2,bminus2,deltheta2,bplus,bminus;
 	double gammagamma=gamma;
 	rootgamma=sqrt(gammagamma);
 	thetabar=0.5*(theta_a+theta_b);
-	deltheta=theta_a-theta_b;
-	Xplus=exp(-gamma*(beta-thetabar)*(beta-thetabar));
-	Xminus=exp(-gamma*(-beta-thetabar)*(-beta-thetabar));
-	prefact=exp(-0.25*gamma*deltheta*deltheta);
-	Iab=(0.25/beta)*sqrt(PI/gamma)*prefact*(erf(rootgamma*(beta-thetabar))-erf(rootgamma*(-beta-thetabar)));
-	Jab=-(0.5/gamma)*Iab-0.25*deltheta*deltheta*Iab;
-	Y=(beta-thetabar)*Xplus-(-beta-thetabar)*Xminus;
-	Jab+=(0.25/(gamma*beta))*prefact*Y;
-	Z=pow(beta-thetabar,3)*Xplus-pow(-beta-thetabar,3)*Xminus;
-	Kab=(0.5/(gamma*gamma))*Iab
-		+(-(0.5/gamma)-0.25*deltheta*deltheta)*Jab
-		-((0.25/(gamma*gamma*beta)) +deltheta*deltheta/(16.0*beta*gamma))*prefact*Y	
-			-(0.25/(beta*gamma))*prefact*Z;
+	deltheta=0.5*(theta_a-theta_b);
+	deltheta2=deltheta*deltheta;
+	bplus=beta-thetabar;
+	bminus=-beta-thetabar;
+	bplus2=bplus*bplus;
+	bminus2=bminus*bminus;
+	Xplus=exp(-gamma*bplus2);
+	Xminus=exp(-gamma*bminus2);
+	P=(0.5/beta)*exp(-gamma*deltheta*deltheta);
+	W=(1.0/rootgamma)*(sqrt(PI)/2.0)*(erf(rootgamma*(beta-thetabar))-erf(rootgamma*(-beta-thetabar)));
+	Iab=P*W;
+	
+	Jab=-(0.5/gamma)*Iab-deltheta2*Iab;
+	Y=bplus*Xplus-bminus*Xminus;
+	Jab+=(0.5/gamma)*P*Y;
+
+	Kab=Jab*((-0.5/gamma)-deltheta2);
+	Kab+=0.5*Iab/(gamma*gamma);
+	Kab=Kab-P*Xplus*bplus*((0.5/(gamma*gamma))+0.5*(deltheta2/gamma)+0.5*bplus*bplus/gamma);
+	Kab=Kab+P*Xminus*bminus*((0.5/(gamma*gamma))+0.5*(deltheta2/gamma)+0.5*bminus*bminus/gamma);
+	
+	Kab-=Iab*(2.0*deltheta2/gamma);
+	Kab=Kab+P*Xplus*bplus*2.0*deltheta2/gamma;
+	Kab=Kab-P*Xminus*bminus*2.0*deltheta2/gamma;
+	
+	Kab=Kab/4.0;
+	
 }
 
 int main(int argc,char *argv[]){
