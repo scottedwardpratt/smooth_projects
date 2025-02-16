@@ -10,88 +10,91 @@ const double PI=4.0*atan(1.0);
 using namespace std;
 using namespace NMSUPratt;
 
-void GetIiJiKi_numerical(Crandy *randy,double beta,double Lambda,double theta_a,double theta_b,double &Iab,double &Jab,double &Kab){
+void GetIiJiKiNumerical(Crandy *randy,double Rprior,double Lambda,double theta_a,double theta_b,double &I,double &Jaterm,double &Jbterm,double &Kabterm){
+	double Ja,Jb,Kab;
 	double theta,X,dtheta,Y,gamma=1.0/(Lambda*Lambda);
 	int nsample=100000000;
-	Iab=Jab=Kab=0.0;
-	dtheta=2.0*beta/double(nsample);
-	for(theta=-beta+0.5*dtheta;theta<beta;theta+=dtheta){
+	I=Ja=Jb=Kab=0.0;
+	dtheta=2.0*Rprior/double(nsample);
+	for(theta=-Rprior+0.5*dtheta;theta<Rprior;theta+=dtheta){
 		X=pow(theta_a-theta,2)+pow(theta_b-theta,2);
 		Y=exp(-0.5*gamma*X);
-		Iab+=Y*dtheta;
-		Jab+=X*Y*dtheta;
+		I+=Y*dtheta;
+		Ja+=pow(theta_a-theta,2)*Y*dtheta;
+		Jb+=pow(theta_b-theta,2)*Y*dtheta;
 		Kab+=pow(theta_a-theta,2)*pow(theta_b-theta,2)*Y*dtheta;
 		//Kab+=0.25*pow(pow(theta_a-theta,2)+pow(theta_b-theta,2),2)*Y*dtheta;
 	}
-	Iab*=0.5/beta;
-	Jab*=0.5/beta;
-	Kab*=0.5/beta;
+	I*=0.5/Rprior;
+	Ja*=0.5/Rprior;
+	Jb*=0.5/Rprior;
+	Kab*=0.5/Rprior;
+	Jaterm=Ja/I;
+	Jbterm=Jb/I;
+	Kabterm=Kab/I;
+	printf("I=%8.5f, Jaterm=%8.5f, Jbterm=%8.5f, Sum=%8.5f, Kabterm=%8.5f\n",
+	I,Jaterm,Jbterm,Jaterm+Jbterm,Kabterm);
 }
 
-void GetIiJiKi_analytic(double beta,double Lambda,double theta_a,double theta_b,double &Iab,double &Jab,double &Kab){
-	double deltheta,thetabar,rootgamma,Xplus,Xminus,X,P,Y,Z,Pprime,Pprimeprime,W,bplus2,bminus2,deltheta2,bplus,bminus;
+void GetIiJiKiUniform(double Rprior,double Lambda,double theta_a,double theta_b,
+double &I,double &Jaterm,double &Jbterm,double &Kabterm){
+	double Ja,Jb,J,Kab;
+	double deltheta,thetabar,rootgamma,Xplus,Xminus,P,Y,W,bplus2,bminus2,deltheta2,bplus,bminus;
 	double gamma=1.0/(Lambda*Lambda);
 	rootgamma=sqrt(gamma);
 	thetabar=0.5*(theta_a+theta_b);
 	deltheta=0.5*(theta_a-theta_b);
 	deltheta2=deltheta*deltheta;
-	bplus=beta-thetabar;
-	bminus=-beta-thetabar;
+	bplus=Rprior-thetabar;
+	bminus=-Rprior-thetabar;
 	bplus2=bplus*bplus;
 	bminus2=bminus*bminus;
 	Xplus=exp(-gamma*bplus2);
 	Xminus=exp(-gamma*bminus2);
-	P=(0.5/beta)*exp(-gamma*deltheta*deltheta);
-	W=(1.0/rootgamma)*(sqrt(PI)/2.0)*(erf(rootgamma*(beta-thetabar))-erf(rootgamma*(-beta-thetabar)));
-	Iab=P*W;
+	P=(0.5/Rprior)*exp(-gamma*deltheta*deltheta);
+	W=(1.0/rootgamma)*(sqrt(PI)/2.0)*(erf(rootgamma*(Rprior-thetabar))-erf(rootgamma*(-Rprior-thetabar)));
+	I=P*W;
 	
-	Jab=-(0.5/gamma)*Iab-deltheta2*Iab;
+	J=-(0.5/gamma)*I-deltheta2*I;
 	Y=bplus*Xplus-bminus*Xminus;
-	Jab+=(0.5/gamma)*P*Y;
+	J+=(0.5/gamma)*P*Y;
+	
+	Ja=J-P*Xplus*deltheta/gamma+P*Xminus*deltheta/gamma;
+	Jb=2.0*J-Ja;	
 
-	Kab=Jab*((-0.5/gamma)-deltheta2);
-	Kab+=0.5*Iab/(gamma*gamma);
+	Kab=J*((-0.5/gamma)-deltheta2);
+	Kab+=0.5*I/(gamma*gamma);
 	Kab=Kab-P*Xplus*bplus*((0.5/(gamma*gamma))+0.5*(deltheta2/gamma)+0.5*bplus*bplus/gamma);
 	Kab=Kab+P*Xminus*bminus*((0.5/(gamma*gamma))+0.5*(deltheta2/gamma)+0.5*bminus*bminus/gamma);
 	
-	Kab-=Iab*(2.0*deltheta2/gamma);
+	Kab-=I*(2.0*deltheta2/gamma);
 	Kab=Kab+P*Xplus*bplus*2.0*deltheta2/gamma;
 	Kab=Kab-P*Xminus*bminus*2.0*deltheta2/gamma;
-	
-	Jab=Jab*2.0;
+
+	J=-2.0*J;
+	Jaterm=-Ja/I;
+	Jbterm=-Jb/I;
+	Kabterm=Kab/I;
+	printf("I=%8.5f, Jaterm=%8.5f, Jbterm=%8.5f, Sum=%8.5f, Kabterm=%8.5f\n",
+	I,Jaterm,Jbterm,Jaterm+Jbterm,Kabterm);
 
 }
 
 int main(int argc,char *argv[]){
-	double Iab,Jab,Jba,Kab,Lambda=2.5,dLambda=0.001;
-	double beta=1.0/sqrt(3.0);
+	double I,Jaterm,Jbterm,Kabterm,Lambda=2.5,dLambda=0.001;
+	double Rprior=0.876543;
 	double theta_a;
 	double theta_b;
 	Crandy *randy=new Crandy(123);
 
 	for(int isample=0;isample<5;isample++){
-		theta_a=(1.0/sqrt(beta))*randy->ran_gauss();
-		theta_b=(1.0/sqrt(beta))*randy->ran_gauss();
-		GetIiJiKi_numerical(randy,beta,Lambda,theta_a,theta_b,Iab,Jab,Kab);
+		theta_a=(1.0/sqrt(Rprior))*randy->ran_gauss();
+		theta_b=(1.0/sqrt(Rprior))*randy->ran_gauss();
 		printf("-------------------------------------\n");
-		printf("numerical: I=%8.5f J=%8.5f  K=%8.5f\n",Iab,Jab,Kab);
-		GetIiJiKi_analytic(beta,Lambda,theta_a,theta_b,Iab,Jab,Kab);
-		printf(" analytic: I=%8.5f J=%8.5f  K=%8.5f\n",Iab,Jab,Kab);
+		GetIiJiKiNumerical(randy,Rprior,Lambda,theta_a,theta_b,I,Jaterm,Jbterm,Kabterm);
+		GetIiJiKiUniform(Rprior,Lambda,theta_a,theta_b,I,Jaterm,Jbterm,Kabterm);
 	}
-	
-	double Iplus,Iminus,Jplus,Jminus,I0,J0,K0,factplus,factminus,fact0;
-	fact0=2.0/pow(Lambda,3);
-	factplus=-2.0/pow(Lambda+0.5*dLambda,3);
-	factminus=-2.0/pow(Lambda-0.5*dLambda,3);
-	
-	GetIiJiKi_analytic(beta,Lambda,theta_a,theta_b,I0,J0,K0);
-	GetIiJiKi_analytic(beta,Lambda+0.5*dLambda,theta_a,theta_b,Iplus,Jplus,Kab);
-	GetIiJiKi_analytic(beta,Lambda-0.5*dLambda,theta_a,theta_b,Iminus,Jminus,Kab);
-	
-	printf("dI/dLambda=%g =? %g\n",(Iplus-Iminus)/dLambda,0.5*fact0*J0);
-	printf("d2I/dLambda2=%g =? %g\n",
-	4.0*(Iplus-2.0*I0+Iminus)/(dLambda*dLambda),0.5*(Jplus*factplus-Jminus*factminus)/dLambda);
-		
+
 	return 0;
 }
 
