@@ -16,6 +16,7 @@ int main(int argc,char *argv[]){
 	char dummy[200];
 	FILE *fptr;
 	string parname, obsname;
+
 	fptr=fopen("NParsNObs.txt","r");
 	fgets(dummy,200,fptr);
 	fscanf(fptr,"%d %d %lf",&NPars,&NObs,&ALPHA);
