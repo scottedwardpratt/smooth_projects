@@ -1,2 +1,2 @@
-# NPars   NObs ALPHA
-12    10  0.0001
+# NPars   NObs ALPHA  thetascale
+6    10  0.0  1.0

@@ -9,7 +9,7 @@ using namespace NMSUUtils;
 int main(){
 	bool gu=false;
 	double GSCALE=sqrt(3.0);
-	double ALPHA;
+	double ALPHA,thetascale;
 	char dummy[400];
 	unsigned int NObs,NPars;
 	unsigned int NTrain,itrain,ic,ipar,maxrank=5,iy;
@@ -32,9 +32,9 @@ int main(){
 	parmap.ReadParsFromFile("smooth_data/smooth_parameters/emulator_parameters.txt");
 	fptr=fopen("NParsNObs.txt","r");
 	fgets(dummy,400,fptr);
-	fscanf(fptr,"%d %d %lf",&NPars,&NObs,&ALPHA);
+	fscanf(fptr,"%d %d %lf %lf",&NPars,&NObs,&ALPHA,&thetascale);
 	fclose(fptr);
-	printf("NPars=%d, NObs=%d, ALPHA=%g\n",NPars,NObs,ALPHA);
+	printf("NPars=%d, NObs=%d, ALPHA=%g, thetascale=%g\n",NPars,NObs,ALPHA,thetascale);
 	
 	printf("Enter Lambda for fakesmooth: ");
 	scanf("%lf",&LAMBDA);
@@ -99,7 +99,7 @@ int main(){
 	fptr=fopen("smooth_data/Info/modelpar_info.txt","r");
 	fgets(dummy,400,fptr);
 	for(ipar=0;ipar<NPars;ipar++){
-		fscanf(fptr,"%s %s %lf %lf",parname_c,type,&xmin[ipar],&xmax[ipar]);
+		fscanf(fptr,"%s %s %lf %lf %lf",parname_c,type,&xmin[ipar],&xmax[ipar],&thetascale);
 		if(gu){
 			x0[ipar]=xmin[ipar];
 			Rgauss[ipar]=xmax[ipar];

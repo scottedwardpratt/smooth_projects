@@ -6,18 +6,15 @@ using namespace std;
 using namespace NMSUUtils;
 int main(){
 	double LAMBDA=3.0,ALPHA=0.01;
-	long long int NTrain,NMC=100000;
+	//long long int NTrain,NMC=100000;
 	NBandSmooth::CSimplexSampler *simplex=new NBandSmooth::CSimplexSampler();
 	FILE *fptr=fopen("LambdaAlpha.txt","r");
 	printf("Enter Estimate for LAMBDA and ALPHA: ");
 	scanf("%lf %lf",&LAMBDA,&ALPHA);
 	//fscanf(fptr,"%lf %lf %lld",&LAMBDA,&ALPHA,&NTrain);
-	simplex->NMC=NMC;
-	for(LAMBDA=1.5;LAMBDA<5.1;LAMBDA+=0.25){
-		simplex->Optimize(LAMBDA,ALPHA);
-	}
-	
-	//simplex->WriteModelPars();
+	//simplex->NMC=NMC;
+	simplex->Optimize(LAMBDA,ALPHA);
+	simplex->WriteModelPars();
 	fclose(fptr);
 	return 0;
 }

@@ -5,7 +5,6 @@
 using namespace std;
 int main(){
 	NBandSmooth::CSmoothMaster master;
-	//double LAMBDA=4.0;
 	master.TuneAllY();
 	master.TestAtTrainingPts();
 	return 0;
