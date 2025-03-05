@@ -9,19 +9,23 @@
 
 using namespace std;
 using namespace NMSUUtils;
-const unsigned int NObs=10,NPars=6;
+const unsigned int NObs=10,NPars=6,IFAKE=0;
 double GSCALE=sqrt(3.0);
 
-void CalcY(vector<double> &X0,vector<double> &RGauss,vector<double> &x,vector<double> &Y,Crandy *randy,double Lambda){
+void CalcY(vector<double> &X0,vector<double> &RGauss,vector<double> &x,vector<double> &Y,Crandy *randy){
 	unsigned int iy,ipar,NObs=Y.size();
 	vector<double> theta,t,D,alpha;
+	randy->reset(100*IFAKE);
+	double Lambda=1.5+3.5*randy->ran();
 	theta.resize(NPars);
 	D.resize(NPars);
 	t.resize(NPars);
 	alpha.resize(NPars);
+	printf("GSCALE=%g, RGauss=(%g,%g,%g,%g,%g,%g)\n",GSCALE,RGauss[0],RGauss[1],RGauss[2],RGauss[3],RGauss[4],RGauss[5]);
 	for(ipar=0;ipar<NPars;ipar++){
 		theta[ipar]=(x[ipar]-X0[ipar])/(GSCALE*RGauss[ipar]);
 	}
+	printf("theta=(%g,%g,%g,%g,%g,%g)\n",theta[0],theta[1],theta[2],theta[3],theta[4],theta[5]);
 	
 	t[0]=0.5*theta[0]+0.5*theta[1]+0.5*theta[2]+0.5*theta[3]+0.5*theta[4]+0.5*theta[5];
 	t[1]=theta[1]-theta[2]+theta[0]*theta[1]/Lambda+theta[1]*theta[2]/Lambda;
@@ -29,9 +33,10 @@ void CalcY(vector<double> &X0,vector<double> &RGauss,vector<double> &x,vector<do
 	t[3]=theta[3]-theta[4]+theta[2]*theta[3]/Lambda+theta[3]*theta[2]/Lambda;
 	t[4]=theta[4]-theta[5]+theta[3]*theta[4]/Lambda+theta[4]*theta[5]/Lambda;	
 	t[5]=0.5*theta[0]-0.5*theta[1]+0.5*theta[2]-0.5*theta[3]+0.5*theta[4]-0.5*theta[5];
+	printf("t=(%g,%g,%g,%g,%g,%g)\n",t[0],t[1],t[2],t[3],t[4],t[5]);
 	
 	for(iy=0;iy<NObs;iy++){
-		randy->reset(iy);
+		randy->reset(iy+100*IFAKE);
 		Y[iy]=100.0*randy->ran();
 		for(ipar=0;ipar<NPars;ipar++){
 			D[ipar]=100.0*randy->ran();
@@ -41,6 +46,7 @@ void CalcY(vector<double> &X0,vector<double> &RGauss,vector<double> &x,vector<do
 			Y[iy]+=D[0]*cos(alpha[0]*t[0])+D[1]*sin(alpha[1]*t[1])+D[2]*atan(alpha[2]*t[2])
 			+D[3]*cosh(alpha[3]*t[3])+D[4]*sinh(alpha[4]*t[4])+D[5]*tanh(alpha[5]*t[5]);
 		}
+		printf("---- Y[%u]=%g\n",iy,Y[iy]);
 	}
 }
 
@@ -49,6 +55,7 @@ int main(){
 	FILE *fptr;
 	char dummy[200];
 	unsigned int itrain,iobs,ipar,NTrain;
+	double ALPHA=0.01,ThetaScale;
 	vector<double> theta,xtrue,Ytrain,Ytrue,SigmaY,Y,X;
 	vector<vector<double>> xtrain;
 	vector<double> X0(NPars),RGauss(NPars);
@@ -57,11 +64,8 @@ int main(){
 	string obsname[NObs]={"obs0","obs1","obs2","obs3","obs4","obs5","obs6","obs7","obs8","obs9",};
 	string parname[NPars]={"par0","par1","par2","par3","par4","par5"};
 	char parname_c[200],type[100];
-	double Lambda;
 	bool existence;
-	printf("Enter Lambda: ");
-	scanf("%lf",&Lambda);
-	
+
 	NTrain=0;
 	do{
 		string filename="smooth_data/modelruns/run"+to_string(NTrain);
@@ -99,11 +103,11 @@ int main(){
 	fptr=fopen("smooth_data/Info/modelpar_info.txt","r");
 	fgets(dummy,200,fptr);
 	for(ipar=0;ipar<NPars;ipar++){
-		fscanf(fptr,"%s %s %lf %lf",parname_c,type,&X0[ipar],&RGauss[ipar]);
+		fscanf(fptr,"%s %s %lf %lf %lf",parname_c,type,&X0[ipar],&RGauss[ipar],&ThetaScale);
 		xtrue[ipar]=X0[ipar]+0.6*RGauss[ipar];
 	}
 	fclose(fptr);
-	CalcY(X0,RGauss,xtrue,Ytrue,&randy,Lambda);
+	CalcY(X0,RGauss,xtrue,Ytrue,&randy);
 	fptr=fopen("smooth_data/Info/experimental_info.txt","w");
 	for(iobs=0;iobs<NObs;iobs++){
 		fprintf(fptr,"%s\t%g\t%g 0.0\n",
@@ -127,13 +131,18 @@ int main(){
 		fprintf(fptr_thetas,"\n");
 		fclose(fptr);
 		
-		CalcY(X0,RGauss,xtrain[itrain],Ytrain,&randy,Lambda);
+		CalcY(X0,RGauss,xtrain[itrain],Ytrain,&randy);
+		for(iobs=0;iobs<NObs;iobs++)
+			printf("Y=%g  \n",Ytrain[iobs]);
+		printf("---- itrain=%u -----\n",itrain);
+		for(ipar=0;ipar<NPars;ipar++)
+			printf("%8.4f ",xtrain[itrain][ipar]);
+		printf("\n");
 		
 		filename="smooth_data/modelruns/run"+to_string(itrain)+"/obs.txt";
 		fptr=fopen(filename.c_str(),"w");
 		for(iobs=0;iobs<NObs;iobs++){
-			double randomerror=0.0*Ytrain[iobs];
-			fprintf(fptr,"%s %lf %lf\n",obsname[iobs].c_str(),Ytrain[iobs],randomerror);
+			fprintf(fptr,"%s %lf %lf\n",obsname[iobs].c_str(),Ytrain[iobs],ALPHA);
 			fprintf(fptr_obs,"%15.8f ",Ytrain[iobs]);
 			fprintf(fptr_sigmay,"%15.8f ",SigmaY[iobs]);
 		}
@@ -163,7 +172,7 @@ int main(){
 				X[ipar]=X0[ipar]+RGauss[ipar]*randy.ran_gauss();
 				theta[ipar]=(X[ipar]-X0[ipar])/(GSCALE*RGauss[ipar]);
 			}
-			CalcY(X0,RGauss,X,Y,&randy,Lambda);
+			CalcY(X0,RGauss,X,Y,&randy);
 			for(ipar=0;ipar<NPars;ipar++){
 				fprintf(fptr,"%12.5e ",theta[ipar]);
 			}

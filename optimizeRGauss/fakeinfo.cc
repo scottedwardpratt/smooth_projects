@@ -26,7 +26,7 @@ int main(int argc,char *argv[]){
 	fprintf(fptr,"# par_name        dist_type    xmin    xmax  ThetaScale\n");
 	for(ipar=0;ipar<NPars;ipar++){
 		parname="par"+to_string(ipar);
-		fprintf(fptr,"%7s gaussian 0 100  1.0\n",parname.c_str());
+		fprintf(fptr,"%7s uniform 0 100  1.0\n",parname.c_str());
 	}
 	fclose(fptr);
 	

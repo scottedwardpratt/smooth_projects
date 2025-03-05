@@ -5,7 +5,7 @@
 using namespace std;
 using namespace NMSUUtils;
 int main(){
-	double LAMBDA=3,ALPHA=0.01;
+	double LAMBDA=2.5,ALPHA=0.01;
 	//long long int NTrain,NMC=100000;
 	NBandSmooth::CSimplexSampler *simplex=new NBandSmooth::CSimplexSampler();
 	FILE *fptr=fopen("LambdaAlpha.txt","r");
@@ -16,7 +16,7 @@ int main(){
 	//for(LAMBDA=2.0;LAMBDA<5.01;LAMBDA+=0.25){
 		simplex->Optimize(LAMBDA,ALPHA);
 		//}
-	//simplex->WriteModelPars();
+		simplex->WriteModelPars();
 	fclose(fptr);
 	return 0;
 }
