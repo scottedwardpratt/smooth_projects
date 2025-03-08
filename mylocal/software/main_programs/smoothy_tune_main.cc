@@ -6,6 +6,6 @@ using namespace std;
 int main(){
 	NBandSmooth::CSmoothMaster master;
 	master.TuneAllY();
-	master.TestAtTrainingPts();
+	//master.TestAtTrainingPts();
 	return 0;
 }
