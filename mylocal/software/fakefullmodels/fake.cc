@@ -187,12 +187,15 @@ int main(){
 	X.resize(NPars);
 	string command="mkdir -p smooth_data/fullmodel_testdata";
 	system(command.c_str());
-	command="rm -f smooth_data/fullmodel_testdata/*.txt";
-	system(command.c_str());
+	for(iobs=0;iobs<NObs;iobs++){
+		command="rm -f smooth_data/fullmodel_testdata/obs"+to_string(iobs)+".txt";
+		system(command.c_str());
+	}
 	unsigned int itest,Ntest=1000;
 
 	for(itest=0;itest<Ntest;itest++){
 		printf("---- itest=%u -----\n",itest);
+		randy.reset(itest);
 		for(ipar=0;ipar<NPars;ipar++){
 			X[ipar]=X0[ipar]+RGauss[ipar]*randy.ran_gauss();
 			theta[ipar]=(X[ipar]-X0[ipar])/(GSCALE*RGauss[ipar]);
