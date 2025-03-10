@@ -36,6 +36,8 @@ slfilename='sigmalambda_npar6.txt' #
 sldata=np.loadtxt(slfilename,skiprows=0,unpack=True)
 npts = sldata[0].size
 print('Number of points in trace =', npts)
+print('Npars=6: <sigmaA>=',np.average(sldata[0]))
+print('<Lambda>=',np.average(sldata[1]))
 
 ax = fig.add_axes([xmargin,ymargin,xsize,ysize])
 ax.set_ylabel("$\Lambda$",size=28, family='serif',labelpad=6)
@@ -52,7 +54,7 @@ ax.tick_params(axis='y',left=True,right=True,labelleft=True,labelright=False,lab
 ax.tick_params(axis='x',top=True,bottom=True,labeltop=False,labelbottom=True,labelsize=20)
 plt.xlim(xmin,xmax-0.1)
 plt.ylim(ymin,ymax)
-plt.plot(100,4.0,marker='*',markersize=16,color='r')
+plt.plot(100,3.0,marker='*',markersize=16,color='r')
 text(20,6,'$N_{\\rm pars}=6$',family='sans',fontsize=24)
 
 #
@@ -60,6 +62,8 @@ slfilename='sigmalambda_npar12.txt' #
 sldata=np.loadtxt(slfilename,skiprows=0,unpack=True)
 npts = sldata[0].size
 print('Number of points in trace =', npts)
+print('Npars=12: <sigmaA>=',np.average(sldata[0]))
+print('<Lambda>=',np.average(sldata[1]))
 
 ax = fig.add_axes([xmargin+xsize,ymargin,xsize,ysize])
 #ax.set_ylabel("$\Lambda$",size=24, family='serif',labelpad=6)
@@ -78,7 +82,7 @@ ax.tick_params(axis='y',left=True,right=True,labelleft=False,labelright=False,la
 ax.tick_params(axis='x',top=True,bottom=True,labeltop=False,labelbottom=True,labelsize=20)
 plt.xlim(xmin,xmax)
 plt.ylim(ymin,ymax)
-plt.plot(100,4.0,marker='*',markersize=16,color='r')
+plt.plot(100,3.0,marker='*',markersize=16,color='r')
 text(20,6,'$N_{\\rm pars}=12$',family='sans',fontsize=24)
 #     
     

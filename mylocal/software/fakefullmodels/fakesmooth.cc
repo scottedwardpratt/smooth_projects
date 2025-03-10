@@ -13,7 +13,7 @@ int main(){
 	char dummy[400];
 	unsigned int NObs,NPars;
 	unsigned int NTrain,itrain,ic,ipar,maxrank=5,iy;
-	double LAMBDA,y;
+	double LAMBDA;
 	CparameterMap parmap;
 	vector<vector<double>> A;
 	vector<vector<double>> xtrain, thetatrain;
@@ -156,9 +156,11 @@ int main(){
 	fclose(fptr_SigmaY);
 	//
 	
+	
 	// Now make some data for later testing, not for tuning
 	vector<vector<double>> thetatest,xtest;
 	int itest,Ntest=1000;
+	double y;
 	
 	thetatest.resize(Ntest);
 	xtest.resize(Ntest);
@@ -213,7 +215,6 @@ int main(){
 	}
 	
 	fclose(expfptr);
-	
 	
 	
 	return 0;

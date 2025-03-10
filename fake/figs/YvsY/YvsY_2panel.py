@@ -51,16 +51,16 @@ fig = plt.figure(1)
 
 iY=9
 for ipanel in range(0,2):
-	discrepancy=0.0
-	if ipanel==0:
-		filename='fullmodel_testdata_Npars12_Ntrain91_Lambda3/YvsY.txt'
-		titlestring='Polynomial, $\Lambda=3$'
-	else:
-		filename='fullmodel_testdata_fake/YvsY.txt'
-		titlestring='Random Functions'
+    discrepancy=0.0
+    if ipanel==0:
+        filename='fullmodel_testdata_Npars12_Ntrain91_Lambda3/YvsY.txt'
+        titlestring='Polynomial, $\Lambda=3$'
+    else:
+        filename='fullmodel_testdata_fake/YvsY.txt'
+        titlestring='Random Functions'
 
-	mydata=np.loadtxt(filename,skiprows=0,unpack=True)
-	NTest=mydata[0].size
+        mydata=np.loadtxt(filename,skiprows=0,unpack=True)
+    NTest=mydata[0].size
 	Yfull=mydata[0]
 	Ymax=-10000
 	Ymin=10000
@@ -74,6 +74,7 @@ for ipanel in range(0,2):
 			Ymin=Yfull[iy]
 		Ymodel_bar+=Yfull[iy]
 		Ymodel_sigma+=Yfull[iy]*Yfull[iy]
+        
 	Ymodel_bar=Ymodel_bar/NTest
 	Ymodel_sigma=Ymodel_sigma/NTest
 	Ymodel_sigma=Ymodel_sigma-Ymodel_bar*Ymodel_bar
@@ -105,12 +106,17 @@ for ipanel in range(0,2):
 	
 	ix=arange(0.5,NTest,1.0)
 	#np.random.shuffle(ix)
+    ievery=0
+    if ipanel==0:
+        ievery=100
+    else
+        ievery=10
 
 	icolor=0
-	plt.plot(ix/10,Yfull,linestyle='None',color=colors[icolor],markersize=7, marker='s', markerfacecolor=colors[icolor], markeredgecolor=colors[icolor],markevery=10,label='model')
+	plt.plot(ix/ievery,Yfull,linestyle='None',color=colors[icolor],markersize=7, marker='s', markerfacecolor=colors[icolor], markeredgecolor=colors[icolor],markevery=ievery,label='model')
 
 	icolor=1
-	plt.errorbar(ix/10,Yemulator,xerr=0.0,yerr=SigmaY,linestyle='None',color=colors[icolor],markersize=7, marker='o', markerfacecolor=colors[icolor], markeredgecolor=colors[icolor],xlolims=False, xuplims=False,markevery=10,errorevery=10,label='emulator')
+	plt.errorbar(ix/ievery,Yemulator,xerr=0.0,yerr=SigmaY,linestyle='None',color=colors[icolor],markersize=7, marker='o', markerfacecolor=colors[icolor], markeredgecolor=colors[icolor],xlolims=False, xuplims=False,markevery=ievery,errorevery=ievery,label='emulator')
 	ax.tick_params(axis='both', which='major', labelsize=18)
    #ax.yaxis.set_major_formatter(sformatter)
 	
