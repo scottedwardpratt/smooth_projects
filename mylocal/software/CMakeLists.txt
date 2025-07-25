@@ -21,10 +21,10 @@ find_library(${GITHOME_BAND_SMOOTH}/software/lib msu_smoothutils)
 find_library(${GITHOME_BAND_SMOOTH}/software/lib msu_smooth)
 
 #################################################
-set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/simplex_optimize_main.cc)
-add_executable(simplex_optimize ${MAIN_PROGRAM_DIR}/simplex_optimize_main.cc)
-add_dependencies(simplex_optimize extern_smooth)
-target_link_libraries(simplex_optimize ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a  ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
+set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/trainingpoint_optimizer_main.cc)
+add_executable(trainingpoint_optimizer ${MAIN_PROGRAM_DIR}/trainingpoint_optimizer_main.cc)
+add_dependencies(trainingpoint_optimizer extern_smooth)
+target_link_libraries(trainingpoint_optimizer ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a  ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
 #################################################
 set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/smoothy_tune_main.cc)
 add_executable(smoothy_tune ${MAIN_PROGRAM_DIR}/smoothy_tune_main.cc)

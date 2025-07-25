@@ -159,7 +159,7 @@ int main(){
 	
 	// Now make some data for later testing, not for tuning
 	vector<vector<double>> thetatest,xtest;
-	int itest,Ntest=1000;
+	int itest,Ntest=100;
 	double y;
 	
 	thetatest.resize(Ntest);

@@ -16,7 +16,7 @@ font = {'family' : 'serif',
         'size'   : 14}
 plt.rc('font', **font)
 plt.rc('text', usetex=False)
-plt.figure(figsize=(6,6))
+plt.figure(figsize=(6,5))
 fig = plt.figure(1)
 
 mydata = np.loadtxt('sigma2count.txt',skiprows=0,unpack=True)
@@ -24,7 +24,7 @@ sigma2=mydata[0]
 scount=mydata[1]
 
 delr=0.0005
-ax = fig.add_axes([0.165,0.15,0.8,0.84])
+ax = fig.add_axes([0.165,0.16,0.8,0.83])
 plt.bar(sigma2,scount,width=delr,color='r',alpha=1.0)
 ax.tick_params(axis='both', which='major', labelsize=18)
 
@@ -36,7 +36,7 @@ plt.xlim(0,0.1)
 ax.set_yticks(np.arange(0,1000,100), minor=False)
 ax.set_yticklabels(np.arange(0,1000,100), minor=False, family='serif')
 ax.set_yticks(np.arange(0,1000,50), minor=True)
-plt.ylim(0,550)
+plt.ylim(0,450)
 plt.ylabel('$N$ (out of 10,000)',fontsize=24,font='sans')
 plt.xlabel('$\langle\sigma_E^2/\sigma_A^2\\rangle$',fontsize=24,font='sans')
 

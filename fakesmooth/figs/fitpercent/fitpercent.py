@@ -52,7 +52,7 @@ plt.plot(xline,yline,ls='--',color='k',lw=2)
 #text(0.75,10,'Uniform Priors\n$\Lambda=2.5$',color='b',size=20,font='sans',ha='right')
 
 #plt.arrow(68.3,0,0,400,width=0.0005,color='g',ls='--',head_width=0.0,head_length=0.0,alpha=0.75)
-text(36,150,"Type A",font="sans",size=24,color='r',ha='right')
+text(54,150,"Type A",font="sans",size=24,color='r',ha='right')
 text(98,400,"Type B",font="sans",size=24,color='g',ha='right')
 
 ####

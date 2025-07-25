@@ -21,8 +21,8 @@ int main(int argc,char *argv[]){
 	fscanf(fptr,"%d %d %lf",&NPars,&NObs,&ALPHA);
 	fclose(fptr);
 	
-	fptr=fopen("smooth_data/Info/modelpar_info.txt","w");
-	fprintf(fptr,"# par_name        dist_type    xmin    xmax   ThetaScale\n");
+	fptr=fopen("smooth_data/Info/prior_info.txt","w");
+	fprintf(fptr,"# par_name        dist_type    xmin    xmax   SensitivityScale\n");
 	for(ipar=0;ipar<NPars;ipar++){
 		parname="par"+to_string(ipar);
 		fprintf(fptr,"%7s gaussian 0 100  1.0\n",parname.c_str());
