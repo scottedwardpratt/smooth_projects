@@ -38,7 +38,7 @@ ax.set_yticklabels(np.arange(0,1000,100), minor=False, family='serif')
 ax.set_yticks(np.arange(0,1000,50), minor=True)
 plt.ylim(0,450)
 plt.ylabel('$N$ (out of 10,000)',fontsize=24,font='sans')
-plt.xlabel('$\langle\sigma_E^2/\sigma_A^2\\rangle$',fontsize=24,font='sans')
+plt.xlabel('$\langle\sigma_Y^2/\sigma_A^2\\rangle$',fontsize=24,font='sans')
 
 #text(0.75,10,'Uniform Priors\n$\Lambda=2.5$',color='b',size=20,font='sans',ha='right')
 

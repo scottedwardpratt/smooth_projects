@@ -28,7 +28,7 @@ int main(){
 	NMSUUtils::Crandy randy(-time(NULL));
 	//NMSUUtils::Crandy randy(-123);
 
-	parmap.ReadParsFromFile("smooth_data/smooth_parameters/simplex_parameters.txt");
+	parmap.ReadParsFromFile("smooth_data/smooth_parameters/tpo_parameters.txt");
 	parmap.ReadParsFromFile("smooth_data/smooth_parameters/emulator_parameters.txt");
 	fptr=fopen("NParsNObs.txt","r");
 	fgets(dummy,400,fptr);
@@ -96,7 +96,7 @@ int main(){
 	}
 	
 	// read in modelpar_info and set experimental value to theta=0.2
-	fptr=fopen("smooth_data/Info/modelpar_info.txt","r");
+	fptr=fopen("smooth_data/Info/prior_info.txt","r");
 	fgets(dummy,400,fptr);
 	for(ipar=0;ipar<NPars;ipar++){
 		fscanf(fptr,"%s %s %lf %lf %lf",parname_c,type,&xmin[ipar],&xmax[ipar],&thetascale);
@@ -136,7 +136,7 @@ int main(){
 		}
 		fprintf(fptr_thetas,"\n");
 		fclose(fptr);	
-
+		
 		filename="smooth_data/modelruns/run"+to_string(itrain)+"/obs.txt";
 		fptr=fopen(filename.c_str(),"w");
 		for(iy=0;iy<NObs;iy++){
