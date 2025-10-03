@@ -38,7 +38,7 @@ int main(){
 	
 	printf("Enter Lambda for fakesmooth: ");
 	scanf("%lf",&LAMBDA);
-	printf("Enter u or g for gaussian/uniform prior: ");
+	printf("Enter g or u for gaussian/uniform prior: ");
 	scanf("%s",typeread);
 	if(typeread[0]=='u')
 		gu=false;

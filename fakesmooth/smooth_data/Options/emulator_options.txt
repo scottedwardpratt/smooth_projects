@@ -1,0 +1,14 @@
+#LogFileName smoothlog.txt # comment out for interactive running
+ SmoothEmulator_LAMBDA 3.0 # smoothness parameter
+ SmoothEmulator_MAXRANK 4
+ SmoothEmulator_ConstrainA0 true
+ SmoothEmulator_ModelRunDirName modelruns
+ SmoothEmulator_TrainingPts all
+ SmoothEmulator_TestPts 1
+ SmoothEmulator_UsePCA false
+ SmoothEmulator_TrainingFormat training_format_smooth
+ #SmoothEmulator_TrainingFormat training_format_surmise
+ SmoothEmulator_TrainingThetasFilename TrainingThetas.txt
+ SmoothEmulator_TrainingObsFilename TrainingObs.txt
+ SmoothEmulator_INCLUDE_LAMBDA_UNCERTAINTY true
+ #

@@ -3,7 +3,7 @@ rm -f -r smooth_data/modelruns/run*
 rm -f -r smooth_data/fullmodel_testdata/*
 g fakeinfo
 fakeinfo;
-simplex_optimize;
+trainingpoint_optimizer;
 fakesmooth;
 smoothy_tune
 #smoothy_testvsfullmodelalt

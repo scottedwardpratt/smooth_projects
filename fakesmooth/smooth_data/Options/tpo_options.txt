@@ -1,0 +1,8 @@
+#LogFileName               simplexlog.txt  # comment out to direct output to screen
+ModelRunDirName    modelruns       # Directory with training point information
+TPOMethod  MCQuadratic  # can be "MC", "MCSphere", "MCSimplex", "MCSimplexPlus1", "MCQuadratic", "MCSphereQuadratic"
+TPO_NTrainingPts    0   # only relevant for OptimizeMethod="MCSphere" or "MC"
+TPO_NMC  10000
+TPO_INCLUDE_LAMBDA_UNCERTAINTY true
+TPO_ReadPoints 0,1,4-7,10,11-13,21
+TPO_FreezePoints 0,1,4-7,10,11-13,21
