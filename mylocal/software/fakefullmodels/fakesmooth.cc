@@ -28,8 +28,8 @@ int main(){
 	NMSUUtils::Crandy randy(-time(NULL));
 	//NMSUUtils::Crandy randy(-123);
 
-	parmap.ReadParsFromFile("smooth_data/smooth_parameters/tpo_parameters.txt");
-	parmap.ReadParsFromFile("smooth_data/smooth_parameters/emulator_parameters.txt");
+	parmap.ReadParsFromFile("smooth_data/Options/tpo_options.txt");
+	parmap.ReadParsFromFile("smooth_data/Options/emulator_options.txt");
 	fptr=fopen("NParsNObs.txt","r");
 	fgets(dummy,400,fptr);
 	fscanf(fptr,"%d %d %lf %lf",&NPars,&NObs,&ALPHA,&thetascale);
@@ -61,7 +61,7 @@ int main(){
 	NTrain=0;
 	bool existence;
 	do{
-		string filename="smooth_data/modelruns/run"+to_string(NTrain);
+		string filename="smooth_data/FullModelRuns/run"+to_string(NTrain);
 		filesystem::path f{filename};
 		existence=filesystem::exists(f);
 		if(existence){
@@ -122,7 +122,7 @@ int main(){
 	FILE *fptr_SigmaY=fopen("SigmaVsLambda/TrainingSigmaY.txt","w");
 	
 	for(itrain=0;itrain<NTrain;itrain++){
-		filename="smooth_data/modelruns/run"+to_string(itrain)+"/mod_parameters.txt";
+		filename="smooth_data/FullModelRuns/run"+to_string(itrain)+"/model_parameters.txt";
 		fptr=fopen(filename.c_str(),"r");
 		for(ipar=0;ipar<NPars;ipar++){
 			fscanf(fptr,"%s %lf",parname_c,&xtrain[itrain][ipar]);
@@ -137,7 +137,7 @@ int main(){
 		fprintf(fptr_thetas,"\n");
 		fclose(fptr);	
 		
-		filename="smooth_data/modelruns/run"+to_string(itrain)+"/obs.txt";
+		filename="smooth_data/FullModelRuns/run"+to_string(itrain)+"/obs.txt";
 		fptr=fopen(filename.c_str(),"w");
 		for(iy=0;iy<NObs;iy++){
 			Ytrain[iy]=smooth.CalcY(A[iy],LAMBDA,thetatrain[itrain]);

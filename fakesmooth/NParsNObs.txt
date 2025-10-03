@@ -1,2 +1,2 @@
 # NPars   NObs ALPHA  sensitivity_factor
-12   1000  0.01  1.0
+12   100  0.01  1.0
