@@ -7,7 +7,6 @@
 using namespace std;
 using namespace NMSUUtils;
 int main(){
-	bool gu=false;
 	double GSCALE=sqrt(3.0);
 	double ALPHA;
 	char dummy[400];
@@ -43,6 +42,8 @@ int main(){
          xmax.push_back(xmaxread);
          sensitivity.push_back(sensitivityread);
          fgets(dummy,400,fptr);
+         Rgauss.push_back(xmax[NPars]);
+         x0.push_back(xmin[NPars]);
          NPars+=1;
       }
    }while(!feof(fptr));
@@ -123,13 +124,16 @@ int main(){
 		for(ipar=0;ipar<NPars;ipar++){
 			fscanf(fptr,"%s %lf",dummy,&xtrain[itrain][ipar]);
 			fprintf(fptr_thetas,"%15.8f ",xtrain[itrain][ipar]);
-			if(gu){
-				thetatrain[itrain][ipar]=(xtrain[itrain][ipar]-x0[ipar])/(Rgauss[ipar]*GSCALE);
+			if(priortype[ipar]=="uniform"){
+            thetatrain[itrain][ipar]=-1.0+2.0*(xtrain[itrain][ipar]-xmin[ipar])/(xmax[ipar]-xmin[ipar]);
 			}
 			else{
-				thetatrain[itrain][ipar]=-1.0+2.0*(xtrain[itrain][ipar]-xmin[ipar])/(xmax[ipar]-xmin[ipar]);
+            thetatrain[itrain][ipar]=(xtrain[itrain][ipar]-x0[ipar])/(Rgauss[ipar]*GSCALE);
+            //printf("%8.5f ",thetatrain[itrain][ipar]);
+            //printf("%8.5f ",Rgauss[ipar]);
 			}
 		}
+      //printf("\n");
 		fprintf(fptr_thetas,"\n");
 		fclose(fptr);	
 		

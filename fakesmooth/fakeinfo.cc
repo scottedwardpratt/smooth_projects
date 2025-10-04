@@ -27,7 +27,7 @@ int main(int argc,char *argv[]){
 	for(ipar=0;ipar<NPars;ipar++){
 		parname="par"+to_string(ipar);
 		randy=double(rand())/double(RAND_MAX);
-		if(randy<=1.0)
+		if(randy<=0.5)
 			fprintf(fptr,"%7s gaussian 0 100  %6.5f\n",parname.c_str(),sensitivity);
 		else
 			fprintf(fptr,"%7s uniform 0 100  %6.5f\n",parname.c_str(),sensitivity);
