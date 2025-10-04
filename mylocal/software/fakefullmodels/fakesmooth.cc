@@ -112,12 +112,11 @@ int main(){
 		obsname[iy].c_str(),ytrue[iy],SigmaY[iy]);
 	}
 	fclose(fptr);
-	
+   
 	// Write observables at training pts
-	FILE *fptr_thetas=fopen("SigmaVsLambda/TrainingThetas.txt","w");
-	FILE *fptr_obs=fopen("SigmaVsLambda/TrainingObs.txt","w");
-	FILE *fptr_SigmaY=fopen("SigmaVsLambda/TrainingSigmaY.txt","w");
-	
+	FILE *fptr_thetas=fopen("smooth_data/trainingpoint_data/SigmaVsLambda/TrainingThetas.txt","w");
+	FILE *fptr_obs=fopen("smooth_data/trainingpoint_data/SigmaVsLambda/TrainingObs.txt","w");
+	FILE *fptr_SigmaY=fopen("smooth_data/trainingpoint_data/SigmaVsLambda/TrainingSigmaY.txt","w");
 	for(itrain=0;itrain<NTrain;itrain++){
 		filename="smooth_data/FullModelRuns/run"+to_string(itrain)+"/model_parameters.txt";
 		fptr=fopen(filename.c_str(),"r");
@@ -136,7 +135,6 @@ int main(){
       //printf("\n");
 		fprintf(fptr_thetas,"\n");
 		fclose(fptr);	
-		
 		filename="smooth_data/FullModelRuns/run"+to_string(itrain)+"/obs.txt";
 		fptr=fopen(filename.c_str(),"w");
 		for(iy=0;iy<NObs;iy++){
