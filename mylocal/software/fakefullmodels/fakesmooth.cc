@@ -9,12 +9,11 @@ using namespace NMSUUtils;
 int main(){
 	bool gu=false;
 	double GSCALE=sqrt(3.0);
-	double ALPHA,thetascale;
+	double ALPHA;
 	char dummy[400];
 	unsigned int NObs,NPars;
 	unsigned int NTrain,itrain,ic,ipar,maxrank=5,iy;
-	double LAMBDA;
-	CparameterMap parmap;
+	double LAMBDA,xminread,xmaxread,sensitivityread;
 	vector<vector<double>> A;
 	vector<vector<double>> xtrain, thetatrain;
 	vector<double> theta,exptheta,SigmaY,Ytrain;
@@ -22,30 +21,41 @@ int main(){
 	string expfilename,filename,command;
 	vector<string> obsname;
 	vector<string> parname;
-	vector<double> xmin,xmax,x0,Rgauss,thetatrue,ytrue;
-	char parname_c[200],type[100],typeread[10];
+	vector<double> xmin,xmax,x0,Rgauss,thetatrue,ytrue,sensitivity;
+	char parname_read[200],typeread[20];
 	FILE *fptr;
-	NMSUUtils::Crandy randy(-time(NULL));
-	//NMSUUtils::Crandy randy(-123);
+	//NMSUUtils::Crandy randy(-time(NULL));
+	NMSUUtils::Crandy randy(-123);
 
-	parmap.ReadParsFromFile("smooth_data/Options/tpo_options.txt");
-	parmap.ReadParsFromFile("smooth_data/Options/emulator_options.txt");
-	fptr=fopen("NParsNObs.txt","r");
-	fgets(dummy,400,fptr);
-	fscanf(fptr,"%d %d %lf %lf",&NPars,&NObs,&ALPHA,&thetascale);
-	fclose(fptr);
-	printf("NPars=%d, NObs=%d, ALPHA=%g, thetascale=%g\n",NPars,NObs,ALPHA,thetascale);
+	fptr=fopen("smooth_data/Info/prior_info.txt","r");
+   NPars=0;
+   fgets(dummy,400,fptr);
+   do{
+      fscanf(fptr,"%s",parname_read);
+      if(!feof(fptr)){
+         parname.push_back(parname_read);
+         fscanf(fptr,"%s",typeread);
+         priortype.push_back(typeread);
+         fscanf(fptr,"%lf",&xminread);
+         fscanf(fptr,"%lf",&xmaxread);
+         fscanf(fptr,"%lf",&sensitivityread);
+         xmin.push_back(xminread);
+         xmax.push_back(xmaxread);
+         sensitivity.push_back(sensitivityread);
+         fgets(dummy,400,fptr);
+         NPars+=1;
+      }
+   }while(!feof(fptr));
+   fclose(fptr);
+   
+   printf("Enter Number of Observables: ");
+   scanf("%u",&NObs);
+   printf("Enter alpha: ");
+   scanf("%lf",&ALPHA);
+	printf("NPars=%d, NObs=%d, ALPHA=%g\n",NPars,NObs,ALPHA);
 	
 	printf("Enter Lambda for fakesmooth: ");
 	scanf("%lf",&LAMBDA);
-	printf("Enter g or u for gaussian/uniform prior: ");
-	scanf("%s",typeread);
-	if(typeread[0]=='u')
-		gu=false;
-	else if(typeread[0]=='g')
-		gu=true;
-	else
-		CLog::Fatal("must enter g or u\n");
 
 	thetatrue.resize(NPars);
 	ytrue.resize(NObs);
@@ -78,8 +88,6 @@ int main(){
 
 	// Create smooth object
 	NBandSmooth::CSmooth smooth(NPars,maxrank);
-
-
 	// Create A for smooth object
 	A.resize(NObs);
 	for(iy=0;iy<NObs;iy++){
@@ -91,23 +99,11 @@ int main(){
 	
 	// Observable uncertainties
 	for(iy=0;iy<NObs;iy++){
-		SigmaY[iy]=5.0;
+		SigmaY[iy]=2.0;
 		obsname[iy]="obs"+to_string(iy);
 	}
 	
-	// read in modelpar_info and set experimental value to theta=0.2
-	fptr=fopen("smooth_data/Info/prior_info.txt","r");
-	fgets(dummy,400,fptr);
-	for(ipar=0;ipar<NPars;ipar++){
-		fscanf(fptr,"%s %s %lf %lf %lf",parname_c,type,&xmin[ipar],&xmax[ipar],&thetascale);
-		if(gu){
-			x0[ipar]=xmin[ipar];
-			Rgauss[ipar]=xmax[ipar];
-		}
-		parname.push_back(string(parname_c));
-		thetatrue[ipar]=0.2;
-	}
-	fclose(fptr);
+	// Set experimental value to theta=0.2
 	fptr=fopen("smooth_data/Info/experimental_info.txt","w");
 	for(iy=0;iy<NObs;iy++){
 		ytrue[iy]=smooth.CalcY(A[iy],LAMBDA,thetatrue);
@@ -116,7 +112,7 @@ int main(){
 	}
 	fclose(fptr);
 	
-	// write observables at training pts
+	// Write observables at training pts
 	FILE *fptr_thetas=fopen("SigmaVsLambda/TrainingThetas.txt","w");
 	FILE *fptr_obs=fopen("SigmaVsLambda/TrainingObs.txt","w");
 	FILE *fptr_SigmaY=fopen("SigmaVsLambda/TrainingSigmaY.txt","w");
@@ -125,7 +121,7 @@ int main(){
 		filename="smooth_data/FullModelRuns/run"+to_string(itrain)+"/model_parameters.txt";
 		fptr=fopen(filename.c_str(),"r");
 		for(ipar=0;ipar<NPars;ipar++){
-			fscanf(fptr,"%s %lf",parname_c,&xtrain[itrain][ipar]);
+			fscanf(fptr,"%s %lf",dummy,&xtrain[itrain][ipar]);
 			fprintf(fptr_thetas,"%15.8f ",xtrain[itrain][ipar]);
 			if(gu){
 				thetatrain[itrain][ipar]=(xtrain[itrain][ipar]-x0[ipar])/(Rgauss[ipar]*GSCALE);
@@ -168,20 +164,15 @@ int main(){
 		thetatest[itest].resize(NPars);
 		xtest[itest].resize(NPars);
 		for(ipar=0;ipar<NPars;ipar++){
-			if(gu){
+			if(priortype[ipar]=="uniform"){
 				thetatest[itest][ipar]=-1.0+2.0*randy.ran();
+            xtest[itest][ipar]=xmin[ipar]
+            +0.5*(1.0+thetatest[itest][ipar])*(xmax[ipar]-xmin[ipar]);
 			}
 			else{
 				thetatest[itest][ipar]=randy.ran_gauss()/GSCALE;
+            xtest[itest][ipar]=x0[ipar]+Rgauss[ipar]*thetatest[itest][ipar]*GSCALE;
 			}
-			if(gu){
-				xtest[itest][ipar]=x0[ipar]+Rgauss[ipar]*thetatest[itest][ipar]*GSCALE;
-			}
-			else{
-				xtest[itest][ipar]=xmin[ipar]
-				+0.5*(1.0+thetatest[itest][ipar])*(xmax[ipar]-xmin[ipar]);
-			}
-
 		}
 	}
 	
