@@ -7,7 +7,7 @@ int main(){
 	NBandSmooth::CSmoothMaster master;
 	double SigmaAbar,SigmaA,Lambdabar,Lambda,logPbar,logP;
 	unsigned int iY,NObs;
-	FILE *fptr=fopen("SigmaVsLambda/sigmalambda.txt","w");
+	FILE *fptr=fopen("smooth_data/SigmaVsLambda/sigmalambda.txt","w");
 	
 	NObs=master.observableinfo->NObservables;
 	SigmaAbar=logPbar=Lambdabar=0.0;

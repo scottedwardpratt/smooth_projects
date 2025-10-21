@@ -8,13 +8,16 @@ int main(){
 	double Lambda,sigmaAbar,Lambdabar,LambdaGuess,logPbar,logP,sigma2,dsigma,sigmaA;
 	unsigned int iY,NObs,isigma,Nsigma=100;
 	vector<unsigned int> sigmadist(Nsigma);
-	string filename;
+	string filename,command;
 	FILE *fptr1,*fptr2;//*fptr3;
 	dsigma=5.0;
 	
 	NObs=master.observableinfo->NObservables;
 
-	fptr2=fopen("SigmaVsLambda/SigmaAvslambda.txt","w");
+   filename="smooth_data/SigmaVsLambda/SigmaAvsLambda.txt";
+   command="mkdir -p smooth_data/SigmaVsLambda";
+   system(command.c_str());
+	fptr2=fopen(filename.c_str(),"w");
 	//printf("Enter Lambda: ");
 	//scanf("%lf",&Lambda);
 	for(Lambda=1.5;Lambda<6.501;Lambda+=0.5){
@@ -23,7 +26,7 @@ int main(){
 		std::string Lstr = std::to_string (Lambda);
 		Lstr.erase ( Lstr.find_last_not_of('0') + 1, std::string::npos );
 		Lstr.erase ( Lstr.find_last_not_of('.') + 1, std::string::npos );
-		filename="SigmaVsLambda/sigmadist_Lambda"+Lstr+".txt";
+		filename="smooth_data/SigmaVsLambda/sigmadist_Lambda"+Lstr+".txt";
 		fptr1=fopen(filename.c_str(),"w");
 		//filename="SigmaVsLambda/sig123_"+Lstr+".txt";
 		//fptr3=fopen(filename.c_str(),"w");

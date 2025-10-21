@@ -53,11 +53,12 @@ int main(){
    fptr=fopen("smooth_data/Info/observable_info.txt","r");
    NObs=0;
    alpha.resize(0);
+   obsname.resize(0);
    fscanf(fptr,"%s",obsname_read);
    do{
-      while(parname_read[0]=='#'){
+      while(obsname_read[0]=='#'){
          fgets(dummy,400,fptr);
-         fscanf(fptr,"%s",parname_read);
+         fscanf(fptr,"%s",obsname_read);
       }
       if(!feof(fptr)){
          obsname.push_back(obsname_read);
@@ -71,7 +72,7 @@ int main(){
    fclose(fptr);
    NObs=obsname.size();
    if(NObs!=obsname.size()){
-      printf("alpha and obsname have different sizes, %u != %u\n",alpha.size(),obsname.size());
+      printf("alpha and obsname have different sizes, %zu != %zu\n",alpha.size(),obsname.size());
       exit(1);
    }
    printf("NObs=%d\n",NObs);
@@ -139,7 +140,6 @@ int main(){
 	// Write observables at training pts
 	FILE *fptr_thetas=fopen("smooth_data/trainingpoint_data/SigmaVsLambda/TrainingThetas.txt","w");
 	FILE *fptr_obs=fopen("smooth_data/trainingpoint_data/SigmaVsLambda/TrainingObs.txt","w");
-	FILE *fptr_SigmaY=fopen("smooth_data/trainingpoint_data/SigmaVsLambda/TrainingSigmaY.txt","w");
 	for(itrain=0;itrain<NTrain;itrain++){
 		filename="smooth_data/FullModelRuns/run"+to_string(itrain)+"/model_parameters.txt";
 		fptr=fopen(filename.c_str(),"r");
