@@ -8,11 +8,11 @@ using namespace std;
 using namespace NMSUUtils;
 int main(){
 	double GSCALE=sqrt(3.0);
-	double ALPHA;
+	double exp_unc;
 	char dummy[400];
 	unsigned int NObs,NPars;
 	unsigned int NTrain,itrain,ic,ipar,maxrank=5,iy;
-	double LAMBDA,xminread,xmaxread,sensitivityread;
+	double LAMBDA,xminread,xmaxread,sensitivityread,alpharead;
 	vector<vector<double>> A;
 	vector<vector<double>> xtrain, thetatrain;
 	vector<double> theta,exptheta,SigmaY,Ytrain;
@@ -20,8 +20,9 @@ int main(){
 	string expfilename,filename,command;
 	vector<string> obsname;
 	vector<string> parname;
+   vector<double> alpha;
 	vector<double> xmin,xmax,x0,Rgauss,thetatrue,ytrue,sensitivity;
-	char parname_read[200],typeread[20];
+	char parname_read[200],obsname_read[200],typeread[20];
 	FILE *fptr;
 	//NMSUUtils::Crandy randy(-time(NULL));
 	NMSUUtils::Crandy randy(-123);
@@ -49,11 +50,33 @@ int main(){
    }while(!feof(fptr));
    fclose(fptr);
    
-   printf("Enter Number of Observables: ");
-   scanf("%u",&NObs);
-   printf("Enter alpha: ");
-   scanf("%lf",&ALPHA);
-	printf("NPars=%d, NObs=%d, ALPHA=%g\n",NPars,NObs,ALPHA);
+   fptr=fopen("smooth_data/Info/observable_info.txt","r");
+   NObs=0;
+   alpha.resize(0);
+   fscanf(fptr,"%s",obsname_read);
+   do{
+      while(parname_read[0]=='#'){
+         fgets(dummy,400,fptr);
+         fscanf(fptr,"%s",parname_read);
+      }
+      if(!feof(fptr)){
+         obsname.push_back(obsname_read);
+         NObs+=1;
+         fscanf(fptr,"%lf",&alpharead);
+         alpha.push_back(alpharead);
+         fgets(dummy,400,fptr);
+         fscanf(fptr,"%s",obsname_read);
+      }
+   }while(!feof(fptr));
+   fclose(fptr);
+   NObs=obsname.size();
+   if(NObs!=obsname.size()){
+      printf("alpha and obsname have different sizes, %u != %u\n",alpha.size(),obsname.size());
+      exit(1);
+   }
+   printf("NObs=%d\n",NObs);
+   
+	printf("NPars=%d, NObs=%d\n",NPars,NObs);
 	
 	printf("Enter Lambda for fakesmooth: ");
 	scanf("%lf",&LAMBDA);
@@ -100,7 +123,6 @@ int main(){
 	
 	// Observable uncertainties
 	for(iy=0;iy<NObs;iy++){
-		SigmaY[iy]=2.0;
 		obsname[iy]="obs"+to_string(iy);
 	}
 	
@@ -108,8 +130,9 @@ int main(){
 	fptr=fopen("smooth_data/Info/experimental_info.txt","w");
 	for(iy=0;iy<NObs;iy++){
 		ytrue[iy]=smooth.CalcY(A[iy],LAMBDA,thetatrue);
+      exp_unc=2.0; // 2% of the strength 100
 		fprintf(fptr,"%s\t%g\t%g 0.0\n",
-		obsname[iy].c_str(),ytrue[iy],SigmaY[iy]);
+		obsname[iy].c_str(),ytrue[iy],exp_unc);
 	}
 	fclose(fptr);
    
@@ -139,19 +162,15 @@ int main(){
 		fptr=fopen(filename.c_str(),"w");
 		for(iy=0;iy<NObs;iy++){
 			Ytrain[iy]=smooth.CalcY(A[iy],LAMBDA,thetatrain[itrain]);
-
-			double randomerror=0.0;
-			fprintf(fptr,"%s %lf %lf\n",obsname[iy].c_str(),Ytrain[iy],randomerror);
+         Ytrain[iy]+=alpha[iy]*SigmaY[iy]*randy.ran_gauss();
+			fprintf(fptr,"%s %lf\n",obsname[iy].c_str(),Ytrain[iy]);
 			fprintf(fptr_obs,"%15.8f ",Ytrain[iy]);
-			fprintf(fptr_SigmaY,"%15.8f ",SigmaY[iy]);
 		}
 		fclose(fptr);
 		fprintf(fptr_obs,"\n");
-		fprintf(fptr_SigmaY,"\n");
 	}
 	fclose(fptr_thetas);
 	fclose(fptr_obs);
-	fclose(fptr_SigmaY);
 	//
 	
 	
