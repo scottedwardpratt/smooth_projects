@@ -174,7 +174,7 @@ int main(){
 	//
 	
 	
-	// Now make some data for later testing, not for tuning
+	// Now make some data for later testing, not used for tuning
 	vector<vector<double>> thetatest,xtest;
 	int itest,Ntest=100;
 	double y;
@@ -197,19 +197,26 @@ int main(){
 		}
 	}
 	
-	command="mkdir -p smooth_data/fullmodel_testdata";
-	system(command.c_str());
-	for(iy=0;iy<NObs;iy++){
-		filename="smooth_data/fullmodel_testdata/"+obsname[iy]+".txt";
-		fptr=fopen(filename.c_str(),"w");
-		for(itest=0;itest<Ntest;itest++){
-			y=smooth.CalcY(A[iy],LAMBDA,thetatest[itest]);
-			for(ipar=0;ipar<NPars;ipar++){
-				fprintf(fptr,"%17.10e ",thetatest[itest][ipar]);
-			}
-			fprintf(fptr,"%17.10e\n",y);
-		}
-		fclose(fptr);
+	
+   for(itest=0;itest<Ntest;itest++){
+      string testdirname="smooth_data/FullModelTestingRuns/run"+to_string(itest);
+      command="mkdir -p "+testdirname;
+      system(command.c_str());
+      
+      filename=testdirname+"/model_parameters.txt";
+      fptr=fopen(filename.c_str(),"w");
+      for(ipar=0;ipar<NPars;ipar++){
+         fprintf(fptr,"%s %17.10e\n",parname[ipar].c_str(),thetatest[itest][ipar]);
+      }
+      fclose(fptr);
+      
+      filename=testdirname+"/obs.txt";
+      fptr=fopen(filename.c_str(),"w");
+      for(iy=0;iy<NObs;iy++){
+         y=smooth.CalcY(A[iy],LAMBDA,thetatest[itest]);
+         fprintf(fptr,"%s %17.10e\n",obsname[iy].c_str(),y);
+      }
+      fclose(fptr);
 		
 	}
 
