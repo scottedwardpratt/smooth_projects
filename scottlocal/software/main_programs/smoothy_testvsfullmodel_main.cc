@@ -5,7 +5,12 @@
 using namespace std;
 int main(){
 	NBandSmooth::CSmoothMaster master;
+   printf("howdy a\n");
+	master.CalcAllSigmaALambda();
+   printf("howdy b\n");
 	master.TuneAllY();
-	//master.TestAtTrainingPts();
+   printf("howdy c\n");
+   master.TestAtTrainingPts();
+	master.TestVsFullModel();
 	return 0;
 }
