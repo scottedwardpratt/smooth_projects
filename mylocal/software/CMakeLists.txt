@@ -57,10 +57,10 @@ target_link_libraries(smoothy_calcobs ${GITHOME_BAND_SMOOTH}/software/lib/libsmo
 #################################################
 # mcmc
 #################################################
-set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/mcmc_main.cc)
-add_executable(mcmc ${MAIN_PROGRAM_DIR}/mcmc_main.cc)
-add_dependencies(mcmc extern_smooth)
-target_link_libraries(mcmc ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
+set(SOURCE_FILES ${MAIN_PROGRAM_DIR}/smoothy_mcmc_main.cc)
+add_executable(smoothy_mcmc ${MAIN_PROGRAM_DIR}/smoothy_mcmc_main.cc)
+add_dependencies(smoothy_mcmc extern_smooth)
+target_link_libraries(smoothy_mcmc ${GITHOME_BAND_SMOOTH}/software/lib/libsmooth.a ${GITHOME_BAND_SMOOTH}/software/lib/libmsu_smoothutils.a   ${EIGEN3_LIBRARY})
 
 #################################################
 # fake full model
