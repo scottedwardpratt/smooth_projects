@@ -3,6 +3,7 @@
 #include "msu_smoothutils/log.h"
 using namespace std;
 int main(){
+   unsigned int iY,ipar;
 	NBandSmooth::CSmoothMaster master;
 	//master.ReadCoefficients();
 	master.TuneAllY();
@@ -15,9 +16,9 @@ int main(){
 	
 	// Prompt user for model parameter values and enter them into the modpars object
 	vector<double> X(modpars->NModelPars);
-	for(unsigned int ipar=0;ipar<modpars->NModelPars;ipar++){
-		cout << "Enter value for " << master.priorinfo->GetName(ipar) << ":\n";
-		cin >> X[ipar];
+	for(ipar=0;ipar<modpars->NModelPars;ipar++){
+      printf("Enter value for %s: ",(master.priorinfo->GetName(ipar)).c_str());
+      scanf("%lf",&X[ipar]);
 	}
 	modpars->SetX(X);
 	
@@ -26,9 +27,10 @@ int main(){
 	vector<double> Y(obsinfo->NObservables);
 	vector<double> SigmaY(obsinfo->NObservables);
 	master.GetAllY(modpars,Y,SigmaY);
-	cout << "---- EMULATED OBSERVABLES ------\n";
-	for(unsigned int iY=0;iY<obsinfo->NObservables;iY++){
-		cout << obsinfo->GetName(iY) << " = " << Y[iY] << " +/- " << SigmaY[iY] << endl;
+	printf("---- EMULATED OBSERVABLES ------\n");
+	for(iY=0;iY<obsinfo->NObservables;iY++){
+      printf("%20s = %11.4e +/- %11.4e\n",
+             (obsinfo->GetName(iY)).c_str(),Y[iY],SigmaY[iY]);
 	}
 
 	return 0;
