@@ -1,0 +1,10 @@
+obs0  obs0
+obs1  obs1
+obs2  obs2
+obs3  obs3
+obs4  obs4
+obs5  obs5
+obs6  obs6
+obs7  obs7
+obs8  obs8
+obs9  obs9
