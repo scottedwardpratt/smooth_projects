@@ -29,7 +29,7 @@ int main(){
 	master.GetAllY(modpars,Y,SigmaY);
 	printf("---- EMULATED OBSERVABLES ------\n");
 	for(iY=0;iY<obsinfo->NObservables;iY++){
-      printf("%20s = %11.4e +/- %11.4e\n",
+      printf("%10s = %11.4e +/- %11.4e\n",
              (obsinfo->GetName(iY)).c_str(),Y[iY],SigmaY[iY]);
 	}
 

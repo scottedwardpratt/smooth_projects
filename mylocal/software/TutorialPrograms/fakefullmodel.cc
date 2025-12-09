@@ -79,8 +79,9 @@ int main(){
    }
    
 	printf("NPars=%d, NObs=%d\n",NPars,NObs);
-	printf("Enter Lambda for fakesmooth: ");
-	scanf("%lf",&LAMBDA);
+	//printf("Enter Lambda for fake model: ");
+	///scanf("%lf",&LAMBDA);
+   LAMBDA=3.0;
 
 	thetatrue.resize(NPars);
 	ytrue.resize(NObs);
@@ -169,7 +170,7 @@ int main(){
 	
 	// Now make some data for later testing, not used for tuning
 	vector<vector<double>> thetatest,xtest;
-	unsigned int itest,Ntest=2*NTrain;
+	unsigned int itest,Ntest=100;
 	double y;
 	
 	thetatest.resize(Ntest);

@@ -10,20 +10,21 @@ using namespace std;
 int main(){
 	unsigned int NPars,NObs;
 	unsigned int ipar,iy;
-	double ALPHA,sensitivity=1.0,randy;
+	double ALPHA,sensitivity=1.0;
 	FILE *fptr;
 	string parname, obsname;
-   printf("Enter the number of model parameters: ");
-   scanf("%d",&NPars);
-   printf("Enter the number of observables ");
-   scanf("%d",&NObs);
+   //printf("Enter the number of model parameters: ");
+   //scanf("%d",&NPars);
+   //printf("Enter the number of observables ");
+   //scanf("%d",&NObs);
+   NPars=6;
+   NObs=10;
    ALPHA=0.0;
    
 	fptr=fopen("smooth_data/Info/prior_info.txt","w");
 	fprintf(fptr,"# par_name  dist_type  xmin/centroid  xmax/width  SensitivityScale\n");
 	for(ipar=0;ipar<NPars;ipar++){
 		parname="par"+to_string(ipar);
-		randy=double(rand())/double(RAND_MAX);
 		if(ipar%2==0)
 			fprintf(fptr,"%7s gaussian 0 100  %6.5f\n",parname.c_str(),sensitivity);
 		else
