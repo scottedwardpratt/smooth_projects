@@ -20,8 +20,7 @@ int main(){
 	
 	mcmc.PruneTrace(); // Throws away all but last point
 	mcmc.PerformTrace(Ntrace,Nskip);
-	mcmc.WriteTrace(); // Writes trace in scaled coordinates theta
-	mcmc.WriteXTrace(); // Writes trace in real coordinates X
+	mcmc.WriteTrace(); // Writes trace
 	mcmc.EvaluateTrace();
 
 	return 0;
