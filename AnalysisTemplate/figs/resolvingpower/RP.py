@@ -80,13 +80,13 @@ for ipanel in range (0,Npanels):
   plt.xlim(-0.5,NObs-0.5)
   plt.ylim(-thetamax,thetamax)
 
-plt.savefig('RP.pdf',format='pdf')
-
+outputfilename='posterior.pdf'
+plt.savefig(outputfilename,format='pdf')
 plt.show()
 plt.close()
 # if you have Mac OS and want to see pdf file, comment out previous two lines and uncomment line below
-#os.system("open -a Preview RP.pdf");
-## if you have Linux and want to see pdf file, comment out previous two lines and uncomment line below
-#os.system("okular RP.pdf &");
+#os.system("open -a Preview "+outputfilename);
+# if you have Linux and want to see pdf file, comment out previous two lines and uncomment line below
+#os.system("okular "+outputfilename+"&");
 
 quit()

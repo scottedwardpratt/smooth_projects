@@ -12,7 +12,6 @@ nbins=30 # Higher gives better resolution but can be noisier
 mcmcfilename='../figdata/trace_theta.txt' # Created by MCMC program (look in mcmc_trace/..)
 priorfilename='../figdata/prior_info.txt' #same as used by Smooth Emulator, but needs extra entry for parname for plot
 # This parameter name can be "latex-like", e.g. $\alpha_s$
-outputfilename='posterior.pdf'
 
 #you might wish to edit these
 ticklabelsize=20.0/(1+npanels**0.25)
@@ -124,7 +123,8 @@ for ipanel in range (0,npanels):
       plt.ylim(-0.1,1.1)
       plt.xlim(-ThetaMax,ThetaMax)
       plt.plot(xarray,counts1d,linestyle='-',linewidth=3,color='r')
-    
+
+outputfilename='posterior.pdf'
 plt.savefig(outputfilename,format='pdf')
 plt.show()
 plt.close()
