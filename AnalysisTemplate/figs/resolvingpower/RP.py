@@ -75,12 +75,12 @@ for ipanel in range (0,Npanels):
     ax.set_xticklabels([], minor=False)
   
   if writetitle:
-    ax.set_title('$\partial \langle\langle \\theta_i\\rangle\\rangle/\partial Y^{\\rm exp}_a \langle \delta Y_a^2\\rangle^{1/2}$',fontsize=1.3*myfontsize)
+    ax.set_title('$\\partial \\langle\\langle \\theta_i\\rangle\\rangle/\\partial Y^{\\rm exp}_a \\langle \\delta Y_a^2\\rangle^{1/2}$',fontsize=1.3*myfontsize)
 
   plt.xlim(-0.5,NObs-0.5)
   plt.ylim(-thetamax,thetamax)
 
-outputfilename='posterior.pdf'
+outputfilename='RP.pdf'
 plt.savefig(outputfilename,format='pdf')
 plt.show()
 plt.close()
