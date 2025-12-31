@@ -19,6 +19,7 @@ int main(){
 	CLog::Info("finished burn in\n");
 	
 	mcmc.PruneTrace(); // Throws away all but last point
+   printf("Nburn=%u, Nskip=%u, Ntrace=%u\n",Nburn,Nskip,Ntrace);
 	mcmc.PerformTrace(Ntrace,Nskip);
 	mcmc.WriteTrace(); // Writes trace
 	mcmc.EvaluateTrace();
