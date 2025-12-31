@@ -11,9 +11,9 @@ int main(){
    //master.TuneAllYFixedLambda();
 	NBandSmooth::CMCMC mcmc(&master);
 	
-	unsigned int Nburn=master.parmap->getI("MCMC_NBURN",1000);  // Steps for burn in
-	unsigned int Ntrace=master.parmap->getI("MCMC_NTRACE",1000); // Record this many points
-	unsigned int Nskip=master.parmap->getI("MCMC_NSKIP",5); // Only record every Nskip^th point
+	unsigned int Nburn=mcmc.parmap->getI("MCMC_NBURN",1000);  // Steps for burn in
+	unsigned int Ntrace=mcmc.parmap->getI("MCMC_NTRACE",1000); // Record this many points
+	unsigned int Nskip=mcmc.parmap->getI("MCMC_NSKIP",5); // Only record every Nskip^th point
 		
 	mcmc.PerformTrace(1,Nburn);	
 	CLog::Info("finished burn in\n");
