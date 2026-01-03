@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 import os
-print('Adding this to path: '+os.environ['SMOOTH_LOCAL'])
+print('Adding this to path: '+os.environ['SMOOTH_LOCAL']+"/software/pybind_stuff")
 sys.path.insert(0,os.environ['SMOOTH_LOCAL']+"/software/pybind_stuff")
 import emulator_smooth
 smoothmaster=emulator_smooth.emulator_smooth()
